@@ -1,7 +1,6 @@
 # Classe Estado
 
 from Model.Transition import Transition
-
 class State(object):
 
     def __init__(self, Id, Name, Posx, Posy, Initial, Final):
@@ -48,9 +47,10 @@ class State(object):
     def setPosy(self, Posy):
         self.Posy = Posy
 
-    def printState(self):
+    def printState(self, Trans):
+
         print("Estado: " + self.getName() + "\nID: " + self.getId() +
               "\nPosição X: " + self.getPosx() + "\nPosição Y: " + self.getPosy() +
               "\nInicial: " + str(self.isInitial()) + "\nFinal: " + str(self.isFinal()))
+        print("Transições: " + Trans)
         print("*"*15)
-

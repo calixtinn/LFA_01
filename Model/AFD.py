@@ -85,7 +85,7 @@
 
 import xml.etree.ElementTree as ET
 from Model.State import State
-
+from Model.Transition import Transition
 
 class AFD(object):
 
@@ -96,7 +96,10 @@ class AFD(object):
         self.Initial = Initial
         self.Finals = Finals
 
-
     def printAutomata(self): #Printa os estados do autômato e suas características
-        for i in self.States:
-            State.printState(i)
+        for i in self.States: # Para cada objeto State
+            trans = ""
+            for j in self.Transitions: # Para cada objeto Transition
+                if (j.getFrom() == i.getId()): # Se From = ID do estado, a transição faz parte do estado.
+                    trans += Transition.printTransition(j) # Cria uma String com as transições de cada estado.
+            State.printState(i, trans)

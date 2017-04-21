@@ -56,6 +56,6 @@ def load(jffFile, cont): #Carrega o arquivo jff e RETORNA UM OBJETO DO TIPO AFD!
     return automato
 #Fim load jff
 
-automata = load("a_impar.jff", automata_Id_counter)
+automata = load("a_b_impar.jff", automata_Id_counter)
 automata_Id_counter += 1
 automata.printAutomata()

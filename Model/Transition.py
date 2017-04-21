@@ -26,4 +26,4 @@ class Transition(object):
         self.Read = Read
 
     def printTransition(self):
-        print(self.From + "->" + self.To + "," + self.Read)
+        return self.From + "->" + self.To + "," + self.Read + " | "
