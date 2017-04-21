@@ -4,7 +4,6 @@
 Esta classe representa um Automoto Finito Deterministico.
 """
 
-
 # --------------------------------------  O que um AFD tem? (Esta classe) ------------------------------------------
 #
 # Estados, transições, Id
