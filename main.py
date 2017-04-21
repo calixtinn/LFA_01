@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from Model.State import State
 
 doc = ET.parse('Input/a_b_impar.jff')
 
@@ -52,4 +53,10 @@ for i in range(0,(n_estados)):
 
 transicoes = le_transicoes(transicoes, doc, root)
 
-le_jff(doc, root, transicoes)
+#le_jff(doc, root, transicoes)
+
+q1 = State(0,"q1",False,True)
+
+print("Nome do Estado: " + q1.getName())
+
+

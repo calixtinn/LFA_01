@@ -1,6 +1,6 @@
 # Classe Estado
 
-class Estado(object):
+class State(object):
 
     def __init__(self, Id, Name, Final, Initial):
         self.Id = Id
@@ -8,11 +8,8 @@ class Estado(object):
         self.Final = Final
         self.Initial = Initial
 
-    def __get__(self, Name):
+    def getName(self):
         return self.Name
-
-    #def getName(self):
-    #    return self.Name
 
 
 
