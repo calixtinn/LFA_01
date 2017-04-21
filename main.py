@@ -13,6 +13,7 @@ def load(jffFile, cont): #Carrega o arquivo jff e RETORNA UM OBJETO DO TIPO AFD!
     s_initial = "" # Guardará o ID do estado inicial
     doc = ET.parse("Input/" + jffFile)  # Recebendo o arquivo de entrada via parametro da função.
     root = doc.getroot()  # Recebendo a tag root
+    alphabet = [] # alfabeto que o automato suporta
 
     for i in root.iter('state'):  # iterando em cada tag State para pegar as informações
 
@@ -47,11 +48,14 @@ def load(jffFile, cont): #Carrega o arquivo jff e RETORNA UM OBJETO DO TIPO AFD!
         To = i.find('to').text
         Read = i.find('read').text
 
+        alphabet.append(Read) # Adiciona o caractere lido na lista do alfabeto
+
         transition = Transition(From, To, Read)
         transitions.append(transition)
     # Fim da obtenção das informações referentes às transições.
 
-    automato = AFD(cont, states, transitions, s_initial, finals) #Cria um automato
+    alphabet = list(set(alphabet))
+    automato = AFD(cont, states, transitions, s_initial, finals, alphabet) #Cria um automato
 
     return automato
 #Fim load jff

@@ -89,12 +89,13 @@ from Model.Transition import Transition
 
 class AFD(object):
 
-    def __init__(self, Id, States, Transitions, Initial, Finals):
+    def __init__(self, Id, States, Transitions, Initial, Finals, Alphabet):
         self.Id = Id
         self.States = States
         self.Transitions = Transitions
         self.Initial = Initial
         self.Finals = Finals
+        self.Alphabet = Alphabet
 
     def printAutomata(self): #Printa os estados do autômato e suas características
         for i in self.States: # Para cada objeto State
@@ -103,3 +104,4 @@ class AFD(object):
                 if (j.getFrom() == i.getId()): # Se From = ID do estado, a transição faz parte do estado.
                     trans += Transition.printTransition(j) # Cria uma String com as transições de cada estado.
             State.printState(i, trans)
+        print("Alfabeto: " + str(self.Alphabet))
