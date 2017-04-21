@@ -67,20 +67,20 @@ Esta classe representa um Automoto Finito Deterministico.
 # m.deleteTransition(source=1 ,target=4, consume="a");
 #
 # ------------------------------------------  Implementações do AFD ------------------------------------------------
-# AFD
+# AFD m
 # m.load("entrada.jff");
 # m.salve("saida.jff");
-# m.equivalents();
-# m.minimum();
-# AFD.equivalents(m1, m2)
-# m3 = m1.complement();
-# m4 = m1.union(m2);
-# m5 = m1.intersection(m2);
-# m6 = m1.difference(m2);
-# m.accept("aaabbbaa")
-# estado = m.initial();
-# estado = m.move(estado ,"aaab") ;
-# estado in m.finals()
+# List eqv = m.equivalents();
+# AFD mm = m.minimum();
+# True|False = AFD.equivalents(m1, m2)
+# AFD m3 = m1.complement();
+# AFD m4 = m1.union(m2);
+# AFD m5 = m1.intersection(m2);
+# AFD m6 = m1.difference(m2);
+# True|False m.accept("aaabbbaa")
+# State estado = m.initial();
+# State estado = m.move(estado ,"aaab") ;
+# List m.finals()
 # m.addState(id=10, initial=false, final=true);
 # m.addTransition(source=1, target=2, consume="b");
 # m.deleteState(3);

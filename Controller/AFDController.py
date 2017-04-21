@@ -72,3 +72,52 @@ class AFDController(object):
         automato = AFD(cont, states, transitions, s_initial, finals, alphabet) #Cria um automato
 
         return automato
+
+    def save(self, jffFile, cont):
+        pass
+
+    def equivalents(self):
+        pass
+
+    def minimum(self):
+        pass
+
+    def equivalent(self, m1, m2):
+        pass
+
+    def complement(self):
+        pass
+
+    def union(self, m2):
+        pass
+
+    def intersection(self, m2):
+        pass
+
+    def difference(self, m2):
+        pass
+
+    def accept(self, word):
+        pass
+
+    def initial(self):
+        pass
+
+    def move(self):
+        pass
+
+    def finals(self):
+        pass
+
+    def addState(self):
+        pass
+
+    def addTransition(self):
+        pass
+
+    def deleteState(self):
+        pass
+
+    def deleteTransition(self):
+        pass
+
