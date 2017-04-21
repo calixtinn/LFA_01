@@ -1,5 +1,7 @@
 # Classe AFD
 
+from Model.State import State
+
 class AFD(object):
 
     # --------------------------------------  O que um AFD tem? (Esta classe) ------------------------------------------
