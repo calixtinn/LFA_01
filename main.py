@@ -3,13 +3,16 @@ from Model.State import State
 
 doc = ET.parse('Input/a_b_impar.jff')
 
-root = doc.getroot()  # recupera a tag principal
+# recupera a tag principal
+root = doc.getroot()
+
 
 def le_jff(doc, root, transicoes):
 
     # listar a galera
 
-    for i in root.iter('state'): #Iterando na tag <state>
+    # Iterando na tag <state>
+    for i in root.iter('state'):
 
         x = i.find('x').text
         y = i.find('y').text
@@ -28,7 +31,8 @@ def le_transicoes(transicoes, doc, root):
 
     # listar a galera
 
-    for i in root.iter('transition'):  # Iterando na tag <transition>
+    # Iterando na tag <transition>
+    for i in root.iter('transition'):
 
         fonte = i.find('from').text
         destino = i.find('to').text
