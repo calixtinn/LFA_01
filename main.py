@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 
-doc = ET.parse('a_b_impar.jff')
+doc = ET.parse('')
 
 root = doc.getroot()  # recupera a tag principal
 
