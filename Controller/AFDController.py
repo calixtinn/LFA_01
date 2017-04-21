@@ -1,18 +1,19 @@
 """
 @AFDController
 @author: Matheus Calixto | Samuel Terra
-Esta classe implementa todas as funcionalidade um Automoto Finito Deterministico.
+Classe que implementa todas as funcionalidade um Automoto Finito Deterministico.
 """
-
 import xml.etree.ElementTree as ET
 from Model.State import State
 from Model.Transition import Transition
 from Model.AFD import AFD
 
-
 class AFDController(object):
 
     def __init__(self):
+        """
+        Inicializa as variaveis de classe
+        """
         self.states = []  # Lista de estados
         self.transitions = []  # Lista de transições
         self.finals = []  # Lista de estados finais
@@ -20,8 +21,10 @@ class AFDController(object):
 
     def load(self, jffFile, cont):
         """
-        Este metodo é responsavel por ler um arquivo XML em formato jff contendo o AFD.
-        :return @AFD
+        Metodo responsavel por ler um arquivo XML em formato jff conteudo o AFD.
+        :param jffFile
+        :param cont
+        :rtype AFD
         """
 
         s_initial = ""  # Guardará o ID do estado inicial
@@ -78,49 +81,131 @@ class AFDController(object):
         return automato
 
     def save(self, jffFile, cont):
+        """
+        Metodo responsavel por salvar AFD em um arquivo XML em formato jff.
+        :param jffFile
+        :param cont
+        :rtype bool
+        """
         pass
 
     def equivalents(self):
+        """
+        Metodo responsavel por verificar os estados equivalentes do AFD.
+        :rtype list
+        """
         pass
 
     def minimum(self):
+        """
+        Metodo responsavel por realizar a minimização do AFD.
+        :rtype AFD
+        """
         pass
 
     def equivalent(self, m1, m2):
+        """
+        Metodo responsavel por verificar a equivalencia de dois AFDs.
+        :param m1
+        :param m2
+        :rtype bool
+        """
         pass
 
     def complement(self):
+        """
+        Metodo responsavel por realizar o complemento AFD.
+        :rtype AFD
+        """
         pass
 
     def union(self, m2):
+        """
+        Metodo responsavel por realizar a união do AFD da classe com um outro.
+        :param m2
+        :rtype AFD
+        """
         pass
 
     def intersection(self, m2):
+        """
+        Metodo responsavel por realizar a interseção do AFD da classe com um outro.
+        :param m2
+        :rtype AFD
+        """
         pass
 
     def difference(self, m2):
+        """
+        Metodo responsavel por realizar a diferença do AFD da classe com um outro.
+        :param m2
+        :rtype AFD
+        """
         pass
 
     def accept(self, word):
+        """
+        Metodo responsavel por verificar se uma determinada palavra é aceita pelo AFD.
+        :param word
+        :rtype bool
+        """
         pass
 
     def initial(self):
+        """
+        Metodo responsavel por retornar o estado inicial do AFD.
+        :rtype State
+        """
         pass
 
     def move(self):
+        """
+        xxxxxxx
+        :rtype 
+        """
         pass
 
     def finals(self):
+        """
+        Metodo responsavel por retornar os estados finais do AFD.
+        :rtype list
+        """
         pass
 
-    def addState(self):
+    def addState(self, id, initial, final):
+        """
+        Metodo responsavel por adicionar estado ao AFD.
+        :param id
+        :param initial
+        :param final
+        :rtype bool
+        """
         pass
 
-    def addTransition(self):
+    def addTransition(self, source, target, consume):
+        """
+        Metodo responsavel por adicionar transições ao AFD.
+        :param source
+        :param target
+        :param consume
+        :rtype bool
+        """
         pass
 
-    def deleteState(self):
+    def deleteState(self, id):
+        """
+        Metodo responsavel por deletar um estado do AFD.
+        :param id
+        :rtype: bool
+        """
         pass
 
-    def deleteTransition(self):
+    def deleteTransition(self, source, target, consume):
+        """
+        Metodo responsavel por deletar uma transição de um estado a outro.
+        :param source
+        :param target
+        :param consume
+        :rtype bool
+        """
         pass
