@@ -3,9 +3,9 @@
 class Transition(object):
 
     def __init__(self, From, To, Read):
-        self.From   = From
-        self.To     = To
-        self.Read   = Read
+        self.From = From
+        self.To = To
+        self.Read = Read
 
     def getFrom(self):
         return self.From
@@ -24,3 +24,6 @@ class Transition(object):
 
     def setRead(self, Read):
         self.Read = Read
+
+    def printTransition(self):
+        print(self.From + "->" + self.To + "," + self.Read)

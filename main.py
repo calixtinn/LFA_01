@@ -1,62 +1,61 @@
 import xml.etree.ElementTree as ET
 from Model.State import State
+from Model.Transition import Transition
+from Model.AFD import AFD
 
-doc = ET.parse('Input/a_b_impar.jff')
+automata_Id_counter = 0 #Contador de ID's de autômatos. (Auto Increment)
 
-# recupera a tag principal
-root = doc.getroot()
+def load(jffFile, cont): #Carrega o arquivo jff e RETORNA UM OBJETO DO TIPO AFD!!!!!
 
+    states = []  # Lista de estados
+    transitions = []  # Lista de transições
+    finals = []  # Lista de estados finais
+    s_initial = "" # Guardará o ID do estado inicial
+    doc = ET.parse("Input/" + jffFile)  # Recebendo o arquivo de entrada via parametro da função.
+    root = doc.getroot()  # Recebendo a tag root
 
-def le_jff(doc, root, transicoes):
-
-    # listar a galera
-
-    # Iterando na tag <state>
-    for i in root.iter('state'):
+    for i in root.iter('state'):  # iterando em cada tag State para pegar as informações
 
         x = i.find('x').text
         y = i.find('y').text
-        print('Estado: ' + i.attrib['name'])
-        print('ID: ' + i.attrib['id'])
-        print('X: ' + x)
-        print('Y: ' + y)
-        if (i.find('initial') != None):
-            print("INICIAL!")
-        if (i.find('final') != None):
-            print("FINAL!")
-        print("Transicoes: " + str(transicoes[int(i.attrib['id'])]))
-        print('*' * 10)
+        name = i.attrib['name']
+        id = i.attrib['id']
 
-def le_transicoes(transicoes, doc, root):
+        if (i.find('initial') != None):  # Se nesse estado houver a tag inicial, seta o estado como inicial.
+            initial = True
+            s_initial = id
+        else:
+            initial = False
 
-    # listar a galera
+        if (i.find('final') != None):  # Se nesse estado houver a tag final, seta o estado como final.
+            final = True
+            finals.append(id)
+        else:
+            final = False
+
+        state = State(id, name, x, y, initial, final) # Cria um objeto Estado
+
+        states.append(state) #Adiciona na lista de estados
+
+    # Fim da obtenção das informações referentes aos estados
 
     # Iterando na tag <transition>
-    for i in root.iter('transition'):
 
-        fonte = i.find('from').text
-        destino = i.find('to').text
-        caractere = i.find('read').text
+    for i in root.iter('transition'): #Pegando as transições
 
-        transicoes[int(fonte)].append([fonte + "," + destino +"," + caractere])
+        From = i.find('from').text
+        To = i.find('to').text
+        Read = i.find('read').text
 
-    return transicoes
+        transition = Transition(From, To, Read)
+        transitions.append(transition)
+    # Fim da obtenção das informações referentes às transições.
 
-def qtde_estados(doc, root):
+    automato = AFD(cont, states, transitions, s_initial, finals) #Cria um automato
 
-    cont = 0
-    for i in root.iter('state'):
-        cont += 1
-    return cont
+    return automato
+#Fim load jff
 
-n_estados = qtde_estados(doc, root)
-transicoes = []
-
-for i in range(0,(n_estados)):
-    transicoes.append([])
-
-transicoes = le_transicoes(transicoes, doc, root)
-
-le_jff(doc, root, transicoes)
-
-
+automata = load("a_impar.jff", automata_Id_counter)
+automata_Id_counter += 1
+automata.printAutomata()
