@@ -9,20 +9,24 @@ from Model.State import State
 from Model.Transition import Transition
 from Model.AFD import AFD
 
+
 class AFDController(object):
+
+    def __init__(self):
+        self.states = []  # Lista de estados
+        self.transitions = []  # Lista de transições
+        self.finals = []  # Lista de estados finais
+        self.alphabet = []  # alfabeto que o automato suporta
 
     def load(self, jffFile, cont):
         """
         Este metodo é responsavel por ler um arquivo XML em formato jff contendo o AFD.
         :return @AFD
         """
-        states = []                         # Lista de estados
-        transitions = []                    # Lista de transições
-        finals = []                         # Lista de estados finais
-        s_initial = ""                      # Guardará o ID do estado inicial
+
+        s_initial = ""  # Guardará o ID do estado inicial
         doc = ET.parse("Input/" + jffFile)  # Recebendo o arquivo de entrada via parametro da função.
-        root = doc.getroot()                # Recebendo a tag root
-        alphabet = []                       # alfabeto que o automato suporta
+        root = doc.getroot()  # Recebendo a tag root
 
         # iterando em cada tag State para pegar as informações
         for i in root.iter('state'):
@@ -42,7 +46,7 @@ class AFDController(object):
             # Se nesse estado houver a tag final, seta o estado como final.
             if (i.find('final') != None):
                 final = True
-                finals.append(id)
+                self.finals.append(id)
             else:
                 final = False
 
@@ -50,7 +54,7 @@ class AFDController(object):
             state = State(id, name, x, y, initial, final)
 
             # Adiciona na lista de estados
-            states.append(state)
+            self.states.append(state)
 
         # Fim da obtenção das informações referentes aos estados
 
@@ -62,14 +66,14 @@ class AFDController(object):
             Read = i.find('read').text
 
             # Adiciona o caractere lido na lista do alfabeto
-            alphabet.append(Read)
+            self.alphabet.append(Read)
 
             transition = Transition(From, To, Read)
-            transitions.append(transition)
+            self.transitions.append(transition)
         # Fim da obtenção das informações referentes às transições.
 
-        alphabet = list(set(alphabet))
-        automato = AFD(cont, states, transitions, s_initial, finals, alphabet) #Cria um automato
+        alphabet = list(set(self.alphabet))
+        automato = AFD(cont, self.states, self.transitions, s_initial, self.finals, alphabet)  # Cria um automato
 
         return automato
 
@@ -120,4 +124,3 @@ class AFDController(object):
 
     def deleteTransition(self):
         pass
-
