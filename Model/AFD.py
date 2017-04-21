@@ -1,4 +1,9 @@
-# Classe AFD
+"""
+@AFD
+@author: Matheus Calixto | Samuel Terra
+Esta classe representa um Automoto Finito Deterministico.
+"""
+
 
 # --------------------------------------  O que um AFD tem? (Esta classe) ------------------------------------------
 #

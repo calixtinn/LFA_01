@@ -1,4 +1,8 @@
-# Classe Transicao
+"""
+@Transition
+@author: Matheus Calixto | Samuel Terra
+Esta classe representa uma Transição (ligação) de Estados em um Automato.
+"""
 
 class Transition(object):
 
