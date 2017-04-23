@@ -87,7 +87,6 @@ Esta classe representa um Automoto Finito Deterministico.
 # m.deleteTransition(source=1 ,target=4, consume="a");
 # ----------------------------------------------------------------------------------------------------------------
 
-import xml.etree.ElementTree as ET
 from Model.State import State
 from Model.Transition import Transition
 
@@ -109,3 +108,12 @@ class AFD(object):
                     trans += Transition.printTransition(j) # Cria uma String com as transições de cada estado.
             State.printState(i, trans)
         print("Alfabeto: " + str(self.Alphabet))
+
+    def getStates(self):
+        return self.States
+
+    def getAlphabet(self):
+        return self.Alphabet
+
+    def getTransitions(self):
+        return self.Transitions

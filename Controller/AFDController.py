@@ -8,7 +8,10 @@ from Model.State import State
 from Model.Transition import Transition
 from Model.AFD import AFD
 
+
 class AFDController(object):
+
+    automata_Id_counter = 0
 
     def __init__(self):
         """
@@ -19,7 +22,7 @@ class AFDController(object):
         self.finals = []  # Lista de estados finais
         self.alphabet = []  # alfabeto que o automato suporta
 
-    def load(self, jffFile, cont):
+    def load(self, jffFile):
         """
         Metodo responsavel por ler um arquivo XML em formato jff conteudo o AFD.
         :param jffFile
@@ -76,7 +79,9 @@ class AFDController(object):
         # Fim da obtenção das informações referentes às transições.
 
         alphabet = list(set(self.alphabet))
-        automato = AFD(cont, self.states, self.transitions, s_initial, self.finals, alphabet)  # Cria um automato
+        automato = AFD(AFDController.automata_Id_counter, self.states, self.transitions, s_initial, self.finals, alphabet)  # Cria um automato
+
+        AFDController.automata_Id_counter += 1
 
         return automato
 
@@ -89,12 +94,65 @@ class AFDController(object):
         """
         pass
 
-    def equivalents(self):
+    def equivalents(afd):
         """
         Metodo responsavel por verificar os estados equivalentes do AFD.
+        :param afd
         :rtype list
         """
-        pass
+        matriz_equivalencia = []
+        possiveis_equivalentes = []
+        transicoes_possiveis_eq = [] #transicoes dos estados que possivelmente seriam equivalentes
+
+        estados = afd.getStates()   #recebe uma lista com os estados do automato
+        alfabeto = afd.getAlphabet()#recebe uma lista contendo o alfabeto do automato
+        transicoes = afd.getTransitions() #recebe uma lista contendo as transições do autômato
+
+        n_estados = len(estados)    #salva o número de estados do autômato
+        n_simbolos = len(alfabeto)  #salva o número de símbolos do alfabeto do autômato.
+
+
+        #cria e inicializa a matriz de equivalência.
+
+        #I  = Igual. Ex: (1,1), (2,2)...
+        #N  = Espaço em branco
+        #X  = Não equivalente
+        #O  = Possível equivalencia
+
+        for linha in range(0, n_estados):
+            aux = []
+            for coluna in range(0, n_estados):
+                if(linha == coluna):
+                    aux.append("I") #I de igual
+                elif(estados[linha].isFinal() != estados[coluna].isFinal()): #Compara-se estados finais com não finais.
+                    aux.append("X")
+                else:
+                    aux.append("N") #espaço em branco.
+                    possiveis_equivalentes.append(str(coluna))
+
+            matriz_equivalencia.append(aux)
+
+        possiveis_equivalentes = list(set(possiveis_equivalentes)) #Lista os estados que devem ser testados entre si.
+        n_possiveis_eq = len(possiveis_equivalentes) #tamanho da lista de possíveis equivalentes.
+
+        #Salva numa lista todas as transições dos estados que possívelmente são equivalentes.
+        for i in transicoes:
+            for j in range(0,n_possiveis_eq):
+                if(i.getFrom() == possiveis_equivalentes[j]):
+                    transicoes_possiveis_eq.append(i)
+
+        for i in range(0, n_possiveis_eq):
+            for j in range(i+1, n_possiveis_eq):
+                trans_i = []  # transicoes de i
+                trans_j = []  # transicoes de j
+                for k in transicoes_possiveis_eq: #procura as transições dos respectivos estados
+                    if(k.getFrom() == possiveis_equivalentes[i]):
+                        trans_i.append([k.getTo(), k.getRead()]) #recebe o destino e o caractere lido
+                    if(k.getFrom() == possiveis_equivalentes[j]):
+                        trans_j.append([k.getTo, k.getRead])
+
+        #fazendo.... pode deixar que eu faço essa função man!
+        return len(transicoes_possiveis_eq)
 
     def minimum(self):
         """

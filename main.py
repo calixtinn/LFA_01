@@ -2,10 +2,11 @@
 from Controller.AFDController import AFDController
 
 #Contador de ID's de autômatos. (Auto Increment)
-automata_Id_counter = 0
+#automata_Id_counter = 0 (Passei pra classe AFDController
 
-AFD = AFDController()
+AF = AFDController()
 
-automata = AFD.load("a_b_impar.jff", automata_Id_counter)
-automata_Id_counter += 1
+automata = AF.load("equivalente_1.jff")
 automata.printAutomata()
+
+print("Qtde de Transições dos possíveis estados equivalentes: " + str(AFDController.equivalents(automata)))
