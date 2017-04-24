@@ -98,113 +98,141 @@ class AFDController(object):
         """
         Metodo responsavel por verificar os estados equivalentes do AFD.
         :param afd
-        :rtype dictionary
+        :rtype list
 
         """
-        matriz_equivalencia = [] #matriz do algoritmo de equivalencia
-        possiveis_equivalentes = [] #lista para o controle dos possíveis equivalentes
-        transicoes_possiveis_eq = [] #transicoes dos estados que possivelmente seriam equivalentes
-        lista_equivalentes = {} #dicionário de estados equivalentes
+        tabela_equivalencia = {} #Tabela que contem a quivalência entre os estados
+        lista_estados = [] #lista para o controle dos estados
+        transicoes_estados = [] #transicoes dos estados
+        lista_equivalentes = [] #lista de estados equivalentes
+        amarrados = {} #Dicionario contendo as amarrações entre estados no algoritmo de equivalencia.
 
-        estados = afd.getStates()   #recebe uma lista com os estados do automato
+        estados = afd.getStates()   #recebe uma lista com os estados do automato (OBJETOS)
         alfabeto = afd.getAlphabet()#recebe uma lista contendo o alfabeto do automato
         transicoes = afd.getTransitions() #recebe uma lista contendo as transições do autômato
 
-        n_estados = len(estados)    #salva o número de estados do autômato
-        n_simbolos = len(alfabeto)  #salva o número de símbolos do alfabeto do autômato.
+        #Cria e inicializa a tabela Hash de equivalências
 
+        for estado in estados: #para cada estado na lista OBJETOS de estados
+            lista_estados.append(estado.getId())
 
-        #cria e inicializa a matriz de equivalência.
+        n_estados = len(lista_estados)  # tamanho da lista de estados
 
-        #I  = Igual. Ex: (1,1), (2,2)...
-        #N  = Espaço em branco
-        #X  = Não equivalente
-        #O  = Possível equivalencia
+        for i in range(0, n_estados): #Percorre a lista de estados testando-os um a um
+            e1 = lista_estados[i]
+            for j in range(i+1, n_estados):
+                e2 = lista_estados[j]
+                chave = e1+","+e2 #Cria uma chave para se testar na tabela. Ex: 1,2 (Estado1 equivalente a estado 2?)
+                if (estados[i].isFinal() != estados[j].isFinal()): #Se ambos não forem finais ou não finais já não é equivalente
+                    tabela_equivalencia[chave] = "X" #Marca na tabela Hash que não é equivalente.
+                else: tabela_equivalencia[chave] = "N" # Caso contrário, marca como N (Espaço vazio a ser testado)
+        #CRIADA A TABELA
 
-        for linha in range(0, n_estados):
-            aux = []
-            for coluna in range(0, n_estados):
-                if(linha == coluna):
-                    aux.append("I") #I de igual
-                elif(estados[linha].isFinal() != estados[coluna].isFinal()): #Compara-se estados finais com não finais.
-                    aux.append("X")
-                else:
-                    aux.append("N") #espaço em branco.
-                    possiveis_equivalentes.append(str(coluna))
-
-            matriz_equivalencia.append(aux)
-
-        possiveis_equivalentes = list(set(possiveis_equivalentes)) #Lista os estados que devem ser testados entre si.
-        n_possiveis_eq = len(possiveis_equivalentes) #tamanho da lista de possíveis equivalentes.
-        possiveis_equivalentes.sort()
-
-        #Salva numa lista todas as transições dos estados que possívelmente são equivalentes.
+        #Salva em uma lista as todas as transições de todos os estados.
         for i in transicoes:
-            for j in range(0,n_possiveis_eq):
-                if(i.getFrom() == possiveis_equivalentes[j]):
-                    transicoes_possiveis_eq.append(i)
+            for j in range(0, n_estados):
+                if (i.getFrom() == lista_estados[j]):
+                    transicoes_estados.append(i)
 
-        for i in range(0, n_possiveis_eq): #Percorre a lista de possíveis equivalentes
+        for i in range(0, n_estados):  # Percorre a lista de estados
             trans_i = {}  # transicoes de i (dicionario)
-            for k in transicoes_possiveis_eq:  # procura as transições dos respectivos estados
-                if (k.getFrom() == possiveis_equivalentes[i]):
+            for k in transicoes_estados:  # procura as transições dos respectivos estados
+                if (k.getFrom() == lista_estados[i]):
                     trans_i[k.getRead()] = k.getTo()  # Ex: ["a"] = 1 [caractere] = para onde vai.
             # End pegar transições de I
 
-            for j in range(i+1, n_possiveis_eq): # Segundo for para percorrer a lista e testar um a um
+            for j in range(i + 1, n_estados):  # Segundo for para percorrer a lista e testar um a um
 
                 # Os estados precisam ser iguais (final e final) ou (não final e não final) para testar
                 # Se não forem, quer dizer que eles já não são equivalentes e não precisa-se testar.
 
-                if(estados[i].isFinal() == estados[j].isFinal()):
+                if (estados[i].isFinal() == estados[j].isFinal()):
 
                     trans_j = {}  # transicoes de j (dicionario)
-                    for k in transicoes_possiveis_eq: #procura as transições dos respectivos estados
-                        if(k.getFrom() == possiveis_equivalentes[j]):
+                    for k in transicoes_estados:  # procura as transições dos respectivos estados
+                        if (k.getFrom() == lista_estados[j]):
                             trans_j[k.getRead()] = k.getTo()
                     # End pegar transições de j
 
-                    for a in alfabeto: #Para cada caracter do alfabeto...
+                    for a in alfabeto:  # Para cada caracter do alfabeto...
 
-                        if(a in trans_i and a in trans_j): #Se houver transições com o caractere do alfabeto em ambos os estados.
+                        if (a in trans_i and a in trans_j):  # Se houver transições com o caractere do alfabeto em ambos os estados.
 
-                            destino_i = int(trans_i[a]) #Salva o destino do estado i ao ler o caractere em questão
-                            destino_j = int(trans_j[a]) #Faz o mesmo para o estado j
+                            destino_i = trans_i[a]  # Salva o destino do estado i ao ler o caractere em questão
+                            destino_j = trans_j[a]  # Faz o mesmo para o estado j
+                            chave_destino = destino_i + "," + destino_j #cria uma chave para testar na tabela
 
-                            estado1 = int(possiveis_equivalentes[i])
-                            estado2 = int(possiveis_equivalentes[j])
+                            '''
+                             Verifica se não acontecem inconssistências do tipo:
+                             Estou testando estados 0 e 1:
+                                a
+                             0
+                             1
 
-                            slot = matriz_equivalencia[destino_i][destino_j] #Pega a posição na matriz, referente aos estados.
+                             se ao ler um caractere a eu for para :
+                                a
+                             0  1
+                             1  0
 
-                            if(slot == "X"): # Se não forem equivalentes...
-                                matriz_equivalencia[estado1][estado2] = "X"
-                                matriz_equivalencia[estado2][estado1] = "X"
-                                break
-                            elif(slot == "I"): # Se forem iguais (Ex: 3,3, 1,1, 2,2)
-                                matriz_equivalencia[estado1][estado2] = "O"
-                                matriz_equivalencia[estado2][estado1] = "O"
-                            elif (slot == "N"): # Se estiver em branco
-                                matriz_equivalencia[estado1][estado2] = "O"
-                                matriz_equivalencia[estado2][estado1] = "O"
-                            elif (slot == "O"): # Se forem previamente equivalentes...
-                                matriz_equivalencia[estado1][estado2] = "O"
-                                matriz_equivalencia[estado2][estado1] = "O"
-                        #End IF
-                    #end for alfabeto
-                #Teste final e nao final no for J
-                else: matriz_equivalencia[i][j] = "X" #Se não forem equivalentes, já atualiza a matriz.
-            # End For J
-        #End For I
+                             Não faz sentido testar esta equivalência entre 0,1 e 1,0.
+                            '''
+                            if (destino_i != lista_estados[j]):
 
-        # No final, percorre a matriz de equivalência e retorna um dicionario com os estados equivalentes.
+                                estado_i = lista_estados[i]
+                                estado_j = lista_estados[j]
+                                possivel_chave = estado_i + "," + estado_j #Cria-se uma chave para marcar na tabela
 
-        for linha in range(0, n_estados):
-            for coluna in range(0, n_estados):
-                if(matriz_equivalencia[linha][coluna] == "O"):
-                    if(coluna not in lista_equivalentes): #Teste para não pegar por ex: 3:1 e 1:3
-                        lista_equivalentes[linha] = coluna
+                                if(destino_i != destino_j): #Se forem iguais EX: (3,3) Nem precista testar.
 
-        return lista_equivalentes
+                                    #Tratar inconssistências do tipo: Não haver uma chave 1,0 na tabela
+                                    #mas haver uma 0,1. São a mesma chave, a mesma equivalência a ser tratada
+
+                                    if (chave_destino not in tabela_equivalencia): #Caso ocorra inverte-se a chave
+                                        chave_destino = destino_j + "," + destino_i
+                                        slot = tabela_equivalencia[chave_destino] #recebe o valor que está na tabela hash
+                                    else: slot = tabela_equivalencia[chave_destino]
+
+                                    if(slot == "X"): #Se não forem equivalentes. automaticamente os estados que estãos endo testados nnão são
+                                        if(possivel_chave not in tabela_equivalencia):
+                                            possivel_chave = estado_j + "," + estado_i
+                                            tabela_equivalencia[possivel_chave] = "X"
+
+                                            # Se esses estados que foram marcados agora estiverem amarrados
+                                            # com outros estados. Estes também são atualizados e marcados
+
+                                            if(possivel_chave in amarrados):
+                                                atualizar = amarrados[possivel_chave]
+                                                tabela_equivalencia[atualizar] = "X"
+                                        else:
+                                            tabela_equivalencia[possivel_chave] = "X"
+                                            if (possivel_chave in amarrados):
+                                                atualizar = amarrados[possivel_chave]
+                                                tabela_equivalencia[atualizar] = "X"
+                                    #Caso não tiverem sido marcados ainda, amarra-se.
+                                    elif(slot == "N"):
+                                        amarrados[chave_destino] = possivel_chave #Se eu marcar chave destino, terei que marcar possivel chave
+
+                # Se já não forem equivalentes (final com não final) atualiza-se a tabela sem passar pelo procedimento.
+                else:
+                    estado_i = lista_estados[i]
+                    estado_j = lista_estados[j]
+                    possivel_chave = estado_i + "," + estado_j
+
+                    if (possivel_chave not in tabela_equivalencia):
+                        possivel_chave = estado_j + "," + estado_i
+                        tabela_equivalencia[possivel_chave] = "X"
+
+                    else: tabela_equivalencia[possivel_chave] = "X"
+
+        # EQUIVALÊNCIAS MONTADAS
+
+        keys = tabela_equivalencia.keys() #recebe as chaves da tabela
+
+        for i in keys:
+            if(tabela_equivalencia[i] == "N"): #As chaves que contiverem um N (espaço em branco) simbolizam estados equivalentes
+                lista_equivalentes.append(i)
+
+        return lista_equivalentes #retorna a lista de equivalências.
 
     def minimum(self):
         """

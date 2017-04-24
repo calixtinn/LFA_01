@@ -6,7 +6,7 @@ from Controller.AFDController import AFDController
 
 AF = AFDController()
 
-automata = AF.load("equivalente_1.jff")
+automata = AF.load("equivalente_2.jff")
 automata.printAutomata()
 estados_equivalentes = AFDController.equivalents(automata)
 
