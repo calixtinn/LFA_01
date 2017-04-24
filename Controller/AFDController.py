@@ -134,6 +134,7 @@ class AFDController(object):
 
         possiveis_equivalentes = list(set(possiveis_equivalentes)) #Lista os estados que devem ser testados entre si.
         n_possiveis_eq = len(possiveis_equivalentes) #tamanho da lista de possíveis equivalentes.
+        possiveis_equivalentes.sort()
 
         #Salva numa lista todas as transições dos estados que possívelmente são equivalentes.
         for i in transicoes:
@@ -143,16 +144,48 @@ class AFDController(object):
 
         for i in range(0, n_possiveis_eq):
             for j in range(i+1, n_possiveis_eq):
-                trans_i = []  # transicoes de i
-                trans_j = []  # transicoes de j
-                for k in transicoes_possiveis_eq: #procura as transições dos respectivos estados
-                    if(k.getFrom() == possiveis_equivalentes[i]):
-                        trans_i.append([k.getTo(), k.getRead()]) #recebe o destino e o caractere lido
-                    if(k.getFrom() == possiveis_equivalentes[j]):
-                        trans_j.append([k.getTo, k.getRead])
+
+                if(estados[i].isFinal() == estados[j].isFinal()): # Os estados precisam ser iguais (final e final) ou (não final e não final) para testar
+
+                    trans_i = {}  # transicoes de i (dicionario)
+                    trans_j = {}  # transicoes de j (dicionario)
+                    for k in transicoes_possiveis_eq: #procura as transições dos respectivos estados
+                        if(k.getFrom() == possiveis_equivalentes[i]):
+                            trans_i[k.getRead()] = k.getTo() #Ex: ["a"] = 1 [caractere] = para onde vai.
+                        if(k.getFrom() == possiveis_equivalentes[j]):
+                            trans_j[k.getRead()] = k.getTo()
+
+                    for a in alfabeto: #Para cada caracter do alfabeto...
+
+                        if(a in trans_i and a in trans_j): #Se houver transições com o caractere do alfabeto em ambos os estados.
+
+                            destino_i = int(trans_i[a])
+                            destino_j = int(trans_j[a])
+
+                            estado1 = int(possiveis_equivalentes[i])
+                            estado2 = int(possiveis_equivalentes[j])
+
+                            slot = matriz_equivalencia[destino_i][destino_j]
+
+                            if(slot == "X"):
+                                matriz_equivalencia[estado1][estado2] = "X"
+                                matriz_equivalencia[estado2][estado1] = "X"
+                                break
+                            elif(slot == "I"):
+                                matriz_equivalencia[estado1][estado2] = "O"
+                                matriz_equivalencia[estado2][estado1] = "O"
+                            elif (slot == "N"):
+                                matriz_equivalencia[estado1][estado2] = "O"
+                                matriz_equivalencia[estado2][estado1] = "O"
+                            elif (slot == "O"):
+                                matriz_equivalencia[estado1][estado2] = "O"
+                                matriz_equivalencia[estado2][estado1] = "O"
+                        #End IF
+                    #end for alfabeto
+        #Fim testar os equivalentes
 
         #fazendo.... pode deixar que eu faço essa função man!
-        return len(transicoes_possiveis_eq)
+        return matriz_equivalencia
 
     def minimum(self):
         """

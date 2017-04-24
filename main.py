@@ -9,4 +9,4 @@ AF = AFDController()
 automata = AF.load("equivalente_1.jff")
 automata.printAutomata()
 
-print("Qtde de Transições dos possíveis estados equivalentes: " + str(AFDController.equivalents(automata)))
+print(AFDController.equivalents(automata))
