@@ -98,11 +98,13 @@ class AFDController(object):
         """
         Metodo responsavel por verificar os estados equivalentes do AFD.
         :param afd
-        :rtype list
+        :rtype dictionary
+
         """
-        matriz_equivalencia = []
-        possiveis_equivalentes = []
+        matriz_equivalencia = [] #matriz do algoritmo de equivalencia
+        possiveis_equivalentes = [] #lista para o controle dos possíveis equivalentes
         transicoes_possiveis_eq = [] #transicoes dos estados que possivelmente seriam equivalentes
+        lista_equivalentes = {} #dicionário de estados equivalentes
 
         estados = afd.getStates()   #recebe uma lista com os estados do automato
         alfabeto = afd.getAlphabet()#recebe uma lista contendo o alfabeto do automato
@@ -142,50 +144,67 @@ class AFDController(object):
                 if(i.getFrom() == possiveis_equivalentes[j]):
                     transicoes_possiveis_eq.append(i)
 
-        for i in range(0, n_possiveis_eq):
-            for j in range(i+1, n_possiveis_eq):
+        for i in range(0, n_possiveis_eq): #Percorre a lista de possíveis equivalentes
+            trans_i = {}  # transicoes de i (dicionario)
+            for k in transicoes_possiveis_eq:  # procura as transições dos respectivos estados
+                if (k.getFrom() == possiveis_equivalentes[i]):
+                    trans_i[k.getRead()] = k.getTo()  # Ex: ["a"] = 1 [caractere] = para onde vai.
+            # End pegar transições de I
 
-                if(estados[i].isFinal() == estados[j].isFinal()): # Os estados precisam ser iguais (final e final) ou (não final e não final) para testar
+            for j in range(i+1, n_possiveis_eq): # Segundo for para percorrer a lista e testar um a um
 
-                    trans_i = {}  # transicoes de i (dicionario)
+                # Os estados precisam ser iguais (final e final) ou (não final e não final) para testar
+                # Se não forem, quer dizer que eles já não são equivalentes e não precisa-se testar.
+
+                if(estados[i].isFinal() == estados[j].isFinal()):
+
                     trans_j = {}  # transicoes de j (dicionario)
                     for k in transicoes_possiveis_eq: #procura as transições dos respectivos estados
-                        if(k.getFrom() == possiveis_equivalentes[i]):
-                            trans_i[k.getRead()] = k.getTo() #Ex: ["a"] = 1 [caractere] = para onde vai.
                         if(k.getFrom() == possiveis_equivalentes[j]):
                             trans_j[k.getRead()] = k.getTo()
+                    # End pegar transições de j
 
                     for a in alfabeto: #Para cada caracter do alfabeto...
 
                         if(a in trans_i and a in trans_j): #Se houver transições com o caractere do alfabeto em ambos os estados.
 
-                            destino_i = int(trans_i[a])
-                            destino_j = int(trans_j[a])
+                            destino_i = int(trans_i[a]) #Salva o destino do estado i ao ler o caractere em questão
+                            destino_j = int(trans_j[a]) #Faz o mesmo para o estado j
 
                             estado1 = int(possiveis_equivalentes[i])
                             estado2 = int(possiveis_equivalentes[j])
 
-                            slot = matriz_equivalencia[destino_i][destino_j]
+                            slot = matriz_equivalencia[destino_i][destino_j] #Pega a posição na matriz, referente aos estados.
 
-                            if(slot == "X"):
+                            if(slot == "X"): # Se não forem equivalentes...
                                 matriz_equivalencia[estado1][estado2] = "X"
                                 matriz_equivalencia[estado2][estado1] = "X"
                                 break
-                            elif(slot == "I"):
+                            elif(slot == "I"): # Se forem iguais (Ex: 3,3, 1,1, 2,2)
                                 matriz_equivalencia[estado1][estado2] = "O"
                                 matriz_equivalencia[estado2][estado1] = "O"
-                            elif (slot == "N"):
+                            elif (slot == "N"): # Se estiver em branco
                                 matriz_equivalencia[estado1][estado2] = "O"
                                 matriz_equivalencia[estado2][estado1] = "O"
-                            elif (slot == "O"):
+                            elif (slot == "O"): # Se forem previamente equivalentes...
                                 matriz_equivalencia[estado1][estado2] = "O"
                                 matriz_equivalencia[estado2][estado1] = "O"
                         #End IF
                     #end for alfabeto
-        #Fim testar os equivalentes
+                #Teste final e nao final no for J
+                else: matriz_equivalencia[i][j] = "X" #Se não forem equivalentes, já atualiza a matriz.
+            # End For J
+        #End For I
 
-        #fazendo.... pode deixar que eu faço essa função man!
-        return matriz_equivalencia
+        # No final, percorre a matriz de equivalência e retorna um dicionario com os estados equivalentes.
+
+        for linha in range(0, n_estados):
+            for coluna in range(0, n_estados):
+                if(matriz_equivalencia[linha][coluna] == "O"):
+                    if(coluna not in lista_equivalentes): #Teste para não pegar por ex: 3:1 e 1:3
+                        lista_equivalentes[linha] = coluna
+
+        return lista_equivalentes
 
     def minimum(self):
         """

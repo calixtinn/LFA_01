@@ -8,5 +8,6 @@ AF = AFDController()
 
 automata = AF.load("equivalente_1.jff")
 automata.printAutomata()
+estados_equivalentes = AFDController.equivalents(automata)
 
-print(AFDController.equivalents(automata))
+print("Lista de estados equivalentes: " + str(estados_equivalentes))
