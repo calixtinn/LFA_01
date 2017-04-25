@@ -26,7 +26,6 @@ class AFDController(object):
         """
         Metodo responsavel por ler um arquivo XML em formato jff conteudo o AFD.
         :param jffFile
-        :param cont
         :rtype AFD
         """
 
@@ -255,7 +254,9 @@ class AFDController(object):
         Metodo responsavel por realizar o complemento AFD.
         :rtype AFD
         """
-        pass
+        n_estados = len(self.states)
+        for i in range(0, n_estados):
+            print(i)
 
     def union(self, m2):
         """

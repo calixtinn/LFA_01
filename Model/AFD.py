@@ -100,7 +100,10 @@ class AFD(object):
         self.Finals = Finals
         self.Alphabet = Alphabet
 
-    def printAutomata(self): #Printa os estados do autômato e suas características
+    def printAutomata(self):
+        """
+        Metodo responsavel por printar os estados do autômato e suas características.
+        """
         for i in self.States: # Para cada objeto State
             trans = ""
             for j in self.Transitions: # Para cada objeto Transition

@@ -11,3 +11,5 @@ automata.printAutomata()
 estados_equivalentes = AFDController.equivalents(automata)
 
 print("Lista de estados equivalentes: " + str(estados_equivalentes))
+
+AF.complement()
