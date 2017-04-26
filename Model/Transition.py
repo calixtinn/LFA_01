@@ -6,7 +6,8 @@ Esta classe representa uma Transição (ligação) de Estados em um Automato.
 
 class Transition(object):
 
-    def __init__(self, From, To, Read):
+    def __init__(self, Id, From, To, Read):
+        self.Id = Id
         self.From = From
         self.To = To
         self.Read = Read
@@ -20,6 +21,9 @@ class Transition(object):
     def getRead(self):
         return self.Read
 
+    def getId(self):
+        return self.Id
+
     def setFrom(self, From):
         self.From = From
 
@@ -30,4 +34,4 @@ class Transition(object):
         self.Read = Read
 
     def printTransition(self):
-        return self.From + "->" + self.To + "," + self.Read + " | "
+        return "(" + str(self.Id) + ")  " + self.From + "->" + self.To + "," + self.Read + " | "

@@ -6,10 +6,12 @@ from Controller.AFDController import AFDController
 
 AF = AFDController()
 
-automata = AF.load("equivalente_2.jff")
-automata.printAutomata()
+automata = AF.load("equivalente_1.jff")
+#automata.printAutomata()
 estados_equivalentes = AFDController.equivalents(automata)
 
 print("Lista de estados equivalentes: " + str(estados_equivalentes))
 
-AF.complement()
+#AF.complement()
+
+AF.minimum(automata,estados_equivalentes)

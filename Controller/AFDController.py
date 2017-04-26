@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from Model.State import State
 from Model.Transition import Transition
 from Model.AFD import AFD
+import re
 
 
 class AFDController(object):
@@ -65,6 +66,7 @@ class AFDController(object):
 
         # Iterando na tag <transition>
         # Pegando as transições
+        cont_trans = 0
         for i in root.iter('transition'):
             From = i.find('from').text
             To = i.find('to').text
@@ -73,8 +75,9 @@ class AFDController(object):
             # Adiciona o caractere lido na lista do alfabeto
             self.alphabet.append(Read)
 
-            transition = Transition(From, To, Read)
+            transition = Transition(cont_trans, From, To, Read)
             self.transitions.append(transition)
+            cont_trans += 1
         # Fim da obtenção das informações referentes às transições.
 
         alphabet = list(set(self.alphabet))
@@ -233,12 +236,54 @@ class AFDController(object):
 
         return lista_equivalentes #retorna a lista de equivalências.
 
-    def minimum(self):
+    def minimum(self, afd, equivalentes):
         """
         Metodo responsavel por realizar a minimização do AFD.
+        :param AFD
+        :param List
         :rtype AFD
         """
-        pass
+        estados = afd.getStates()
+        transicoes = afd.getTransitions()
+        copy_transicoes = []
+        repetidas = []
+
+        for t in transicoes:
+            print(Transition.printTransition(t))
+
+        '''
+        # Para cada equivalência encontrada na lista de equivalências, realiza-se a modificação
+        # nos estados e transições. Por convenção, vai-se deletar o primeiro estado da equivalência. Ex:
+        # Equivalência 1,3 - > Deleta-se o 1.
+
+        for i in equivalentes:
+            aux = i.split(',')
+            e1 = aux[0]
+            e2 = aux[1]
+
+            # Para cada transição, sempre que To for o e1, ou seja,
+            # sempre que estiver jogando algo em e1,  passa-se a jogar em e2
+            # Se for um looping, ex: From 1 To 1 Read a,  modifica-se também o From.
+
+            for t in transicoes:
+
+                if (t.getTo() == t.getFrom()):
+                    t.setTo(e2)
+                    t.setFrom(e2)
+                    repetidas.append(t.getRead())
+                    copy_transicoes.append(t)
+
+                elif (t.getTo() == e1):
+                    if ((t.getRead() in repetidas) and t.getFrom() == e2):
+                        delete_transition(transicoes,e2,e1,t.getRead())
+                    else: t.setTo(e2)
+
+                elif (t.getFrom() == e1):
+                    if ( (t.getRead() in repetidas) and t.getTo() == e2 ):
+                        #deleta transicao
+                        pass
+                    else: t.setFrom(e2)
+        '''
 
     def equivalent(self, m1, m2):
         """
@@ -254,9 +299,6 @@ class AFDController(object):
         Metodo responsavel por realizar o complemento AFD.
         :rtype AFD
         """
-        n_estados = len(self.states)
-        for i in range(0, n_estados):
-            print(i)
 
     def union(self, m2):
         """
@@ -339,12 +381,18 @@ class AFDController(object):
         """
         pass
 
-    def deleteTransition(self, source, target, consume):
+    def deleteTransition(self, transitions, source, target, consume):
         """
         Metodo responsavel por deletar uma transição de um estado a outro.
         :param source
         :param target
         :param consume
-        :rtype bool
+        :rtype list
         """
-        pass
+        transicoes = transitions
+
+        for t in transicoes:
+            if(t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
+                transicoes.remove(t)
+
+        return transicoes
