@@ -27,6 +27,9 @@ class Transition(object):
     def setFrom(self, From):
         self.From = From
 
+    def setId(self, Id):
+        self.Id = Id
+
     def setTo(self, To):
         self.To = To
 

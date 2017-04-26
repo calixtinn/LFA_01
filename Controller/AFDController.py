@@ -247,11 +247,12 @@ class AFDController(object):
         transicoes = afd.getTransitions()
         copy_transicoes = []
         repetidas = []
+        trans_id = 0
 
         for t in transicoes:
             print(Transition.printTransition(t))
+        print("---------------------------------")
 
-        '''
         # Para cada equivalência encontrada na lista de equivalências, realiza-se a modificação
         # nos estados e transições. Por convenção, vai-se deletar o primeiro estado da equivalência. Ex:
         # Equivalência 1,3 - > Deleta-se o 1.
@@ -267,23 +268,43 @@ class AFDController(object):
 
             for t in transicoes:
 
-                if (t.getTo() == t.getFrom()):
+                if (t.getTo() == t.getFrom() and t.getTo() == e1):
                     t.setTo(e2)
                     t.setFrom(e2)
                     repetidas.append(t.getRead())
+                    t.setId(trans_id)
+                    trans_id += 1
                     copy_transicoes.append(t)
+
+                elif (t.getTo() == t.getFrom() and t.getTo() == e2):
+                    repetidas.append(t.getRead())
 
                 elif (t.getTo() == e1):
                     if ((t.getRead() in repetidas) and t.getFrom() == e2):
-                        delete_transition(transicoes,e2,e1,t.getRead())
-                    else: t.setTo(e2)
+                        pass
+                    else:
+                        t.setTo(e2)
+                        t.setId(trans_id)
+                        trans_id += 1
+                        copy_transicoes.append(t)
 
                 elif (t.getFrom() == e1):
                     if ( (t.getRead() in repetidas) and t.getTo() == e2 ):
-                        #deleta transicao
                         pass
-                    else: t.setFrom(e2)
-        '''
+                    else:
+                        t.setFrom(e2)
+                        t.setId(trans_id)
+                        trans_id += 1
+                        copy_transicoes.append(t)
+
+                else:
+                    t.setId(trans_id)
+                    trans_id += 1
+                    copy_transicoes.append(t)
+
+        for t in copy_transicoes:
+            print(Transition.printTransition(t))
+
 
     def equivalent(self, m1, m2):
         """
@@ -396,3 +417,4 @@ class AFDController(object):
                 transicoes.remove(t)
 
         return transicoes
+
