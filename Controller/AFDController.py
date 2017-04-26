@@ -4,14 +4,15 @@
 Classe que implementa todas as funcionalidade um Automoto Finito Deterministico.
 """
 import xml.etree.ElementTree as ET
+from xml.dom.minidom import Document
 from Model.State import State
 from Model.Transition import Transition
 from Model.AFD import AFD
-import re
+
+from xml.dom.minidom import Document
 
 
 class AFDController(object):
-
     automata_Id_counter = 0
 
     def __init__(self):
@@ -81,56 +82,113 @@ class AFDController(object):
         # Fim da obtenção das informações referentes às transições.
 
         alphabet = list(set(self.alphabet))
-        automato = AFD(AFDController.automata_Id_counter, self.states, self.transitions, s_initial, self.finals, alphabet)  # Cria um automato
+        automato = AFD(AFDController.automata_Id_counter, self.states, self.transitions, s_initial, self.finals,
+                       alphabet)  # Cria um automato
 
         AFDController.automata_Id_counter += 1
 
         return automato
 
-    def save(self, jffFile, cont):
+    def save(self, automata, jffFile):
         """
         Metodo responsavel por salvar AFD em um arquivo XML em formato jff.
+        :type jffFile: str
+        :type automata: AFD
+        :param automata
         :param jffFile
-        :param cont
         :rtype bool
         """
-        pass
+        doc = Document()
 
-    def equivalents(afd):
+        structure = doc.createElement('structure')
+        type = doc.createElement('type')
+        automaton = doc.createElement('automaton')
+
+        doc.appendChild(structure)  # ponto de partida
+        type.appendChild(doc.createTextNode('fa'))
+        structure.appendChild(type)
+
+        for theState in automata.getStates():
+            final = doc.createElement('final')
+            initial = doc.createElement('initial')
+
+            x = doc.createElement('x')
+            y = doc.createElement('y')
+
+            x.appendChild(doc.createTextNode(theState.getPosx()))
+            y.appendChild(doc.createTextNode(theState.getPosy()))
+
+            state = doc.createElement('state')
+            state.setAttribute('id', theState.getId())
+            state.setAttribute('name', theState.getName())
+            state.appendChild(x)
+            state.appendChild(y)
+            if theState.isInitial():
+                state.appendChild(initial)
+            if theState.isFinal():
+                state.appendChild(final)
+
+            automaton.appendChild(state)
+            structure.appendChild(automaton)
+
+        for theTransition in automata.getTransitions():
+            From = doc.createElement('from')
+            to = doc.createElement('to')
+            read = doc.createElement('read')
+
+            From.appendChild(doc.createTextNode(theTransition.getFrom()))
+            to.appendChild(doc.createTextNode(theTransition.getTo()))
+            read.appendChild(doc.createTextNode(theTransition.getRead()))
+
+            transition = doc.createElement('transition')
+            transition.appendChild(From)
+            transition.appendChild(to)
+            transition.appendChild(read)
+
+            automaton.appendChild(transition)
+            structure.appendChild(automaton)
+
+        doc.writexml(open('Output/'+jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
+
+        doc.unlink()
+
+    def equivalents(self, afd):
         """
         Metodo responsavel por verificar os estados equivalentes do AFD.
         :param afd
         :rtype list
 
         """
-        tabela_equivalencia = {} #Tabela que contem a quivalência entre os estados
-        lista_estados = [] #lista para o controle dos estados
-        transicoes_estados = [] #transicoes dos estados
-        lista_equivalentes = [] #lista de estados equivalentes
-        amarrados = {} #Dicionario contendo as amarrações entre estados no algoritmo de equivalencia.
+        tabela_equivalencia = {}  # Tabela que contem a quivalência entre os estados
+        lista_estados = []  # lista para o controle dos estados
+        transicoes_estados = []  # transicoes dos estados
+        lista_equivalentes = []  # lista de estados equivalentes
+        amarrados = {}  # Dicionario contendo as amarrações entre estados no algoritmo de equivalencia.
 
-        estados = afd.getStates()   #recebe uma lista com os estados do automato (OBJETOS)
-        alfabeto = afd.getAlphabet()#recebe uma lista contendo o alfabeto do automato
-        transicoes = afd.getTransitions() #recebe uma lista contendo as transições do autômato
+        estados = afd.getStates()  # recebe uma lista com os estados do automato (OBJETOS)
+        alfabeto = afd.getAlphabet()  # recebe uma lista contendo o alfabeto do automato
+        transicoes = afd.getTransitions()  # recebe uma lista contendo as transições do autômato
 
-        #Cria e inicializa a tabela Hash de equivalências
+        # Cria e inicializa a tabela Hash de equivalências
 
-        for estado in estados: #para cada estado na lista OBJETOS de estados
+        for estado in estados:  # para cada estado na lista OBJETOS de estados
             lista_estados.append(estado.getId())
 
         n_estados = len(lista_estados)  # tamanho da lista de estados
 
-        for i in range(0, n_estados): #Percorre a lista de estados testando-os um a um
+        for i in range(0, n_estados):  # Percorre a lista de estados testando-os um a um
             e1 = lista_estados[i]
-            for j in range(i+1, n_estados):
+            for j in range(i + 1, n_estados):
                 e2 = lista_estados[j]
-                chave = e1+","+e2 #Cria uma chave para se testar na tabela. Ex: 1,2 (Estado1 equivalente a estado 2?)
-                if (estados[i].isFinal() != estados[j].isFinal()): #Se ambos não forem finais ou não finais já não é equivalente
-                    tabela_equivalencia[chave] = "X" #Marca na tabela Hash que não é equivalente.
-                else: tabela_equivalencia[chave] = "N" # Caso contrário, marca como N (Espaço vazio a ser testado)
-        #CRIADA A TABELA
+                chave = e1 + "," + e2  # Cria uma chave para se testar na tabela. Ex: 1,2 (Estado1 equivalente a estado 2?)
+                if (estados[i].isFinal() != estados[
+                    j].isFinal()):  # Se ambos não forem finais ou não finais já não é equivalente
+                    tabela_equivalencia[chave] = "X"  # Marca na tabela Hash que não é equivalente.
+                else:
+                    tabela_equivalencia[chave] = "N"  # Caso contrário, marca como N (Espaço vazio a ser testado)
+        # CRIADA A TABELA
 
-        #Salva em uma lista as todas as transições de todos os estados.
+        # Salva em uma lista as todas as transições de todos os estados.
         for i in transicoes:
             for j in range(0, n_estados):
                 if (i.getFrom() == lista_estados[j]):
@@ -162,7 +220,7 @@ class AFDController(object):
 
                             destino_i = trans_i[a]  # Salva o destino do estado i ao ler o caractere em questão
                             destino_j = trans_j[a]  # Faz o mesmo para o estado j
-                            chave_destino = destino_i + "," + destino_j #cria uma chave para testar na tabela
+                            chave_destino = destino_i + "," + destino_j  # cria uma chave para testar na tabela
 
                             '''
                              Verifica se não acontecem inconssistências do tipo:
@@ -182,27 +240,30 @@ class AFDController(object):
 
                                 estado_i = lista_estados[i]
                                 estado_j = lista_estados[j]
-                                possivel_chave = estado_i + "," + estado_j #Cria-se uma chave para marcar na tabela
+                                possivel_chave = estado_i + "," + estado_j  # Cria-se uma chave para marcar na tabela
 
-                                if(destino_i != destino_j): #Se forem iguais EX: (3,3) Nem precista testar.
+                                if (destino_i != destino_j):  # Se forem iguais EX: (3,3) Nem precista testar.
 
-                                    #Tratar inconssistências do tipo: Não haver uma chave 1,0 na tabela
-                                    #mas haver uma 0,1. São a mesma chave, a mesma equivalência a ser tratada
+                                    # Tratar inconssistências do tipo: Não haver uma chave 1,0 na tabela
+                                    # mas haver uma 0,1. São a mesma chave, a mesma equivalência a ser tratada
 
-                                    if (chave_destino not in tabela_equivalencia): #Caso ocorra inverte-se a chave
+                                    if (chave_destino not in tabela_equivalencia):  # Caso ocorra inverte-se a chave
                                         chave_destino = destino_j + "," + destino_i
-                                        slot = tabela_equivalencia[chave_destino] #recebe o valor que está na tabela hash
-                                    else: slot = tabela_equivalencia[chave_destino]
+                                        slot = tabela_equivalencia[
+                                            chave_destino]  # recebe o valor que está na tabela hash
+                                    else:
+                                        slot = tabela_equivalencia[chave_destino]
 
-                                    if(slot == "X"): #Se não forem equivalentes. automaticamente os estados que estãos endo testados nnão são
-                                        if(possivel_chave not in tabela_equivalencia):
+                                    if (
+                                                slot == "X"):  # Se não forem equivalentes. automaticamente os estados que estãos endo testados nnão são
+                                        if (possivel_chave not in tabela_equivalencia):
                                             possivel_chave = estado_j + "," + estado_i
                                             tabela_equivalencia[possivel_chave] = "X"
 
                                             # Se esses estados que foram marcados agora estiverem amarrados
                                             # com outros estados. Estes também são atualizados e marcados
 
-                                            if(possivel_chave in amarrados):
+                                            if (possivel_chave in amarrados):
                                                 atualizar = amarrados[possivel_chave]
                                                 tabela_equivalencia[atualizar] = "X"
                                         else:
@@ -210,9 +271,10 @@ class AFDController(object):
                                             if (possivel_chave in amarrados):
                                                 atualizar = amarrados[possivel_chave]
                                                 tabela_equivalencia[atualizar] = "X"
-                                    #Caso não tiverem sido marcados ainda, amarra-se.
-                                    elif(slot == "N"):
-                                        amarrados[chave_destino] = possivel_chave #Se eu marcar chave destino, terei que marcar possivel chave
+                                    # Caso não tiverem sido marcados ainda, amarra-se.
+                                    elif (slot == "N"):
+                                        amarrados[
+                                            chave_destino] = possivel_chave  # Se eu marcar chave destino, terei que marcar possivel chave
 
                 # Se já não forem equivalentes (final com não final) atualiza-se a tabela sem passar pelo procedimento.
                 else:
@@ -224,17 +286,19 @@ class AFDController(object):
                         possivel_chave = estado_j + "," + estado_i
                         tabela_equivalencia[possivel_chave] = "X"
 
-                    else: tabela_equivalencia[possivel_chave] = "X"
+                    else:
+                        tabela_equivalencia[possivel_chave] = "X"
 
         # EQUIVALÊNCIAS MONTADAS
 
-        keys = tabela_equivalencia.keys() #recebe as chaves da tabela
+        keys = tabela_equivalencia.keys()  # recebe as chaves da tabela
 
         for i in keys:
-            if(tabela_equivalencia[i] == "N"): #As chaves que contiverem um N (espaço em branco) simbolizam estados equivalentes
+            if (tabela_equivalencia[
+                    i] == "N"):  # As chaves que contiverem um N (espaço em branco) simbolizam estados equivalentes
                 lista_equivalentes.append(i)
 
-        return lista_equivalentes #retorna a lista de equivalências.
+        return lista_equivalentes  # retorna a lista de equivalências.
 
     def minimum(self, afd, equivalentes):
         """
@@ -315,11 +379,15 @@ class AFDController(object):
         """
         pass
 
-    def complement(self):
+    def complement(self, automata):
         """
         Metodo responsavel por realizar o complemento AFD.
+        :type automata: AFD
         :rtype AFD
         """
+
+
+        pass
 
     def union(self, m2):
         """
@@ -413,7 +481,7 @@ class AFDController(object):
         transicoes = transitions
 
         for t in transicoes:
-            if(t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
+            if (t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
                 transicoes.remove(t)
 
         return transicoes
