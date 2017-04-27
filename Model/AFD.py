@@ -112,6 +112,9 @@ class AFD(object):
             State.printState(i, trans)
         print("Alfabeto: " + str(self.Alphabet))
 
+    def getId(self):
+        return self.Id
+
     def getStates(self):
         return self.States
 
@@ -120,3 +123,9 @@ class AFD(object):
 
     def getTransitions(self):
         return self.Transitions
+
+    def getInitial(self):
+        return self.Initial
+
+    def getFinals(self):
+        return self.Finals()
