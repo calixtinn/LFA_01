@@ -80,7 +80,7 @@ Esta classe representa um Automoto Finito Deterministico.
 # True|False m.accept("aaabbbaa")
 # State estado = m.initial();
 # State estado = m.move(estado ,"aaab") ;
-# List m.finals()
+# List m.finals() - OK
 # m.addState(id=10, initial=false, final=true);
 # m.addTransition(source=1, target=2, consume="b");
 # m.deleteState(3); - OK
@@ -127,15 +127,9 @@ class AFD(object):
     def getInitial(self):
         return self.Initial
 
-    def setStates(self, States):
+    def setStates(self, States, Finals):
         self.States = States
-        newFinals = []
-
-        for e in States:
-            if(e.getFinals == True):
-                newFinals.append(e)
-
-        self.setFinals(newFinals)
+        self.Finals = Finals
 
     def setTransitions(self, Transitions):
         self.Transitions = Transitions

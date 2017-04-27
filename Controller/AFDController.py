@@ -383,13 +383,16 @@ class AFDController(object):
         :rtype AFD
         """
         stateList = automata.getStates()
+        final_list = []
 
         for theState in stateList:
             if theState.isFinal():
                 theState.setFinal(False)
             else:
                 theState.setFinal(True)
+                final_list.append(theState)
 
+        automata.setStates(stateList, final_list)
         jffout = "neg_" + jffin
         self.save(automata, jffout)
 
@@ -454,15 +457,8 @@ class AFDController(object):
         Metodo responsavel por retornar os estados finais do AFD.
         :rtype State
         """
-        lista_ids = afd.getFinals()
-        estados = afd.getStates()
-        lista_finais = []
 
-        for e in estados:
-            if(e.getId() in lista_ids):
-                lista_finais.append(e)
-
-        return lista_finais
+        return afd.getFinals()
 
     def addState(self, id, initial, final):
         """

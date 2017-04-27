@@ -22,12 +22,16 @@ automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 # os automatos com mnemônicos: min (minimizado) e neg (negado).
 
 #minimo = AF.minimum(automata, entrada)
-#negado = AF.complement(automata_copy, entrada)
+negado = AF.complement(automata_copy, entrada)
+
+finais = AF.final(negado)
+
+for f in finais:
+    f.printState()
+
 #inicial = AF.initial(automata)
 #inicial.printState()
 
-finais = AF.final(automata)
-for f in finais:
-    f.printState()
+
 
 
