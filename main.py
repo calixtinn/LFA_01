@@ -5,23 +5,14 @@ from Controller.AFDController import AFDController
 
 AF = AFDController()
 
-automata = AF.load("equivalente_1.jff")
+automata = AF.load("equivalente_2.jff")
 #automata.printAutomata()
 estados_equivalentes = AFDController.equivalents(automata)
 
 #print("Lista de estados equivalentes: " + str(estados_equivalentes))
 
-AF.complement(automata)
+#AF.complement()
 
-#AF.minimum(automata,estados_equivalentes)
+minimo = AF.minimum(automata,estados_equivalentes)
 
-#AF.save(automata, 'saida1.jff')
-
-for a in automata.getStates():
-    print('\n')
-    print('Id '+a.getId())
-    print('Name '+a.getName())
-    print('Posx '+a.getPosx())
-    print('Posy '+a.getPosy())
-    print('Final? '+str(a.isFinal()))
-    print('Inicial? '+str(a.isInitial()))
+AF.save(minimo, 'equivalente_2.jff')

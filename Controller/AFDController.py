@@ -148,7 +148,7 @@ class AFDController(object):
             automaton.appendChild(transition)
             structure.appendChild(automaton)
 
-        doc.writexml(open('Output/'+jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
+        doc.writexml(open('Output/min_'+jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
 
         doc.unlink()
 
@@ -310,13 +310,6 @@ class AFDController(object):
         """
         estados = afd.getStates()
         transicoes = afd.getTransitions()
-        copy_transicoes = []
-        repetidas = []
-        trans_id = 0
-
-        for t in transicoes:
-            print(Transition.printTransition(t))
-        print("---------------------------------")
 
         # Para cada equivalência encontrada na lista de equivalências, realiza-se a modificação
         # nos estados e transições. Por convenção, vai-se deletar o primeiro estado da equivalência. Ex:
@@ -336,39 +329,45 @@ class AFDController(object):
                 if (t.getTo() == t.getFrom() and t.getTo() == e1):
                     t.setTo(e2)
                     t.setFrom(e2)
-                    repetidas.append(t.getRead())
-                    t.setId(trans_id)
-                    trans_id += 1
-                    copy_transicoes.append(t)
-
-                elif (t.getTo() == t.getFrom() and t.getTo() == e2):
-                    repetidas.append(t.getRead())
-
                 elif (t.getTo() == e1):
-                    if ((t.getRead() in repetidas) and t.getFrom() == e2):
-                        pass
-                    else:
-                        t.setTo(e2)
-                        t.setId(trans_id)
-                        trans_id += 1
-                        copy_transicoes.append(t)
-
+                    t.setTo(e2)
                 elif (t.getFrom() == e1):
-                    if ( (t.getRead() in repetidas) and t.getTo() == e2 ):
-                        pass
-                    else:
-                        t.setFrom(e2)
-                        t.setId(trans_id)
-                        trans_id += 1
-                        copy_transicoes.append(t)
+                    t.setFrom(e2)
 
-                else:
-                    t.setId(trans_id)
-                    trans_id += 1
-                    copy_transicoes.append(t)
+        min_transicoes = transicoes[:] #Lista auxiliar para deletar transições repetidas
 
-        for t in copy_transicoes:
-            print(Transition.printTransition(t))
+        #Varre a lista de transições modificadas para eliminar transições repetidas
+
+        for i in range(0, len(transicoes)):
+            from_i = transicoes[i].getFrom()
+            to_i = transicoes[i].getTo()
+            read_i = transicoes[i].getRead()
+            for j in range(i + 1, len(transicoes)):
+                from_j = transicoes[j].getFrom()
+                to_j = transicoes[j].getTo()
+                read_j = transicoes[j].getRead()
+                if (from_i == from_j and to_i == to_j and read_i == read_j):
+                    del min_transicoes[j]
+
+        transicoes = min_transicoes[:]
+        afd.setTransitions(transicoes) #Seta no automato sua nova lista de transições
+
+        #Transições eliminadas
+
+        #Eliminar estados:
+
+        min_estados = estados[:]
+        afd.setStates(min_estados)
+
+        for e in equivalentes:
+            aux = e.split(',')
+            e1 = aux[0]
+            min_estados = self.deleteState(afd, e1)
+            afd.setStates(min_estados)
+
+        # Estados eliminados
+
+        return afd
 
 
     def equivalent(self, m1, m2):
@@ -471,13 +470,17 @@ class AFDController(object):
         """
         pass
 
-    def deleteState(self, id):
+    def deleteState(self, afd, id):
         """
         Metodo responsavel por deletar um estado do AFD.
         :param id
-        :rtype: bool
+        :rtype list
         """
-        pass
+        estados = afd.getStates()
+        id = int(id)
+        del estados[id]
+
+        return estados
 
     def deleteTransition(self, transitions, source, target, consume):
         """
