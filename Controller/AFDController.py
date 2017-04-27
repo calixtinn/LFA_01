@@ -308,7 +308,7 @@ class AFDController(object):
         :param List
         :rtype AFD
         """
-        estados = afd.getStates()
+
         transicoes = afd.getTransitions()
 
         # Para cada equivalência encontrada na lista de equivalências, realiza-se a modificação
@@ -319,7 +319,6 @@ class AFDController(object):
             aux = i.split(',')
             e1 = aux[0]
             e2 = aux[1]
-
             # Para cada transição, sempre que To for o e1, ou seja,
             # sempre que estiver jogando algo em e1,  passa-se a jogar em e2
             # Se for um looping, ex: From 1 To 1 Read a,  modifica-se também o From.
@@ -356,19 +355,12 @@ class AFDController(object):
 
         #Eliminar estados:
 
-        min_estados = estados[:]
-        afd.setStates(min_estados)
-
         for e in equivalentes:
             aux = e.split(',')
             e1 = aux[0]
-            min_estados = self.deleteState(afd, e1)
-            afd.setStates(min_estados)
-
-        # Estados eliminados
+            self.deleteState(afd, e1)
 
         return afd
-
 
     def equivalent(self, m1, m2):
         """
@@ -478,10 +470,15 @@ class AFDController(object):
         :rtype list
         """
         estados = afd.getStates()
-        id = int(id)
-        del estados[id]
 
-        return estados
+        for e in estados:
+            if(e.getId() == id):
+                del_state = e
+                break
+
+        index = estados.index(del_state)
+
+        del estados[index]
 
     def deleteTransition(self, transitions, source, target, consume):
         """
