@@ -11,8 +11,17 @@ estados_equivalentes = AFDController.equivalents(automata)
 
 #print("Lista de estados equivalentes: " + str(estados_equivalentes))
 
-AF.complement()
+AF.complement(automata)
 
 #AF.minimum(automata,estados_equivalentes)
 
-AF.save(automata, 'saida1.xml')
+#AF.save(automata, 'saida1.jff')
+
+for a in automata.getStates():
+    print('\n')
+    print('Id '+a.getId())
+    print('Name '+a.getName())
+    print('Posx '+a.getPosx())
+    print('Posy '+a.getPosy())
+    print('Final? '+str(a.isFinal()))
+    print('Inicial? '+str(a.isInitial()))

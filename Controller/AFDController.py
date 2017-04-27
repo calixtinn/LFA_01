@@ -152,9 +152,10 @@ class AFDController(object):
 
         doc.unlink()
 
-    def equivalents(self, afd):
+    def equivalents(afd):
         """
         Metodo responsavel por verificar os estados equivalentes do AFD.
+        :type afd: AFD
         :param afd
         :rtype list
 
@@ -386,8 +387,16 @@ class AFDController(object):
         :rtype AFD
         """
 
+        stateList = automata.getStates()
 
-        pass
+        for theState in stateList:
+            if theState.isFinal():
+                theState.setFinal(False)
+            else:
+                theState.setFinal(True)
+
+        return AFD(automata.getId(), stateList, automata.getTransitions(), automata.getInitial, automata.getFinals,
+                   automata.getAlphabet())
 
     def union(self, m2):
         """
