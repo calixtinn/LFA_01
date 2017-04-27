@@ -152,7 +152,7 @@ class AFDController(object):
 
         doc.unlink()
 
-    def equivalents(afd):
+    def equivalents(self, afd):
         """
         Metodo responsavel por verificar os estados equivalentes do AFD.
         :type afd: AFD
