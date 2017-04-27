@@ -1,18 +1,23 @@
 from Controller.AFDController import AFDController
+import copy
 
 #Contador de ID's de autômatos. (Auto Increment)
 #automata_Id_counter = 0 (Passei pra classe AFDController
 
 AF = AFDController()
 
-automata = AF.load("equivalente_2.jff")
+entrada = input("Digite o arquivo de entrada: ")
+
+automata = AF.load(entrada)
+automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 #automata.printAutomata()
-estados_equivalentes = AF.equivalents(automata)
+#estados_equivalentes = AF.equivalents(automata) #Passei para a funçao de minimização
 
-print("Lista de estados equivalentes: " + str(estados_equivalentes))
+# Se eu passasse "automata" nas duas funções, a função negado iria negar o automato já minimizado,
+# pois a função minimum modifica o objeto. Logo, é necessário criar uma cópia para que a função
+# negado não negue o automato já minimizado, mas sim o original.
+# Também passei a chamada da função SAVE pra dentro de minimum e complement. Para que possam salvar
+# os automatos com mnemônicos: min (minimizado) e neg (negado).
 
-negado = AF.complement(automata)
-
-#minimo = AF.minimum(automata,estados_equivalentes)
-
-AF.save(negado, 'neg_equivalente_2.jff')
+minimo = AF.minimum(automata, entrada)
+negado = AF.complement(automata_copy, entrada)

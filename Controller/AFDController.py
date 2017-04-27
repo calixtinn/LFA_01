@@ -4,7 +4,6 @@
 Classe que implementa todas as funcionalidade um Automoto Finito Deterministico.
 """
 import xml.etree.ElementTree as ET
-from xml.dom.minidom import Document
 from Model.State import State
 from Model.Transition import Transition
 from Model.AFD import AFD
@@ -301,15 +300,16 @@ class AFDController(object):
 
         return lista_equivalentes  # retorna a lista de equivalências.
 
-    def minimum(self, afd, equivalentes):
+    def minimum(self, afd, jffin):
         """
         Metodo responsavel por realizar a minimização do AFD.
         :param AFD
-        :param List
+        :param jff_entrada
         :rtype AFD
         """
 
         transicoes = afd.getTransitions()
+        equivalentes = self.equivalents(afd)
 
         # Para cada equivalência encontrada na lista de equivalências, realiza-se a modificação
         # nos estados e transições. Por convenção, vai-se deletar o primeiro estado da equivalência. Ex:
@@ -360,6 +360,9 @@ class AFDController(object):
             e1 = aux[0]
             self.deleteState(afd, e1)
 
+        jffout = "min_" + jffin
+        self.save(afd, jffout)
+
         return afd
 
     def equivalent(self, m1, m2):
@@ -371,13 +374,12 @@ class AFDController(object):
         """
         pass
 
-    def complement(self, automata):
+    def complement(self, automata, jffin):
         """
         Metodo responsavel por realizar o complemento AFD.
         :type automata: AFD
         :rtype AFD
         """
-
         stateList = automata.getStates()
 
         for theState in stateList:
@@ -385,6 +387,9 @@ class AFDController(object):
                 theState.setFinal(False)
             else:
                 theState.setFinal(True)
+
+        jffout = "neg_" + jffin
+        self.save(automata, jffout)
 
         return automata
 
