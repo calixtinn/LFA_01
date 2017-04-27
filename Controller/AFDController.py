@@ -432,7 +432,6 @@ class AFDController(object):
         Metodo responsavel por retornar o estado inicial do AFD.
         :rtype State
         """
-
         id = afd.getInitial()
         estados = afd.getStates()
 
@@ -450,12 +449,20 @@ class AFDController(object):
         """
         pass
 
-    def finals(self):
+    def final(self, afd):
         """
         Metodo responsavel por retornar os estados finais do AFD.
-        :rtype list
+        :rtype State
         """
-        pass
+        lista_ids = afd.getFinals()
+        estados = afd.getStates()
+        lista_finais = []
+
+        for e in estados:
+            if(e.getId() in lista_ids):
+                lista_finais.append(e)
+
+        return lista_finais
 
     def addState(self, id, initial, final):
         """

@@ -7,8 +7,8 @@ import copy
 
 AF = AFDController()
 
-entrada = input("Digite o arquivo de entrada: ")
-
+#entrada = input("Digite o arquivo de entrada: ")
+entrada = "equivalente_1.jff"
 automata = AF.load(entrada)
 automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 
@@ -23,6 +23,11 @@ automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 
 #minimo = AF.minimum(automata, entrada)
 #negado = AF.complement(automata_copy, entrada)
-inicial = AF.initial(automata)
-inicial.printState()
+#inicial = AF.initial(automata)
+#inicial.printState()
+
+finais = AF.final(automata)
+for f in finais:
+    f.printState()
+
 

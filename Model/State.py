@@ -55,3 +55,4 @@ class State(object):
         print("Estado: " + self.getName() + "\nID: " + self.getId() +
               "\nPosição X: " + self.getPosx() + "\nPosição Y: " + self.getPosy() +
               "\nInicial: " + str(self.isInitial()) + "\nFinal: " + str(self.isFinal()))
+        print("*"*15)
