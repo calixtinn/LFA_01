@@ -148,7 +148,7 @@ class AFDController(object):
             automaton.appendChild(transition)
             structure.appendChild(automaton)
 
-        doc.writexml(open('Output/min_'+jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
+        doc.writexml(open('Output/'+jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
 
         doc.unlink()
 
@@ -385,8 +385,6 @@ class AFDController(object):
                 theState.setFinal(False)
             else:
                 theState.setFinal(True)
-
-        automata.setStates(stateList)
 
         return automata
 
