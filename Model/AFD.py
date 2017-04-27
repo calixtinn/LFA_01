@@ -124,6 +124,9 @@ class AFD(object):
     def getFinals(self):
         return self.Finals
 
+    def getInitial(self):
+        return self.Initial
+
     def setStates(self, States):
         self.States = States
         newFinals = []

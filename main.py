@@ -1,4 +1,5 @@
 from Controller.AFDController import AFDController
+from Model.State import State
 import copy
 
 #Contador de ID's de autômatos. (Auto Increment)
@@ -20,5 +21,8 @@ automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 # Também passei a chamada da função SAVE pra dentro de minimum e complement. Para que possam salvar
 # os automatos com mnemônicos: min (minimizado) e neg (negado).
 
-minimo = AF.minimum(automata, entrada)
-negado = AF.complement(automata_copy, entrada)
+#minimo = AF.minimum(automata, entrada)
+#negado = AF.complement(automata_copy, entrada)
+inicial = AF.initial(automata)
+inicial.printState()
+

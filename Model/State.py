@@ -51,9 +51,7 @@ class State(object):
     def setPosy(self, Posy):
         self.Posy = Posy
 
-    def printState(self, Trans):
+    def printState(self):
         print("Estado: " + self.getName() + "\nID: " + self.getId() +
               "\nPosição X: " + self.getPosx() + "\nPosição Y: " + self.getPosy() +
               "\nInicial: " + str(self.isInitial()) + "\nFinal: " + str(self.isFinal()))
-        print("Transições: " + Trans)
-        print("*" * 15)

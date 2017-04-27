@@ -427,12 +427,21 @@ class AFDController(object):
         """
         pass
 
-    def initial(self):
+    def initial(self, afd):
         """
         Metodo responsavel por retornar o estado inicial do AFD.
         :rtype State
         """
-        pass
+
+        id = afd.getInitial()
+        estados = afd.getStates()
+
+        for e in estados:
+            if(id == e.getId()):
+                inicial = e
+                break
+
+        return inicial
 
     def move(self):
         """
