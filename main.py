@@ -10,6 +10,7 @@ entrada = input("Digite o arquivo de entrada: ")
 
 automata = AF.load(entrada)
 automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
+
 #automata.printAutomata()
 #estados_equivalentes = AF.equivalents(automata) #Passei para a funçao de minimização
 

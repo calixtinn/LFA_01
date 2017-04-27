@@ -319,6 +319,7 @@ class AFDController(object):
             aux = i.split(',')
             e1 = aux[0]
             e2 = aux[1]
+
             # Para cada transição, sempre que To for o e1, ou seja,
             # sempre que estiver jogando algo em e1,  passa-se a jogar em e2
             # Se for um looping, ex: From 1 To 1 Read a,  modifica-se também o From.
@@ -378,6 +379,7 @@ class AFDController(object):
         """
         Metodo responsavel por realizar o complemento AFD.
         :type automata: AFD
+        :type jffin: String
         :rtype AFD
         """
         stateList = automata.getStates()
@@ -491,11 +493,3 @@ class AFDController(object):
         :param consume
         :rtype list
         """
-        transicoes = transitions
-
-        for t in transicoes:
-            if (t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
-                transicoes.remove(t)
-
-        return transicoes
-

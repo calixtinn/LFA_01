@@ -121,8 +121,21 @@ class AFD(object):
     def getTransitions(self):
         return self.Transitions
 
+    def getFinals(self):
+        return self.Finals
+
     def setStates(self, States):
         self.States = States
+        newFinals = []
+
+        for e in States:
+            if(e.getFinals == True):
+                newFinals.append(e)
+
+        self.setFinals(newFinals)
 
     def setTransitions(self, Transitions):
         self.Transitions = Transitions
+
+    def setFinals(self, Finals):
+        self.Finals = Finals
