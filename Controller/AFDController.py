@@ -394,8 +394,9 @@ class AFDController(object):
             else:
                 theState.setFinal(True)
 
-        return AFD(automata.getId(), stateList, automata.getTransitions(), automata.getInitial, automata.getFinals,
-                   automata.getAlphabet())
+        automata.setStates(stateList)
+
+        return automata
 
     def union(self, m2):
         """
