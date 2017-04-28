@@ -442,12 +442,55 @@ class AFDController(object):
 
         return inicial
 
-    def move(self):
+    def move(self, afd, id, word):
         """
-        xxxxxxx
-        :rtype 
+        Método responsável por testar um movimento a partir de um estado e retornar se aceita ou não
+        :param afd
+        :param estado (id)
+        :param word (palavra)
+        :rtype boolean
         """
-        pass
+
+        transicoes = afd.getTransitions() #Pega a lista de transições do AFD
+        estados = afd.getStates()
+        comprimento_palavra = len(word) # Pega o comprimento da palavra passada por parâmtro
+        estados_finais = afd.getFinals() # Pega a lista de estados finais do AFD
+        id = str(id) # Converte o ID em string
+        existe = False
+        erro = 0
+
+        # Testa primeiro se o estado existe antes de deletá-lo
+        for e in estados:
+            if (e.getId() == id):
+                existe = True
+                break
+
+        if (not existe):
+            print("ERRO! Estado inexistente!")
+
+        else:  # Se existir, segue o algoritmo para percorrer o AFD
+
+            for i in range(0, comprimento_palavra): #Varre toda a palavra caractere por caractere
+                if(not existe): #Se não houve nenhuma transição com o estado e caractere passado, erro.
+                    erro = 1
+                    break
+                for t in transicoes: #Percorre todas as transições procurando a transição entre o caractere da palavra e o estado passado
+                    if(t.getFrom() == id and t.getRead() == word[i]): # se for o estado desejado e o caractere desejado
+                        id = t.getTo() #movo para o próximo estado
+                        existe = True
+                        break
+                    else: existe = False
+
+            if(erro == 1): #Erro para não existência de transição e/ou estado
+                print("Palavra REJEITADA! Estado (" + id + ") não possui transição lendo o caractere " + word[i])
+                return False
+            else:
+                if(id in estados_finais): # Se parou em um estado final, aceita
+                    print("Palavra ACEITA! Parou no estado (" +id+ ")")
+                    return True
+                else: # Se não, rejeita.
+                    print("Palavra REJEITADA! Parou no estado (" +id+ ")")
+                    return False
 
     def final(self, afd):
         """

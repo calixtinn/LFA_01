@@ -63,6 +63,11 @@ automata = AF.load(entrada)
 #AF.deleteTransition(automata,"1","1","c")
 #automata.printTransitions()
 
+'''Função de testar movimentos a partir de uma plavra e um estado'''
+#automata.printTransitions()
+#resultado = AF.move(automata, 0, "ababa")
+
+
 
 
 
