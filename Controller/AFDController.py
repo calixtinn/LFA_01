@@ -12,7 +12,6 @@ from xml.dom.minidom import Document
 
 
 class AFDController(object):
-    automata_Id_counter = 0
 
     def __init__(self):
         """
@@ -81,10 +80,8 @@ class AFDController(object):
         # Fim da obtenção das informações referentes às transições.
 
         alphabet = list(set(self.alphabet))
-        automato = AFD(AFDController.automata_Id_counter, self.states, self.transitions, s_initial, self.finals,
+        automato = AFD(self.states, self.transitions, s_initial, self.finals,
                        alphabet)  # Cria um automato
-
-        AFDController.automata_Id_counter += 1
 
         return automato
 
@@ -497,11 +494,20 @@ class AFDController(object):
 
         del estados[index]
 
-    def deleteTransition(self, transitions, source, target, consume):
+    def deleteTransition(self, afd, source, target, consume):
         """
         Metodo responsavel por deletar uma transição de um estado a outro.
+        :param afd
         :param source
         :param target
         :param consume
-        :rtype list
         """
+        transicoes = afd.getTransitions()
+
+        for t in transicoes:
+            if(t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
+                del_transition = t
+                break
+        index = transicoes.index(del_transition)
+
+        del transicoes[index]

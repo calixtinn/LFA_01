@@ -78,13 +78,13 @@ Esta classe representa um Automoto Finito Deterministico.
 # AFD m5 = m1.intersection(m2);
 # AFD m6 = m1.difference(m2);
 # True|False m.accept("aaabbbaa")
-# State estado = m.initial();
+# State estado = m.initial(); - OK
 # State estado = m.move(estado ,"aaab") ;
 # List m.finals() - OK
 # m.addState(id=10, initial=false, final=true);
 # m.addTransition(source=1, target=2, consume="b");
 # m.deleteState(3); - OK
-# m.deleteTransition(source=1 ,target=4, consume="a");
+# m.deleteTransition(source=1 ,target=4, consume="a"); - OK
 # ----------------------------------------------------------------------------------------------------------------
 
 from Model.State import State
@@ -92,8 +92,7 @@ from Model.Transition import Transition
 
 class AFD(object):
 
-    def __init__(self, Id, States, Transitions, Initial, Finals, Alphabet):
-        self.Id = Id
+    def __init__(self, States, Transitions, Initial, Finals, Alphabet):
         self.States = States
         self.Transitions = Transitions
         self.Initial = Initial

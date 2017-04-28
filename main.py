@@ -1,5 +1,6 @@
 from Controller.AFDController import AFDController
 from Model.State import State
+from Model.Transition import Transition
 import copy
 
 #Contador de ID's de autômatos. (Auto Increment)
@@ -10,7 +11,7 @@ AF = AFDController()
 #entrada = input("Digite o arquivo de entrada: ")
 entrada = "equivalente_1.jff"
 automata = AF.load(entrada)
-automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
+#automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 
 #automata.printAutomata()
 #estados_equivalentes = AF.equivalents(automata) #Passei para a funçao de minimização
@@ -21,16 +22,35 @@ automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 # Também passei a chamada da função SAVE pra dentro de minimum e complement. Para que possam salvar
 # os automatos com mnemônicos: min (minimizado) e neg (negado).
 
+'''Função de minimização implementada'''
+
 #minimo = AF.minimum(automata, entrada)
-negado = AF.complement(automata_copy, entrada)
 
-finais = AF.final(negado)
+'''Função de complemento immplementada'''
 
-for f in finais:
-    f.printState()
+#negado = AF.complement(automata_copy, entrada)
+
+'''Função de retorno dos estados finais implementada'''
+
+#finais = AF.final(negado)
+
+#for f in finais:
+#    f.printState()
+
+'''Função de Retornar o estado inicial de um automato implementada'''
 
 #inicial = AF.initial(automata)
 #inicial.printState()
+
+
+'''Função de deletar transições implementada.'''
+
+#transicoes = automata.getTransitions()
+
+#AF.deleteTransition(automata,"0","1","a")
+
+
+
 
 
 
