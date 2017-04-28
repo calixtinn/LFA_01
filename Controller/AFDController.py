@@ -457,15 +457,41 @@ class AFDController(object):
 
         return afd.getFinals()
 
-    def addState(self, id, initial, final):
+    def addState(self, afd, name, initial, final):
         """
         Metodo responsavel por adicionar estado ao AFD.
+        :param afd
         :param id
+        :param name
         :param initial
         :param final
-        :rtype bool
         """
-        pass
+        # O novo estado sempre tera o ID referente à quantidade de estados.
+        # Ex: Se houverem 5 estados, significa que já há id's de 0-4. Logo
+        # o próximo id disponível será = 5.
+
+        estados = afd.getStates()
+        id = str(len(estados))
+        erro = 0
+
+        x = 0.0
+        y = 0.0
+
+        for e in estados:
+            x += float(e.getPosx())
+            y += float(e.getPosy())
+            if(name == e.getName()):
+                erro = 1
+                break
+
+        if(erro == 1):
+            print("ERRO! NOME existente!")
+        else:
+            x /= len(estados) # x = x / quantidade de estados
+            y /= len(estados)
+            novo_estado = State(id, name, str(x), str(y), final, initial)
+            estados.append(novo_estado)
+
 
     def addTransition(self, source, target, consume):
         """

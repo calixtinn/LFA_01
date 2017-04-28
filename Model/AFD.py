@@ -135,3 +135,15 @@ class AFD(object):
 
     def setFinals(self, Finals):
         self.Finals = Finals
+
+    #Função criada para facilitar a impressão dos estados do autômato
+
+    def printStates(self):
+        for e in self.getStates():
+            e.printState()
+
+    # Função criada para facilitar a impressão das transições do autômato
+
+    def printTransitions(self):
+        for t in self.getTransitions():
+            t.printTransition()
