@@ -430,6 +430,10 @@ class AFDController(object):
         :param m2
         :rtype AFD
         """
+        '''
+        a diferenca pode ser feita do complemento de m1 em intercessao com m2
+        '''
+
         pass
 
     def accept(self, afd, word):
