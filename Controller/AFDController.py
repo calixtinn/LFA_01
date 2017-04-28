@@ -452,9 +452,8 @@ class AFDController(object):
     def final(self, afd):
         """
         Metodo responsavel por retornar os estados finais do AFD.
-        :rtype State
+        :rtype Lista
         """
-
         return afd.getFinals()
 
     def addState(self, afd, name, initial, final):
@@ -491,17 +490,66 @@ class AFDController(object):
             y /= len(estados)
             novo_estado = State(id, name, str(x), str(y), final, initial)
             estados.append(novo_estado)
+            print("Estado com ID = (" + id + ") adicionado com sucesso!")
 
 
-    def addTransition(self, source, target, consume):
+    def addTransition(self, afd, source, target, consume):
         """
         Metodo responsavel por adicionar transições ao AFD.
+        :param afd
         :param source
         :param target
         :param consume
-        :rtype bool
         """
-        pass
+        transicoes = afd.getTransitions()
+        estados = afd.getStates()
+        erro = 0
+        id = str(len(transicoes))
+        existe_fonte = False
+        existe_destino = False
+
+        # Testa para saber se os dois estados passados por parametro existem no AFD.
+
+        for i in range(0, 2):
+            for e in estados:
+                if(existe_fonte): # Se existe o estado fonte, falta testar somente o estado destino.
+                    if(e.getId() == target):
+                        existe_destino = True # Se existe, sai do laço, pois já foram verificados os 2 estados.
+                        break
+                elif(existe_destino):# Se existe o estado de destino, falta testar somente o estado fonte
+                    if(e.getId() == source):
+                        existe_fonte = True # Se existe, sai do laço, pois já foram verificados os 2 estados.
+                        break
+                else: # Se ainda não foi verificada a existência de nenhum estado, verifica-se.
+                    if(e.getId() == source):
+                        existe_fonte = True
+                        break
+
+                    if(e.getId() == target):
+                        existe_destino = True
+                        break
+
+
+        if(not existe_destino):
+            print("ERRO! O estado de destino não existe neste autômato!")
+        elif(not existe_fonte):
+            print("ERRO! O estado fonte não existe neste autômato!")
+        else: #Caso os dois estados existam, verifica-se se a transição já existe antes de adiconá-la.
+
+            for t in transicoes:
+                #Testa se a transição já existe
+                if(t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
+                    erro = 1
+                    break
+
+            if(erro == 1):
+                print("ERRO! Transição já existente!")
+            else: # Se não existir, adiciona-a à lista de transições do AFD.
+
+                nova_transicao = Transition(id,source,target,consume)
+                transicoes.append(nova_transicao)
+                print("Transição com ID = ("+id+") adicionada com sucesso!")
+
 
     def deleteState(self, afd, id):
         """
@@ -510,15 +558,27 @@ class AFDController(object):
         :rtype list
         """
         estados = afd.getStates()
+        existe = False
 
+        #Testa primeiro se o estado existe antes de deletá-lo
         for e in estados:
             if(e.getId() == id):
-                del_state = e
+                existe == True
                 break
 
-        index = estados.index(del_state)
+        if(not existe):
+            print("ERRO! Estado inexistente!")
 
-        del estados[index]
+        else: # Se existir, deleta-o
+            for e in estados:
+                if(e.getId() == id):
+                    del_state = e
+                    break
+
+            index = estados.index(del_state)
+
+            del estados[index]
+            print("Estado de ID = ("+id+") deletado com sucesso!")
 
     def deleteTransition(self, afd, source, target, consume):
         """
@@ -529,11 +589,17 @@ class AFDController(object):
         :param consume
         """
         transicoes = afd.getTransitions()
+        existe = False
 
         for t in transicoes:
             if(t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
                 del_transition = t
+                existe = True
                 break
-        index = transicoes.index(del_transition)
 
-        del transicoes[index]
+        if(existe): # Se a transição existe, deleta.
+            index = transicoes.index(del_transition)
+            del transicoes[index]
+            print("Transição de ID = ("+str(index)+") deletada com sucesso!")
+        # Se não, retorna erro!
+        else: print("ERRO! Esta transição não existe neste AFD!")

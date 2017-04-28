@@ -55,7 +55,13 @@ automata = AF.load(entrada)
 
 '''Função de adicionar uma nova transição'''
 
+#AF.addTransition(automata,"1","1","c")
+#automata.printTransitions()
+#print("*"*15)
 
+'''Função de deletar uma transição'''
+#AF.deleteTransition(automata,"1","1","c")
+#automata.printTransitions()
 
 
 

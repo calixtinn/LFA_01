@@ -81,8 +81,8 @@ Esta classe representa um Automoto Finito Deterministico.
 # State estado = m.initial(); - OK
 # State estado = m.move(estado ,"aaab") ;
 # List m.finals() - OK
-# m.addState(id=10, initial=false, final=true);
-# m.addTransition(source=1, target=2, consume="b");
+# m.addState(id=10, initial=false, final=true); - OK
+# m.addTransition(source=1, target=2, consume="b"); - OK
 # m.deleteState(3); - OK
 # m.deleteTransition(source=1 ,target=4, consume="a"); - OK
 # ----------------------------------------------------------------------------------------------------------------
