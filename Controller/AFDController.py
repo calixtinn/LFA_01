@@ -363,15 +363,6 @@ class AFDController(object):
 
         return afd
 
-    def equivalent(self, m1, m2):
-        """
-        Metodo responsavel por verificar a equivalencia de dois AFDs.
-        :param m1
-        :param m2
-        :rtype bool
-        """
-        pass
-
     def complement(self, automata, jffin):
         """
         Metodo responsavel por realizar o complemento AFD.
@@ -394,6 +385,25 @@ class AFDController(object):
         self.save(automata, jffout)
 
         return automata
+
+    def equivalent(self, m1, m2):
+        """
+        Metodo responsavel por verificar a equivalencia de dois AFDs.
+        :param m1
+        :param m2
+        :rtype bool
+        """
+        '''
+        dois automotos são quivalentes, se o minimo de ambos forem iguais
+        verificar se o primeiro estado dos dois automatos são iguais
+        tem que ser iguais depois da minimizacao:
+            o alfabeto
+            quantidade de estados
+            estado inicial
+        '''
+
+
+        pass
 
     def union(self, m1, m2):
         """
