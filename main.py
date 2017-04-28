@@ -67,6 +67,9 @@ automata = AF.load(entrada)
 #automata.printTransitions()
 #resultado = AF.move(automata, 0, "ababa")
 
+'''Função para testar se uma palavra é aceita no AFD'''
+
+resultado = AF.accept(automata, "ba")
 
 
 

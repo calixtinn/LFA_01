@@ -419,13 +419,17 @@ class AFDController(object):
         """
         pass
 
-    def accept(self, word):
+    def accept(self, afd, word):
         """
         Metodo responsavel por verificar se uma determinada palavra é aceita pelo AFD.
+        :param AFD
         :param word
-        :rtype bool
+        :rtype boolean
         """
-        pass
+
+        inicial = afd.getInitial()
+
+        return self.move(afd,inicial,word)
 
     def initial(self, afd):
         """

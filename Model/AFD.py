@@ -77,9 +77,9 @@ Esta classe representa um Automoto Finito Deterministico.
 # AFD m4 = m1.union(m2);
 # AFD m5 = m1.intersection(m2);
 # AFD m6 = m1.difference(m2);
-# True|False m.accept("aaabbbaa")
+# True|False m.accept("aaabbbaa") - OK
 # State estado = m.initial(); - OK
-# State estado = m.move(estado ,"aaab") ;
+# State estado = m.move(estado ,"aaab") ; - OK
 # List m.finals() - OK
 # m.addState(id=10, initial=false, final=true); - OK
 # m.addTransition(source=1, target=2, consume="b"); - OK
