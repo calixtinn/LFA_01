@@ -7,7 +7,6 @@ import xml.etree.ElementTree as ET
 from Model.State import State
 from Model.Transition import Transition
 from Model.AFD import AFD
-
 from xml.dom.minidom import Document
 
 
@@ -213,7 +212,7 @@ class AFDController(object):
                     for a in alfabeto:  # Para cada caracter do alfabeto...
 
                         if (
-                                a in trans_i and a in trans_j):  # Se houver transições com o caractere do alfabeto em ambos os estados.
+                                        a in trans_i and a in trans_j):  # Se houver transições com o caractere do alfabeto em ambos os estados.
 
                             destino_i = trans_i[a]  # Salva o destino do estado i ao ler o caractere em questão
                             destino_j = trans_j[a]  # Faz o mesmo para o estado j
@@ -322,7 +321,6 @@ class AFDController(object):
             # Se for um looping, ex: From 1 To 1 Read a,  modifica-se também o From.
 
             for t in transicoes:
-
                 if (t.getTo() == t.getFrom() and t.getTo() == e1):
                     t.setTo(e2)
                     t.setFrom(e2)
@@ -401,7 +399,10 @@ class AFDController(object):
             quantidade de estados
             estado inicial
         '''
+        minimoM1 = self.minimum(m1, 'saida1')
+        minimoM2 = self.minimum(m2, 'saida2')
 
+        print(len(minimoM1.getStates()))
 
         pass
 
@@ -626,7 +627,7 @@ class AFDController(object):
         # Testa primeiro se o estado existe antes de deletá-lo
         for e in estados:
             if (e.getId() == id):
-                existe == True
+                existe = True
                 break
 
         if (not existe):

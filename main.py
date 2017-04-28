@@ -24,7 +24,7 @@ automata = AF.load(entrada)
 
 '''Função de minimização implementada'''
 
-#minimo = AF.minimum(automata, entrada)
+minimo = AF.minimum(automata, entrada)
 
 '''Função de complemento immplementada'''
 
@@ -68,10 +68,13 @@ automata = AF.load(entrada)
 #resultado = AF.move(automata, 0, "ababa")
 
 '''Função para testar se uma palavra é aceita no AFD'''
+#resultado = AF.accept(automata, "ba")
 
-resultado = AF.accept(automata, "ba")
-
-
-
+'''Função para verificar a esquivalencia de automatos'''
+# entrada = "equivalente_1.jff"
+# automata1 = AF.load(entrada)
+# entrada = "equivalente_2.jff"
+# automata2 = AF.load(entrada)
+# resultado = AF.equivalent(automata1, automata2)
 
 
