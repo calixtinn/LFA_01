@@ -306,6 +306,8 @@ class AFDController(object):
 
         transicoes = afd.getTransitions()
         equivalentes = self.equivalents(afd)
+        inicial = afd.getInitial()
+        transicoes_iguais = []
 
         # Para cada equivalência encontrada na lista de equivalências, realiza-se a modificação
         # nos estados e transições. Por convenção, vai-se deletar o primeiro estado da equivalência. Ex:
@@ -315,6 +317,12 @@ class AFDController(object):
             aux = i.split(',')
             e1 = aux[0]
             e2 = aux[1]
+
+            #Não elimino o inicial, caso ele for o candidato da eliminação.
+            if(e1 == inicial):
+                aux = e1
+                e1 = e2
+                e2 = aux
 
             # Para cada transição, sempre que To for o e1, ou seja,
             # sempre que estiver jogando algo em e1,  passa-se a jogar em e2
@@ -342,7 +350,14 @@ class AFDController(object):
                 to_j = transicoes[j].getTo()
                 read_j = transicoes[j].getRead()
                 if (from_i == from_j and to_i == to_j and read_i == read_j):
-                    del min_transicoes[j]
+                    #del min_transicoes[j]
+                    transicoes_iguais.append(int(transicoes[j].getId()))
+
+        transicoes_iguais.sort(reverse=True)
+
+        for t in transicoes_iguais:
+
+            del min_transicoes[t]
 
         transicoes = min_transicoes[:]
         afd.setTransitions(transicoes)  # Seta no automato sua nova lista de transições
@@ -354,6 +369,12 @@ class AFDController(object):
         for e in equivalentes:
             aux = e.split(',')
             e1 = aux[0]
+            e2 = aux[1]
+            # Não elimino o inicial, caso ele for o candidato da eliminação.
+            if (e1 == inicial):
+                aux = e1
+                e1 = e2
+                e2 = aux
             self.deleteState(afd, e1)
 
         jffout = "min_" + jffin
@@ -393,18 +414,17 @@ class AFDController(object):
         """
         '''
         dois automotos são quivalentes, se o minimo de ambos forem iguais
-        verificar se o primeiro estado dos dois automatos são iguais
+        verificar se o primeiro estado dos dois automatos são equivalentes
         tem que ser iguais depois da minimizacao:
             o alfabeto
             quantidade de estados
             estado inicial
         '''
-        minimoM1 = self.minimum(m1, 'saida1')
-        minimoM2 = self.minimum(m2, 'saida2')
+        min_m1 = self.minimum(m1, 'aut_eq1.jff')
+        min_m2 = self.minimum(m2, 'aut_eq2.jff')
 
-        print(len(minimoM1.getStates()))
-
-        pass
+        print(len(min_m1.getStates()))
+        print(len(min_m2.getStates()))
 
     def union(self, m1, m2):
         """
