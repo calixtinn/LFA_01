@@ -9,16 +9,7 @@ from Model.Transition import Transition
 from Model.AFD import AFD
 from xml.dom.minidom import Document
 
-
 class AFDController(object):
-    def __init__(self):
-        """
-        Inicializa as variaveis de classe
-        """
-        self.states = []  # Lista de estados
-        self.transitions = []  # Lista de transições
-        self.finals = []  # Lista de estados finais
-        self.alphabet = []  # alfabeto que o automato suporta
 
     def load(self, jffFile):
         """
@@ -26,6 +17,10 @@ class AFDController(object):
         :param jffFile
         :rtype AFD
         """
+        states = []  # Lista de estados
+        transitions = []  # Lista de transições
+        finals = []  # Lista de estados finais
+        alphabet = []  # alfabeto que o automato suporta
 
         s_initial = ""  # Guardará o ID do estado inicial
         doc = ET.parse("Input/" + jffFile)  # Recebendo o arquivo de entrada via parametro da função.
@@ -49,7 +44,7 @@ class AFDController(object):
             # Se nesse estado houver a tag final, seta o estado como final.
             if (i.find('final') != None):
                 final = True
-                self.finals.append(id)
+                finals.append(id)
             else:
                 final = False
 
@@ -57,7 +52,7 @@ class AFDController(object):
             state = State(id, name, x, y, initial, final)
 
             # Adiciona na lista de estados
-            self.states.append(state)
+            states.append(state)
 
         # Fim da obtenção das informações referentes aos estados
 
@@ -73,15 +68,15 @@ class AFDController(object):
                 Read = '§'
 
             # Adiciona o caractere lido na lista do alfabeto
-            self.alphabet.append(Read)
+            alphabet.append(Read)
 
             transition = Transition(cont_trans, From, To, Read)
-            self.transitions.append(transition)
+            transitions.append(transition)
             cont_trans += 1
         # Fim da obtenção das informações referentes às transições.
 
-        alphabet = list(set(self.alphabet))
-        automato = AFD(self.states, self.transitions, s_initial, self.finals,
+        alphabet = list(set(alphabet))
+        automato = AFD(states, transitions, s_initial, finals,
                        alphabet)  # Cria um automato
 
         return automato
@@ -149,7 +144,7 @@ class AFDController(object):
 
         doc.unlink()
 
-    def equivalents(self, afd):
+    def equivalent_states(self, afd):
         """
         Metodo responsavel por verificar os estados equivalentes do AFD.
         :type afd: AFD
@@ -308,7 +303,7 @@ class AFDController(object):
         """
 
         transicoes = afd.getTransitions()
-        equivalentes = self.equivalents(afd)
+        equivalentes = self.equivalent_states(afd)
         inicial = afd.getInitial()
         transicoes_iguais = []
 
@@ -378,7 +373,7 @@ class AFDController(object):
                 aux = e1
                 e1 = e2
                 e2 = aux
-            self.deleteState(afd, e1)
+            mensagem = self.deleteState(afd, e1)
 
         jffout = "min_" + jffin
         self.save(afd, jffout)
@@ -408,12 +403,12 @@ class AFDController(object):
 
         return automata
 
-    def equivalent(self, m1, m2):
+    def equivalent_automatas(self, min_m1, min_m2):
         """
         Metodo responsavel por verificar a equivalencia de dois AFDs.
         :param m1
         :param m2
-        :rtype bool
+        :rtype string
         """
         '''
         dois automotos são quivalentes, se o minimo de ambos forem iguais
@@ -423,11 +418,70 @@ class AFDController(object):
             quantidade de estados
             estado inicial
         '''
-        min_m1 = self.minimum(m1, 'aut_eq1.jff')
-        min_m2 = self.minimum(m2, 'aut_eq2.jff')
+        n_estados_m1 = len(min_m1.getStates())
+        n_estados_m2 = len(min_m2.getStates())
+        n_transicoes_m1 = len(min_m1.getTransitions())
 
-        print(len(min_m1.getStates()))
-        print(len(min_m2.getStates()))
+        if(min_m1.getAlphabet() != min_m2.getAlphabet()):
+            mensagem = "O alfabeto dos dois AFD's são diferentes. Logo, NÃO são equivalentes"
+            return mensagem
+        elif(n_estados_m1 != n_estados_m2):
+            mensagem = "A quantaide de estados dos dois AFD's são diferentes. Logo NÃO são equivalentes"
+            return mensagem
+        else:
+                # Roda o algoritmo de equivalencia para saber se os estados inicias são equivalentes.
+                # Para tal, cria-se um novo AFD contendo todos os estados dois dois AFD's
+                # Executa-se o algoritmo como se os dois autômatos fossem um só!
+
+            estados_min1 = min_m1.getStates()
+            estados_min2 = min_m2.getStates()
+            transicoes_min1 = min_m1.getTransitions()
+            transicoes_min2 = min_m2.getTransitions()
+            inicial_min1 = str(min_m1.getInitial())
+            estados_finais = min_m1.getFinals()
+            alfabeto = min_m1.getAlphabet()
+
+            #Renomea os Id's dos estados de min2 a partir do numero de estados de min1
+            #Ex: se min1 tem 2 estados (ID's: 0 e 1). O contador de ID's dos estados de min2 começará
+            #com ID 2, e assim por diante.
+
+            id_cont = n_estados_m1
+
+            for e in estados_min2:
+                e.setId(str(id_cont))
+                id_cont += 1
+                if(e.isFinal()):
+                    estados_finais.append(str(e.getId())) #Adiciona na lista de estados finais, os estados finais do AFD2
+                if(e.isInitial()):
+                    inicial_min2 = e.getId() #Pega o estado inicial do AFD2, com o ID já modificado
+
+            #Mesma ideia para os ID's das transições.
+
+            id_cont = n_transicoes_m1
+
+            for t in transicoes_min2:
+                t.setId(str(id_cont))
+                id_cont += 1
+
+            novos_estados = estados_min1 + estados_min2 #Nova lista de estados
+            novas_transicoes = transicoes_min1 + transicoes_min2 #Nova lista de transições
+
+            novo_afd = AFD(novos_estados,novas_transicoes,inicial_min1,estados_finais,alfabeto) #Novo AFD.
+            estados_equivalentes = self.equivalent_states(novo_afd) #Verifica a equivalência de estados
+
+            #Testa se os estados iniciais dos dois AFD's minimizados são equivalentes. Se sim, retorna true.
+
+            for eq in estados_equivalentes:
+                aux = eq.split(',')
+                e1 = aux[0]
+                e2 = aux[1]
+
+                if( (e1 == inicial_min1 and e2 == inicial_min2)  or (e1 == inicial_min2 and e2 == inicial_min1)):
+                    mensagem = "Os Autômatos são equivalentes!"
+                    return mensagem
+
+        mensagem = "Os estados iniciais dos dois AFD's não são equivalentes. Logo os AFD's NÃO são equivalentes"
+        return mensagem
 
     def union(self, m1, m2):
         """
@@ -642,7 +696,7 @@ class AFDController(object):
         """
         Metodo responsavel por deletar um estado do AFD.
         :param id
-        :rtype list
+        :rtype string
         """
         estados = afd.getStates()
         existe = False
@@ -654,7 +708,7 @@ class AFDController(object):
                 break
 
         if (not existe):
-            print("ERRO! Estado inexistente!")
+            return "ERRO! Estado inexistente!"
 
         else:  # Se existir, deleta-o
             for e in estados:
@@ -665,7 +719,7 @@ class AFDController(object):
             index = estados.index(del_state)
 
             del estados[index]
-            print("Estado de ID = (" + id + ") deletado com sucesso!")
+            return "Estado de ID = (" + id + ") deletado com sucesso!"
 
     def deleteTransition(self, afd, source, target, consume):
         """

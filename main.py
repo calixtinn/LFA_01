@@ -6,11 +6,11 @@ import copy
 AF = AFDController()
 
 #entrada = input("Digite o arquivo de entrada: ")
-entrada = "bug.jff"
-automata = AF.load(entrada)
+#entrada = "aut_eq2.jff"
+#automata = AF.load(entrada)
 #automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 
-automata.printAutomata()
+#automata.printAutomata()
 
 '''Função que faz a equivalencia de estados implementada'''
 
@@ -70,11 +70,17 @@ automata.printAutomata()
 '''Função para testar se uma palavra é aceita no AFD'''
 #resultado = AF.accept(automata, "ba")
 
-'''Função para verificar a esquivalencia de automatos
+'''Função para verificar a esquivalencia de automatos'''
 entrada = "aut_eq1.jff"
 automata1 = AF.load(entrada)
 entrada = "aut_eq2.jff"
 automata2 = AF.load(entrada)
-resultado = AF.equivalent(automata1, automata2)
-'''
+
+min_m1 = AF.minimum(automata1, entrada)
+min_m2 = AF.minimum(automata2, entrada)
+
+mensagem = AF.equivalent_automatas(automata1, automata2)
+
+print(mensagem)
+
 
