@@ -103,12 +103,9 @@ class AFD(object):
         """
         Metodo responsavel por printar os estados do autômato e suas características.
         """
-        for i in self.States: # Para cada objeto State
-            trans = ""
-            for j in self.Transitions: # Para cada objeto Transition
-                if (j.getFrom() == i.getId()): # Se From = ID do estado, a transição faz parte do estado.
-                    trans += Transition.printTransition(j) # Cria uma String com as transições de cada estado.
-            State.printState(i, trans)
+        self.printStates()
+        print("Transições: ")
+        self.printTransitions()
         print("Alfabeto: " + str(self.Alphabet))
 
     def getStates(self):

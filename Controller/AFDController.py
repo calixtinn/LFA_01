@@ -69,6 +69,9 @@ class AFDController(object):
             To = i.find('to').text
             Read = i.find('read').text
 
+            if(Read == None): #Trata o movimento vazio, representado pelo caractere §
+                Read = '§'
+
             # Adiciona o caractere lido na lista do alfabeto
             self.alphabet.append(Read)
 

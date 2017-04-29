@@ -6,11 +6,11 @@ import copy
 AF = AFDController()
 
 #entrada = input("Digite o arquivo de entrada: ")
-entrada = "aut_eq2.jff"
+entrada = "bug.jff"
 automata = AF.load(entrada)
 #automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
 
-#automata.printAutomata()
+automata.printAutomata()
 
 '''Função que faz a equivalencia de estados implementada'''
 
@@ -24,7 +24,7 @@ automata = AF.load(entrada)
 
 '''Função de minimização implementada'''
 
-minimo = AF.minimum(automata, entrada)
+#minimo = AF.minimum(automata, entrada)
 
 '''Função de complemento immplementada'''
 
