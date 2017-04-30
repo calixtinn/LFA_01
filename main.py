@@ -71,16 +71,27 @@ AF = AFDController()
 #resultado = AF.accept(automata, "ba")
 
 '''Função para verificar a esquivalencia de automatos'''
-entrada = "aut_eq1.jff"
-automata1 = AF.load(entrada)
-entrada = "aut_eq2.jff"
-automata2 = AF.load(entrada)
+#entrada = "aut_eq1.jff"
+#automata1 = AF.load(entrada)
+#entrada = "aut_eq2.jff"
+#automata2 = AF.load(entrada)
 
-min_m1 = AF.minimum(automata1, entrada)
-min_m2 = AF.minimum(automata2, entrada)
+#min_m1 = AF.minimum(automata1, entrada)
+#min_m2 = AF.minimum(automata2, entrada)
 
-mensagem = AF.equivalent_automatas(automata1, automata2)
+#mensagem = AF.equivalent_automatas(automata1, automata2)
 
-print(mensagem)
+#print(mensagem)
 
+'''Função que realiza a união de dois autômatos'''
 
+entrada = "a_impar.jff"
+m1 = AF.load(entrada)
+entrada = "c_impar.jff"
+m2 = AF.load(entrada)
+
+resultado = AF.union(m1,m2)
+
+resultado.printAutomata()
+
+AF.save(resultado,"uniao_a_impar_c_impar.jff")
