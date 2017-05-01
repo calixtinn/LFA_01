@@ -90,6 +90,7 @@ class AFDController(object):
         :param jffFile
         :rtype bool
         """
+        # Cria um documento (root) Dom para gerar o xml
         doc = Document()
 
         # Cria tag 'structure' para o xml
