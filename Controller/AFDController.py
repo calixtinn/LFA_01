@@ -92,56 +92,84 @@ class AFDController(object):
         """
         doc = Document()
 
+        # Cria tag 'structure' para o xml
         structure = doc.createElement('structure')
+        # Cria tag 'type' para o xml
         type = doc.createElement('type')
+        # Cria tag 'automaton' para o xml
         automaton = doc.createElement('automaton')
 
-        doc.appendChild(structure)  # ponto de partida
+        # adiciona a tag 'structure' na raiz do documento xml
+        doc.appendChild(structure)
+        # adiciona o texto 'fa' dentro da tag 'type'
         type.appendChild(doc.createTextNode('fa'))
+        # Adiciona a tag 'type' dentro da tag 'structure'
         structure.appendChild(type)
 
+        # Cria a estrutura xml de todos os estados
         for theState in automata.getStates():
+            # Cria tag 'final'
             final = doc.createElement('final')
+            # Cria tag 'initial'
             initial = doc.createElement('initial')
 
+            # Cria tag da coordenada 'x'
             x = doc.createElement('x')
+            # Cria tag da coordenada 'y'
             y = doc.createElement('y')
 
+            # Busca o valor da coordenada x do estado e adiciona dentro da sua tag
             x.appendChild(doc.createTextNode(theState.getPosx()))
+            # Busca o valor da coordenada y do estado e adiciona dentro da sua tag
             y.appendChild(doc.createTextNode(theState.getPosy()))
 
+            # Cria a tag 'state'
             state = doc.createElement('state')
+            # Seta os atributos 'id' e 'name'
             state.setAttribute('id', theState.getId())
             state.setAttribute('name', theState.getName())
+            # Adiciona as duas coordenadas dentro do estado
             state.appendChild(x)
             state.appendChild(y)
+            # Se o estado for final ou inicial, adiciona a respectiva tag
             if theState.isInitial():
                 state.appendChild(initial)
             if theState.isFinal():
                 state.appendChild(final)
 
+            # Adiciona o estado no automato
             automaton.appendChild(state)
+            # Adiciona o 'automaton' na 'structure'
             structure.appendChild(automaton)
 
+        # Cria toda a estrutura xml das transicoes
         for theTransition in automata.getTransitions():
+            # Cria as tags necessarias da 'transition'
             From = doc.createElement('from')
             to = doc.createElement('to')
             read = doc.createElement('read')
 
+            # Adiciona valores nas tag
             From.appendChild(doc.createTextNode(theTransition.getFrom()))
             to.appendChild(doc.createTextNode(theTransition.getTo()))
             read.appendChild(doc.createTextNode(theTransition.getRead()))
 
+            # Cria uma tag 'transition'
             transition = doc.createElement('transition')
+            # Adiciona as tag criadas dentro da tag transition
             transition.appendChild(From)
             transition.appendChild(to)
             transition.appendChild(read)
 
+            # Adiciona a 'transition' dentro do 'automaton'
             automaton.appendChild(transition)
+            # Adiciona o 'automaton' dentro da 'structure'
             structure.appendChild(automaton)
 
+        # Gera o arquivo de saida com algumas confuracoes do arquivo (identacao, nova linha, codificacao)
         doc.writexml(open('Output/' + jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
 
+        # Libera memoria
         doc.unlink()
 
     def equivalent_states(self, afd):
