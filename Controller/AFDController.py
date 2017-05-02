@@ -9,8 +9,8 @@ from Model.Transition import Transition
 from Model.AFD import AFD
 from xml.dom.minidom import Document
 
-class AFDController(object):
 
+class AFDController(object):
     def load(self, jffFile):
         """
         Metodo responsavel por ler um arquivo XML em formato jff conteudo o AFD.
@@ -64,7 +64,7 @@ class AFDController(object):
             To = i.find('to').text
             Read = i.find('read').text
 
-            if(Read == None): #Trata o movimento vazio, representado pelo caractere §
+            if (Read == None):  # Trata o movimento vazio, representado pelo caractere §
                 Read = '§'
 
             # Adiciona o caractere lido na lista do alfabeto
@@ -345,8 +345,8 @@ class AFDController(object):
             e1 = aux[0]
             e2 = aux[1]
 
-            #Não elimino o inicial, caso ele for o candidato da eliminação.
-            if(e1 == inicial):
+            # Não elimino o inicial, caso ele for o candidato da eliminação.
+            if (e1 == inicial):
                 aux = e1
                 e1 = e2
                 e2 = aux
@@ -377,13 +377,12 @@ class AFDController(object):
                 to_j = transicoes[j].getTo()
                 read_j = transicoes[j].getRead()
                 if (from_i == from_j and to_i == to_j and read_i == read_j):
-                    #del min_transicoes[j]
+                    # del min_transicoes[j]
                     transicoes_iguais.append(int(transicoes[j].getId()))
 
         transicoes_iguais.sort(reverse=True)
 
         for t in transicoes_iguais:
-
             del min_transicoes[t]
 
         transicoes = min_transicoes[:]
@@ -409,7 +408,7 @@ class AFDController(object):
 
         return afd
 
-    def complement(self, automata, jffin):
+    def complement(self, automata, jffin):  # Rever depois se he realmente necessario esse arquivo de saida
         """
         Metodo responsavel por realizar o complemento AFD.
         :type automata: AFD
@@ -435,8 +434,8 @@ class AFDController(object):
     def equivalent_automatas(self, min_m1, min_m2):
         """
         Metodo responsavel por verificar a equivalencia de dois AFDs.
-        :param m1
-        :param m2
+        :param min_m2: AFD
+        :param min_m1: AFD
         :rtype string
         """
         '''
@@ -451,16 +450,16 @@ class AFDController(object):
         n_estados_m2 = len(min_m2.getStates())
         n_transicoes_m1 = len(min_m1.getTransitions())
 
-        if(min_m1.getAlphabet() != min_m2.getAlphabet()):
+        if (min_m1.getAlphabet() != min_m2.getAlphabet()):
             mensagem = "O alfabeto dos dois AFD's são diferentes. Logo, NÃO são equivalentes"
             return mensagem
-        elif(n_estados_m1 != n_estados_m2):
+        elif (n_estados_m1 != n_estados_m2):
             mensagem = "A quantaide de estados dos dois AFD's são diferentes. Logo NÃO são equivalentes"
             return mensagem
         else:
-                # Roda o algoritmo de equivalencia para saber se os estados inicias são equivalentes.
-                # Para tal, cria-se um novo AFD contendo todos os estados dois dois AFD's
-                # Executa-se o algoritmo como se os dois autômatos fossem um só!
+            # Roda o algoritmo de equivalencia para saber se os estados inicias são equivalentes.
+            # Para tal, cria-se um novo AFD contendo todos os estados dois dois AFD's
+            # Executa-se o algoritmo como se os dois autômatos fossem um só!
 
             estados_min1 = min_m1.getStates()
             estados_min2 = min_m2.getStates()
@@ -470,21 +469,22 @@ class AFDController(object):
             estados_finais = min_m1.getFinals()
             alfabeto = min_m1.getAlphabet()
 
-            #Renomea os Id's dos estados de min2 a partir do numero de estados de min1
-            #Ex: se min1 tem 2 estados (ID's: 0 e 1). O contador de ID's dos estados de min2 começará
-            #com ID 2, e assim por diante.
+            # Renomea os Id's dos estados de min2 a partir do numero de estados de min1
+            # Ex: se min1 tem 2 estados (ID's: 0 e 1). O contador de ID's dos estados de min2 começará
+            # com ID 2, e assim por diante.
 
             id_cont = n_estados_m1
 
             for e in estados_min2:
                 e.setId(str(id_cont))
                 id_cont += 1
-                if(e.isFinal()):
-                    estados_finais.append(str(e.getId())) #Adiciona na lista de estados finais, os estados finais do AFD2
-                if(e.isInitial()):
-                    inicial_min2 = e.getId() #Pega o estado inicial do AFD2, com o ID já modificado
+                if (e.isFinal()):
+                    estados_finais.append(
+                        str(e.getId()))  # Adiciona na lista de estados finais, os estados finais do AFD2
+                if (e.isInitial()):
+                    inicial_min2 = e.getId()  # Pega o estado inicial do AFD2, com o ID já modificado
 
-            #Mesma ideia para os ID's das transições.
+            # Mesma ideia para os ID's das transições.
 
             id_cont = n_transicoes_m1
 
@@ -492,20 +492,20 @@ class AFDController(object):
                 t.setId(str(id_cont))
                 id_cont += 1
 
-            novos_estados = estados_min1 + estados_min2 #Nova lista de estados
-            novas_transicoes = transicoes_min1 + transicoes_min2 #Nova lista de transições
+            novos_estados = estados_min1 + estados_min2  # Nova lista de estados
+            novas_transicoes = transicoes_min1 + transicoes_min2  # Nova lista de transições
 
-            novo_afd = AFD(novos_estados,novas_transicoes,inicial_min1,estados_finais,alfabeto) #Novo AFD.
-            estados_equivalentes = self.equivalent_states(novo_afd) #Verifica a equivalência de estados
+            novo_afd = AFD(novos_estados, novas_transicoes, inicial_min1, estados_finais, alfabeto)  # Novo AFD.
+            estados_equivalentes = self.equivalent_states(novo_afd)  # Verifica a equivalência de estados
 
-            #Testa se os estados iniciais dos dois AFD's minimizados são equivalentes. Se sim, retorna true.
+            # Testa se os estados iniciais dos dois AFD's minimizados são equivalentes. Se sim, retorna true.
 
             for eq in estados_equivalentes:
                 aux = eq.split(',')
                 e1 = aux[0]
                 e2 = aux[1]
 
-                if( (e1 == inicial_min1 and e2 == inicial_min2)  or (e1 == inicial_min2 and e2 == inicial_min1)):
+                if ((e1 == inicial_min1 and e2 == inicial_min2) or (e1 == inicial_min2 and e2 == inicial_min1)):
                     mensagem = "Os Autômatos são equivalentes!"
                     return mensagem
 
@@ -519,22 +519,22 @@ class AFDController(object):
         :param m2
         :rtype AFD
         """
-        #Pega informações dos dois autômatos passados por parâmetro.
+        # Pega informações dos dois autômatos passados por parâmetro.
 
         estados_m1 = m1.getStates()
         estados_m2 = m2.getStates()
         transicoes_m1 = m1.getTransitions()
         transicoes_m2 = m2.getTransitions()
 
-        estados_uniao = [] # Lista de estados do automato gerado pela união de m1 e m2
-        transicoes_uniao = [] # Lista de transições deste autômato
-        alfabeto_uniao = set(m1.getAlphabet() + m2.getAlphabet()) #Alfabeto deste autômato
-        finais_uniao = [] # Lista de autômatos finais deste AFD
-        inicial_uniao = "" #Inicializa o estado inicial do autômato da união de m1 e m2
+        estados_uniao = []  # Lista de estados do automato gerado pela união de m1 e m2
+        transicoes_uniao = []  # Lista de transições deste autômato
+        alfabeto_uniao = set(m1.getAlphabet() + m2.getAlphabet())  # Alfabeto deste autômato
+        finais_uniao = []  # Lista de autômatos finais deste AFD
+        inicial_uniao = ""  # Inicializa o estado inicial do autômato da união de m1 e m2
 
-        trans_estadosm1 = {} #Tabelas de transições por estado. (Para facilitar o acesso à informação posteriormente)
-        trans_estadosm2 = {} #Tabelas de transições por estado. (Para facilitar o acesso à informação posteriormente)
-        estado_id_uniao = {} #Tabela contendo como chave o estado do novo AFD e como valor o ID deste estado.
+        trans_estadosm1 = {}  # Tabelas de transições por estado. (Para facilitar o acesso à informação posteriormente)
+        trans_estadosm2 = {}  # Tabelas de transições por estado. (Para facilitar o acesso à informação posteriormente)
+        estado_id_uniao = {}  # Tabela contendo como chave o estado do novo AFD e como valor o ID deste estado.
 
         # Para cada transição do AFD m1, crio a tabela Hash contendo como chave o ID do Estado,
         # e como valor suas transições
@@ -543,8 +543,8 @@ class AFDController(object):
             estado = t.getFrom()
             valor = []
 
-            if(trans_estadosm1.get(estado) == None):
-                valor.append(t.getTo()+','+t.getRead())
+            if (trans_estadosm1.get(estado) == None):
+                valor.append(t.getTo() + ',' + t.getRead())
                 trans_estadosm1[estado] = valor
             else:
                 valor = trans_estadosm1[estado]
@@ -557,14 +557,14 @@ class AFDController(object):
             estado = t.getFrom()
             valor = []
 
-            if(trans_estadosm2.get(estado) == None):
-                valor.append(t.getTo()+','+t.getRead())
+            if (trans_estadosm2.get(estado) == None):
+                valor.append(t.getTo() + ',' + t.getRead())
                 trans_estadosm2[estado] = valor
             else:
                 valor = trans_estadosm2[estado]
                 valor.append(t.getTo() + ',' + t.getRead())
 
-        id_estados_uniao = 0 # Contador de ID's dos estados do novo AFD
+        id_estados_uniao = 0  # Contador de ID's dos estados do novo AFD
 
         # Faz-se a multiplicação dos estados dos dois autômatos, criando assim uma nova lista de estados
         # Contendo um novo ID, com um novo nome (seguindo o padrão: Estado de m1 = 0, Estado de m2 = 0
@@ -579,55 +579,57 @@ class AFDController(object):
                 novo_nome = id_1 + "," + id_2
                 novo_x = (float(s1.getPosx()) + float(s2.getPosx())) / 2
                 novo_y = (float(s1.getPosy()) + float(s2.getPosy())) / 2
-                if(s1.isFinal() or s2.isFinal()):
+                if (s1.isFinal() or s2.isFinal()):
                     final = True
                     finais_uniao.append(novo_nome)
-                else: final = False
-                if(s1.isInitial() and s2.isInitial()):
+                else:
+                    final = False
+                if (s1.isInitial() and s2.isInitial()):
                     initial = True
                     inicial_uniao = novo_nome
-                else: initial = False
-                novo_estado = State(str(id_estados_uniao),novo_nome,str(novo_x),str(novo_y),initial,final)
+                else:
+                    initial = False
+                novo_estado = State(str(id_estados_uniao), novo_nome, str(novo_x), str(novo_y), initial, final)
                 estados_uniao.append(novo_estado)
-                estado_id_uniao[novo_nome] = str(id_estados_uniao) #Associando cada novo estado ao seu ID para definir as transições
+                estado_id_uniao[novo_nome] = str(
+                    id_estados_uniao)  # Associando cada novo estado ao seu ID para definir as transições
                 id_estados_uniao += 1
 
         # De posse dos novos estados provindos da MULTIPLICAÇÃO dos dois AFD's, define-se as transições
 
-        id_transicao = 0 #inicializa o contador do ID das transições
+        id_transicao = 0  # inicializa o contador do ID das transições
 
         # Para cada estado do AFD resultante da união, faz-se a separação dos estados em e1 e e2
         # Para que sejam definidas, para cada letra do alfabeto, os destinos de e1 e e2.
         # Depois de definidos, define-se a transição com base nos ID's da tabela motnada anteriormente.
 
         for e in estados_uniao:
-            nome_estado = e.getName().split(",") # Ex: Estado (0,0) -> e1 = 0, e2 = 0.
+            nome_estado = e.getName().split(",")  # Ex: Estado (0,0) -> e1 = 0, e2 = 0.
             e1 = nome_estado[0]
             e2 = nome_estado[1]
 
-            trans_e1 = trans_estadosm1[e1] #Transições estado e1
-            trans_e2 = trans_estadosm2[e2] #Transições estado e2
+            trans_e1 = trans_estadosm1[e1]  # Transições estado e1
+            trans_e2 = trans_estadosm2[e2]  # Transições estado e2
 
             for letra in alfabeto_uniao:
+                destino_e1 = self.monta_destino(e1, trans_e1, letra)
+                destino_e2 = self.monta_destino(e2, trans_e2, letra)
 
-                destino_e1 = self.monta_destino(e1,trans_e1,letra)
-                destino_e2 = self.monta_destino(e2,trans_e2,letra)
+                novo_destino = destino_e1 + ',' + destino_e2  # Ex (1,3) Estado 1 e estado 3.
 
-                novo_destino = destino_e1 + ',' + destino_e2 #Ex (1,3) Estado 1 e estado 3.
+                novo_destino = estado_id_uniao[novo_destino]  # Verifica-se na tabela qual o ID desse estado (1,3)
 
-                novo_destino = estado_id_uniao[novo_destino] #Verifica-se na tabela qual o ID desse estado (1,3)
-
-                nova_transicao = Transition(id_transicao,e.getId(),novo_destino,letra) #Cria a transição.
+                nova_transicao = Transition(id_transicao, e.getId(), novo_destino, letra)  # Cria a transição.
                 transicoes_uniao.append(nova_transicao)
                 id_transicao += 1
 
-        if(inicial_uniao == ""):
-            print ("ERRO!, não há estado inicial nesse autômato. Verifique o arquivo .jff")
+        if (inicial_uniao == ""):
+            print("ERRO!, não há estado inicial nesse autômato. Verifique o arquivo .jff")
 
         else:
-            afd_uniao = AFD(estados_uniao,transicoes_uniao,inicial_uniao,finais_uniao,alfabeto_uniao) #Cria o novo afd
+            afd_uniao = AFD(estados_uniao, transicoes_uniao, inicial_uniao, finais_uniao,
+                            alfabeto_uniao)  # Cria o novo afd
             return afd_uniao
-
 
     def monta_destino(self, estado, lista_trans, letra):
 
@@ -640,8 +642,6 @@ class AFDController(object):
 
         return estado
 
-
-
     def intersection(self, m1, m2):
         """
         Metodo responsavel por realizar a interseção de dois AFDs.
@@ -649,6 +649,12 @@ class AFDController(object):
         :param m2
         :rtype AFD
         """
+
+        """
+        se a intercessao for praticamente a uniao, acho que rola de fazer uma modularização... separa a parte do 
+        codigo que realiza a multiplicação e depois é só analizar os estados finais. ;)
+        """
+
         pass
 
     def difference(self, m1, m2):
@@ -660,9 +666,9 @@ class AFDController(object):
         """
         '''
         a diferenca pode ser feita do complemento de m1 em intercessao com m2
+        return -> ¬m1 ∩ m2.
         '''
-
-        pass
+        return self.intersection(self.complement(m1, 'dif.jff'), m2)
 
     def accept(self, afd, word):
         """
@@ -683,6 +689,8 @@ class AFDController(object):
         """
         id = afd.getInitial()
         estados = afd.getStates()
+        # Inicializa a variavel
+        inicial = False
 
         for e in estados:
             if (id == e.getId()):
