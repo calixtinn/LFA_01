@@ -85,13 +85,22 @@ AF = AFDController()
 
 '''Função que realiza a união de dois autômatos'''
 
+# entrada = "a_impar.jff"
+# m1 = AF.load(entrada)
+# entrada = "c_impar.jff"
+# m2 = AF.load(entrada)
+#
+# resultado = AF.union(m1,m2)
+#
+# resultado.printAutomata()
+#
+# AF.save(resultado,"uniao_a_impar_c_impar.jff")
+
 entrada = "a_impar.jff"
 m1 = AF.load(entrada)
-entrada = "c_impar.jff"
+entrada = "b_par.jff"
 m2 = AF.load(entrada)
 
-resultado = AF.union(m1,m2)
+resultado = AF.intersection(m1, m2)
 
-resultado.printAutomata()
-
-AF.save(resultado,"uniao_a_impar_c_impar.jff")
+AF.save(resultado, "intercessao_a_impar_b_par.jff")

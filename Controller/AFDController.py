@@ -654,8 +654,121 @@ class AFDController(object):
         se a intercessao for praticamente a uniao, acho que rola de fazer uma modularização... separa a parte do 
         codigo que realiza a multiplicação e depois é só analizar os estados finais. ;)
         """
+        # Pega informações dos dois autômatos passados por parâmetro.
 
-        pass
+        estados_m1 = m1.getStates()
+        estados_m2 = m2.getStates()
+        transicoes_m1 = m1.getTransitions()
+        transicoes_m2 = m2.getTransitions()
+
+        estados_intercessao = []      # Lista de estados do automato gerado pela intercessao de m1 e m2
+        transicoes_intercessao = []   # Lista de transições deste autômato
+        alfabeto_intercessao = set(m1.getAlphabet() + m2.getAlphabet())  # Alfabeto deste autômato
+        finais_intercessao = []       # Lista de autômatos finais deste AFD
+        inicial_intercessao = ""      # Inicializa o estado inicial do autômato da intercessao de m1 e m2
+
+        trans_estadosm1 = {}  # Tabelas de transições por estado. (Para facilitar o acesso à informação posteriormente)
+        trans_estadosm2 = {}  # Tabelas de transições por estado. (Para facilitar o acesso à informação posteriormente)
+        estado_id_intercessao = {}  # Tabela contendo como chave o estado do novo AFD e como valor o ID deste estado.
+
+        # Para cada transição do AFD m1, crio a tabela Hash contendo como chave o ID do Estado,
+        # e como valor suas transições
+
+        for t in transicoes_m1:
+            estado = t.getFrom()
+            valor = []
+
+            if (trans_estadosm1.get(estado) == None):
+                valor.append(t.getTo() + ',' + t.getRead())
+                trans_estadosm1[estado] = valor
+            else:
+                valor = trans_estadosm1[estado]
+                valor.append(t.getTo() + ',' + t.getRead())
+
+        # Para cada transição do AFD m2, crio a tabela Hash contendo como chave o ID do Estado,
+        # e como valor suas transições
+
+        for t in transicoes_m2:
+            estado = t.getFrom()
+            valor = []
+
+            if (trans_estadosm2.get(estado) == None):
+                valor.append(t.getTo() + ',' + t.getRead())
+                trans_estadosm2[estado] = valor
+            else:
+                valor = trans_estadosm2[estado]
+                valor.append(t.getTo() + ',' + t.getRead())
+
+        # Contador de ID's dos estados do novo AFD
+        id_estados_uniao = 0
+
+        # Faz-se a multiplicação dos estados dos dois autômatos, criando assim uma nova lista de estados
+        # Contendo um novo ID, com um novo nome (seguindo o padrão: Estado de m1 = 0, Estado de m2 = 0
+        # Estado multiplicado = 0,0), as posições x e y obtidas através das médias das posições dos estados
+        # de m1 e m2, e uma flag dizendo se é inicial (os dois iniciais de m1 e m2) e/ou final
+        # (final de m1 com final de m2 OU final de m1 com não final de m2 e vice versa)
+
+        for s1 in estados_m1:
+            id_1 = s1.getId()
+            for s2 in estados_m2:
+                id_2 = s2.getId()
+                novo_nome = id_1 + "," + id_2
+                novo_x = (float(s1.getPosx()) + float(s2.getPosx())) / 2
+                novo_y = (float(s1.getPosy()) + float(s2.getPosy())) / 2
+                # Tem de ser estado final nos dois automatos
+                if (s1.isFinal() and s2.isFinal()):
+                    final = True
+                    finais_intercessao.append(novo_nome)
+                else:
+                    final = False
+                if (s1.isInitial() and s2.isInitial()):
+                    initial = True
+                    inicial_intercessao = novo_nome
+                else:
+                    initial = False
+                novo_estado = State(str(id_estados_uniao), novo_nome, str(novo_x), str(novo_y), initial, final)
+                estados_intercessao.append(novo_estado)
+                # Associando cada novo estado ao seu ID para definir as transições
+                estado_id_intercessao[novo_nome] = str(id_estados_uniao)
+                id_estados_uniao += 1
+
+        # De posse dos novos estados provindos da MULTIPLICAÇÃO dos dois AFD's, define-se as transições
+
+        id_transicao = 0  # inicializa o contador do ID das transições
+
+        # Para cada estado do AFD resultante da união, faz-se a separação dos estados em e1 e e2
+        # Para que sejam definidas, para cada letra do alfabeto, os destinos de e1 e e2.
+        # Depois de definidos, define-se a transição com base nos ID's da tabela motnada anteriormente.
+
+        for e in estados_intercessao:
+            nome_estado = e.getName().split(",")  # Ex: Estado (0,0) -> e1 = 0, e2 = 0.
+            e1 = nome_estado[0]
+            e2 = nome_estado[1]
+
+            trans_e1 = trans_estadosm1[e1]  # Transições estado e1
+            trans_e2 = trans_estadosm2[e2]  # Transições estado e2
+
+            for letra in alfabeto_intercessao:
+                destino_e1 = self.monta_destino(e1, trans_e1, letra)
+                destino_e2 = self.monta_destino(e2, trans_e2, letra)
+
+                novo_destino = destino_e1 + ',' + destino_e2  # Ex (1,3) Estado 1 e estado 3.
+
+                novo_destino = estado_id_intercessao[novo_destino]  # Verifica-se na tabela qual o ID desse estado (1,3)
+
+                nova_transicao = Transition(id_transicao, e.getId(), novo_destino, letra)  # Cria a transição.
+                transicoes_intercessao.append(nova_transicao)
+                id_transicao += 1
+
+        if (inicial_intercessao == ""):
+            print("ERRO!, não há estado inicial nesse autômato. Verifique o arquivo .jff")
+
+        else:
+            # Cria o novo afd
+            afd_intercessao = AFD(estados_intercessao, transicoes_intercessao, inicial_intercessao, finais_intercessao,
+                                  alfabeto_intercessao)
+            return afd_intercessao
+
 
     def difference(self, m1, m2):
         """
