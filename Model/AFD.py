@@ -74,7 +74,7 @@ Esta classe representa um Automoto Finito Deterministico.
 # AFD mm = m.minimum(); - OK
 # True|False = AFD.equivalents(m1, m2) - OK
 # AFD m3 = m1.complement(); - OK
-# AFD m4 = m1.union(m2);
+# AFD m4 = m1.union(m2); - OK
 # AFD m5 = m1.intersection(m2);
 # AFD m6 = m1.difference(m2);
 # True|False m.accept("aaabbbaa") - OK
