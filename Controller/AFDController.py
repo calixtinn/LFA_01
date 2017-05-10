@@ -1,6 +1,7 @@
 """
-@AFDController
+Classe AFDController
 @author: Matheus Calixto | Samuel Terra
+
 Classe que implementa todas as funcionalidade um Automoto Finito Deterministico.
 """
 import xml.etree.ElementTree as ET
@@ -11,6 +12,10 @@ from xml.dom.minidom import Document
 
 
 class AFDController(object):
+    """
+    Classe que implementa todas as funcionalidade um Automoto Finito Deterministico.
+    """
+
     def load(self, jffFile):
         """
         Metodo responsavel por ler um arquivo XML em formato jff conteudo o AFD.
@@ -35,14 +40,14 @@ class AFDController(object):
             id = i.attrib['id']
 
             # Se nesse estado houver a tag inicial, seta o estado como inicial.
-            if (i.find('initial') != None):
+            if i.find('initial') is not None:
                 initial = True
                 s_initial = id
             else:
                 initial = False
 
             # Se nesse estado houver a tag final, seta o estado como final.
-            if (i.find('final') != None):
+            if i.find('final') is not None:
                 final = True
                 finals.append(id)
             else:
@@ -64,7 +69,7 @@ class AFDController(object):
             To = i.find('to').text
             Read = i.find('read').text
 
-            if (Read == None):  # Trata o movimento vazio, representado pelo caractere §
+            if Read is None:  # Trata o movimento vazio, representado pelo caractere §
                 Read = '§'
 
             # Adiciona o caractere lido na lista do alfabeto
@@ -213,13 +218,13 @@ class AFDController(object):
         # Salva em uma lista as todas as transições de todos os estados.
         for i in transicoes:
             for j in range(0, n_estados):
-                if (i.getFrom() == lista_estados[j]):
+                if i.getFrom() == lista_estados[j]:
                     transicoes_estados.append(i)
 
         for i in range(0, n_estados):  # Percorre a lista de estados
             trans_i = {}  # transicoes de i (dicionario)
             for k in transicoes_estados:  # procura as transições dos respectivos estados
-                if (k.getFrom() == lista_estados[i]):
+                if k.getFrom() == lista_estados[i]:
                     trans_i[k.getRead()] = k.getTo()  # Ex: ["a"] = 1 [caractere] = para onde vai.
             # End pegar transições de I
 
@@ -228,18 +233,17 @@ class AFDController(object):
                 # Os estados precisam ser iguais (final e final) ou (não final e não final) para testar
                 # Se não forem, quer dizer que eles já não são equivalentes e não precisa-se testar.
 
-                if (estados[i].isFinal() == estados[j].isFinal()):
+                if estados[i].isFinal() == estados[j].isFinal():
 
                     trans_j = {}  # transicoes de j (dicionario)
                     for k in transicoes_estados:  # procura as transições dos respectivos estados
-                        if (k.getFrom() == lista_estados[j]):
+                        if k.getFrom() == lista_estados[j]:
                             trans_j[k.getRead()] = k.getTo()
                     # End pegar transições de j
 
                     for a in alfabeto:  # Para cada caracter do alfabeto...
 
-                        if (
-                                        a in trans_i and a in trans_j):  # Se houver transições com o caractere do alfabeto em ambos os estados.
+                        if a in trans_i and a in trans_j:  # Se houver transições com o caractere do alfabeto em ambos os estados.
 
                             destino_i = trans_i[a]  # Salva o destino do estado i ao ler o caractere em questão
                             destino_j = trans_j[a]  # Faz o mesmo para o estado j
@@ -259,18 +263,18 @@ class AFDController(object):
 
                              Não faz sentido testar esta equivalência entre 0,1 e 1,0.
                             '''
-                            if (destino_i != lista_estados[j]):
+                            if destino_i != lista_estados[j]:
 
                                 estado_i = lista_estados[i]
                                 estado_j = lista_estados[j]
                                 possivel_chave = estado_i + "," + estado_j  # Cria-se uma chave para marcar na tabela
 
-                                if (destino_i != destino_j):  # Se forem iguais EX: (3,3) Nem precista testar.
+                                if destino_i != destino_j:  # Se forem iguais EX: (3,3) Nem precista testar.
 
                                     # Tratar inconssistências do tipo: Não haver uma chave 1,0 na tabela
                                     # mas haver uma 0,1. São a mesma chave, a mesma equivalência a ser tratada
 
-                                    if (chave_destino not in tabela_equivalencia):  # Caso ocorra inverte-se a chave
+                                    if chave_destino not in tabela_equivalencia:  # Caso ocorra inverte-se a chave
                                         chave_destino = destino_j + "," + destino_i
                                         slot = tabela_equivalencia[
                                             chave_destino]  # recebe o valor que está na tabela hash
@@ -279,23 +283,23 @@ class AFDController(object):
 
                                     if (
                                                 slot == "X"):  # Se não forem equivalentes. automaticamente os estados que estãos endo testados nnão são
-                                        if (possivel_chave not in tabela_equivalencia):
+                                        if possivel_chave not in tabela_equivalencia:
                                             possivel_chave = estado_j + "," + estado_i
                                             tabela_equivalencia[possivel_chave] = "X"
 
                                             # Se esses estados que foram marcados agora estiverem amarrados
                                             # com outros estados. Estes também são atualizados e marcados
 
-                                            if (possivel_chave in amarrados):
+                                            if possivel_chave in amarrados:
                                                 atualizar = amarrados[possivel_chave]
                                                 tabela_equivalencia[atualizar] = "X"
                                         else:
                                             tabela_equivalencia[possivel_chave] = "X"
-                                            if (possivel_chave in amarrados):
+                                            if possivel_chave in amarrados:
                                                 atualizar = amarrados[possivel_chave]
                                                 tabela_equivalencia[atualizar] = "X"
                                     # Caso não tiverem sido marcados ainda, amarra-se.
-                                    elif (slot == "N"):
+                                    elif slot == "N":
                                         amarrados[
                                             chave_destino] = possivel_chave  # Se eu marcar chave destino, terei que marcar possivel chave
 
@@ -305,7 +309,7 @@ class AFDController(object):
                     estado_j = lista_estados[j]
                     possivel_chave = estado_i + "," + estado_j
 
-                    if (possivel_chave not in tabela_equivalencia):
+                    if possivel_chave not in tabela_equivalencia:
                         possivel_chave = estado_j + "," + estado_i
                         tabela_equivalencia[possivel_chave] = "X"
 
@@ -346,7 +350,7 @@ class AFDController(object):
             e2 = aux[1]
 
             # Não elimino o inicial, caso ele for o candidato da eliminação.
-            if (e1 == inicial):
+            if e1 == inicial:
                 aux = e1
                 e1 = e2
                 e2 = aux
@@ -356,12 +360,12 @@ class AFDController(object):
             # Se for um looping, ex: From 1 To 1 Read a,  modifica-se também o From.
 
             for t in transicoes:
-                if (t.getTo() == t.getFrom() and t.getTo() == e1):
+                if t.getTo() == t.getFrom() and t.getTo() == e1:
                     t.setTo(e2)
                     t.setFrom(e2)
-                elif (t.getTo() == e1):
+                elif t.getTo() == e1:
                     t.setTo(e2)
-                elif (t.getFrom() == e1):
+                elif t.getFrom() == e1:
                     t.setFrom(e2)
 
         min_transicoes = transicoes[:]  # Lista auxiliar para deletar transições repetidas
@@ -376,7 +380,7 @@ class AFDController(object):
                 from_j = transicoes[j].getFrom()
                 to_j = transicoes[j].getTo()
                 read_j = transicoes[j].getRead()
-                if (from_i == from_j and to_i == to_j and read_i == read_j):
+                if from_i == from_j and to_i == to_j and read_i == read_j:
                     # del min_transicoes[j]
                     transicoes_iguais.append(int(transicoes[j].getId()))
 
@@ -397,7 +401,7 @@ class AFDController(object):
             e1 = aux[0]
             e2 = aux[1]
             # Não elimino o inicial, caso ele for o candidato da eliminação.
-            if (e1 == inicial):
+            if e1 == inicial:
                 aux = e1
                 e1 = e2
                 e2 = aux
@@ -426,8 +430,11 @@ class AFDController(object):
                 final_list.append(theState)
 
         automata.setStates(stateList, final_list)
-        jffout = "neg_" + jffin
-        self.save(automata, jffout)
+
+        # se o parametro para gerar saida nao estiver vazio, gera o arquivo de saida
+        if not jffin:
+            jffout = "neg_" + jffin
+            self.save(automata, jffout)
 
         return automata
 
@@ -450,10 +457,10 @@ class AFDController(object):
         n_estados_m2 = len(min_m2.getStates())
         n_transicoes_m1 = len(min_m1.getTransitions())
 
-        if (min_m1.getAlphabet() != min_m2.getAlphabet()):
+        if min_m1.getAlphabet() != min_m2.getAlphabet():
             mensagem = "O alfabeto dos dois AFD's são diferentes. Logo, NÃO são equivalentes"
             return mensagem
-        elif (n_estados_m1 != n_estados_m2):
+        elif n_estados_m1 != n_estados_m2:
             mensagem = "A quantaide de estados dos dois AFD's são diferentes. Logo NÃO são equivalentes"
             return mensagem
         else:
@@ -478,10 +485,10 @@ class AFDController(object):
             for e in estados_min2:
                 e.setId(str(id_cont))
                 id_cont += 1
-                if (e.isFinal()):
+                if e.isFinal():
                     estados_finais.append(
                         str(e.getId()))  # Adiciona na lista de estados finais, os estados finais do AFD2
-                if (e.isInitial()):
+                if e.isInitial():
                     inicial_min2 = e.getId()  # Pega o estado inicial do AFD2, com o ID já modificado
 
             # Mesma ideia para os ID's das transições.
@@ -530,7 +537,7 @@ class AFDController(object):
 
         alfabeto_uniao = set(m1.getAlphabet() + m2.getAlphabet())
 
-        #Cria uma tabela contendo como chave o estado, e como valores suas transições!
+        # Cria uma tabela contendo como chave o estado, e como valores suas transições!
 
         trans_estadosm1, trans_estadosm2 = self.tabela_transicoes(transicoes_m1, transicoes_m2)
 
@@ -544,9 +551,10 @@ class AFDController(object):
 
         # De posse dos novos estados provindos da MULTIPLICAÇÃO dos dois AFD's, define-se as transições
 
-        transicoes_uniao = self.monta_transicoes(estados_uniao, alfabeto_uniao, trans_estadosm1, trans_estadosm2, estado_id_uniao)
+        transicoes_uniao = self.monta_transicoes(estados_uniao, alfabeto_uniao, trans_estadosm1, trans_estadosm2,
+                                                 estado_id_uniao)
 
-        if (inicial_uniao == ""):
+        if inicial_uniao == "":
             print("ERRO!, não há estado inicial nesse autômato. Verifique o arquivo .jff")
 
         else:
@@ -568,7 +576,7 @@ class AFDController(object):
         :return: novas_transicoes:
         """
 
-        novas_transicoes = [] #Lista contendo as novas transições do AFD resultante.
+        novas_transicoes = []  # Lista contendo as novas transições do AFD resultante.
         id_transicao = 0  # inicializa o contador do ID das transições
 
         # Para cada estado do AFD resultante, faz-se a separação dos estados em e1 e e2
@@ -614,8 +622,8 @@ class AFDController(object):
         :return: trans_estadosm1, trans_estadosm2
         '''
 
-        trans_estadosm1 = {} # Tabelas de transições dos estados de m1
-        trans_estadosm2 = {} # Tabelas de transições dos estados de m2
+        trans_estadosm1 = {}  # Tabelas de transições dos estados de m1
+        trans_estadosm2 = {}  # Tabelas de transições dos estados de m2
 
         for t in transicoes_m1:
             estado = t.getFrom()
@@ -634,12 +642,11 @@ class AFDController(object):
                 valor = trans_estadosm1[estado]
                 valor.append(t.getTo() + ',' + t.getRead())
 
-
         for t in transicoes_m2:
             estado = t.getFrom()
             valor = []
 
-            if (trans_estadosm2.get(estado) == None):
+            if trans_estadosm2.get(estado) is None:
                 valor.append(t.getTo() + ',' + t.getRead())
                 trans_estadosm2[estado] = valor
             else:
@@ -648,10 +655,9 @@ class AFDController(object):
 
         return trans_estadosm1, trans_estadosm2
 
-
     def multiplica_estados(self, tipo, estados_m1, estados_m2):
 
-        '''
+        """
         Método que realiza a multiplicação dos estados dois dois autômatos, para que as operações
         de união e intercessão sejam realizadas.
         Essa operaçõo ocorre multiplicando cada estado de m1 por cada estado de m2.
@@ -668,7 +674,7 @@ class AFDController(object):
         :param estados_m1:
         :param estados_m2:
         :return:
-        '''
+        """
 
         estados_finais = []
         novos_estados = []
@@ -685,33 +691,34 @@ class AFDController(object):
                 novo_nome = id_1 + "," + id_2
                 novo_x = (float(s1.getPosx()) + float(s2.getPosx())) / 2
                 novo_y = (float(s1.getPosy()) + float(s2.getPosy())) / 2
-                if(tipo == 1): #união
-                    if (s1.isFinal() or s2.isFinal()):
+                if tipo == 1:  # união
+                    if s1.isFinal() or s2.isFinal():
                         final = True
                         estados_finais.append(novo_nome)
                     else:
                         final = False
-                elif(tipo == 0): #Intercessão
-                    if (s1.isFinal() and s2.isFinal()):
+                elif tipo == 0:  # Intercessão
+                    if s1.isFinal() and s2.isFinal():
                         final = True
                         estados_finais.append(novo_nome)
                     else:
                         final = False
-                if (s1.isInitial() and s2.isInitial()):
+                if s1.isInitial() and s2.isInitial():
                     initial = True
                     estado_inicial = novo_nome
                 else:
                     initial = False
                 novo_estado = State(str(id_estado), novo_nome, str(novo_x), str(novo_y), initial, final)
                 novos_estados.append(novo_estado)
-                estado_id[novo_nome] = str(id_estado) # Associando cada novo estado ao seu ID para definir as transições
+                estado_id[novo_nome] = str(
+                    id_estado)  # Associando cada novo estado ao seu ID para definir as transições
                 id_estado += 1
 
-        return novos_estados,estados_finais,estado_inicial,estado_id
+        return novos_estados, estados_finais, estado_inicial, estado_id
 
     def monta_destino(self, estado, lista_trans, letra):
 
-        '''
+        """
         Método responsável por montar o destino de cada transição do novo AFD gerado com a
         operação de união ou com a operação de intercessão.
 
@@ -719,7 +726,7 @@ class AFDController(object):
         :param lista_trans: lista de transições do respectivo estado
         :param letra: caractere lido.
         :return: estado destino
-        '''
+        """
 
         for trans in lista_trans:  # Para cada transição do estado
             elem = trans.split(',')
@@ -729,7 +736,7 @@ class AFDController(object):
             # Se há uma transição, lendo esta letra passada por parâmetro,
             # retorna-se o destino. Caso contrário, o estado não se movimenta, permanece nele mesmo.
 
-            if (simbolo == letra): return destino
+            if simbolo == letra: return destino
 
         return estado
 
@@ -759,11 +766,14 @@ class AFDController(object):
         # de m1 e m2, e uma flag dizendo se é inicial (os dois iniciais de m1 e m2) e/ou final
         # (final de m1 com final de m2 OU final de m1 com não final de m2 e vice versa)
 
-        estados_intercessao, finais_intercessao, inicial_intercessao, estado_id_intercessao = self.multiplica_estados(0, estados_m1, estados_m2)
+        estados_intercessao, finais_intercessao, inicial_intercessao, estado_id_intercessao = self.multiplica_estados(0,
+                                                                                                                      estados_m1,
+                                                                                                                      estados_m2)
 
         # De posse dos novos estados provindos da MULTIPLICAÇÃO dos dois AFD's, define-se as transições
 
-        transicoes_uniao = self.monta_transicoes(estados_intercessao, alfabeto_intercessao, trans_estadosm1, trans_estadosm2,
+        transicoes_uniao = self.monta_transicoes(estados_intercessao, alfabeto_intercessao, trans_estadosm1,
+                                                 trans_estadosm2,
                                                  estado_id_intercessao)
 
         if (inicial_intercessao == ""):
@@ -771,21 +781,19 @@ class AFDController(object):
 
         else:
             afd_intercessao = AFD(estados_intercessao, transicoes_uniao, inicial_intercessao, finais_intercessao,
-                            alfabeto_intercessao)  # Cria o novo afd
+                                  alfabeto_intercessao)  # Cria o novo afd
             return afd_intercessao
-
 
     def difference(self, m1, m2):
         """
         Metodo responsavel por realizar a diferença de dois AFDs.
+        A diferenca pode ser feita do complemento de m1 em intercessao com m2
+        Return -> m1 ∩ ¬m2.
+        
         :param m1
         :param m2
         :rtype AFD
         """
-        '''
-        a diferenca pode ser feita do complemento de m1 em intercessao com m2
-        return -> m1 ∩ ¬m2.
-        '''
         return self.intersection(m1, self.complement(m2, 'dif.jff'))
 
     def accept(self, afd, word):
@@ -811,7 +819,7 @@ class AFDController(object):
         inicial = False
 
         for e in estados:
-            if (id == e.getId()):
+            if id == e.getId():
                 inicial = e
                 break
 
@@ -821,7 +829,7 @@ class AFDController(object):
         """
         Método responsável por testar um movimento a partir de um estado e retornar se aceita ou não
         :param afd
-        :param estado (id)
+        :param id
         :param word (palavra)
         :rtype boolean
         """
@@ -836,33 +844,32 @@ class AFDController(object):
 
         # Testa primeiro se o estado existe antes de deletá-lo
         for e in estados:
-            if (e.getId() == id):
+            if e.getId() == id:
                 existe = True
                 break
 
-        if (not existe):
+        if not existe:
             print("ERRO! Estado inexistente!")
 
         else:  # Se existir, segue o algoritmo para percorrer o AFD
 
             for i in range(0, comprimento_palavra):  # Varre toda a palavra caractere por caractere
-                if (not existe):  # Se não houve nenhuma transição com o estado e caractere passado, erro.
+                if not existe:  # Se não houve nenhuma transição com o estado e caractere passado, erro.
                     erro = 1
                     break
                 for t in transicoes:  # Percorre todas as transições procurando a transição entre o caractere da palavra e o estado passado
-                    if (t.getFrom() == id and t.getRead() == word[
-                        i]):  # se for o estado desejado e o caractere desejado
+                    if t.getFrom() == id and t.getRead() == word[i]:  # se for o estado desejado e o caractere desejado
                         id = t.getTo()  # movo para o próximo estado
                         existe = True
                         break
                     else:
                         existe = False
 
-            if (erro == 1):  # Erro para não existência de transição e/ou estado
+            if erro == 1:  # Erro para não existência de transição e/ou estado
                 print("Palavra REJEITADA! Estado (" + id + ") não possui transição lendo o caractere " + word[i])
                 return False
             else:
-                if (id in estados_finais):  # Se parou em um estado final, aceita
+                if id in estados_finais:  # Se parou em um estado final, aceita
                     print("Palavra ACEITA! Parou no estado (" + id + ")")
                     return True
                 else:  # Se não, rejeita.
@@ -880,7 +887,6 @@ class AFDController(object):
         """
         Metodo responsavel por adicionar estado ao AFD.
         :param afd
-        :param id
         :param name
         :param initial
         :param final
@@ -899,11 +905,11 @@ class AFDController(object):
         for e in estados:
             x += float(e.getPosx())
             y += float(e.getPosy())
-            if (name == e.getName()):
+            if name == e.getName():
                 erro = 1
                 break
 
-        if (erro == 1):
+        if erro == 1:
             print("ERRO! NOME existente!")
         else:
             x /= len(estados)  # x = x / quantidade de estados
@@ -931,36 +937,36 @@ class AFDController(object):
 
         for i in range(0, 2):
             for e in estados:
-                if (existe_fonte):  # Se existe o estado fonte, falta testar somente o estado destino.
-                    if (e.getId() == target):
+                if existe_fonte:  # Se existe o estado fonte, falta testar somente o estado destino.
+                    if e.getId() == target:
                         existe_destino = True  # Se existe, sai do laço, pois já foram verificados os 2 estados.
                         break
-                elif (existe_destino):  # Se existe o estado de destino, falta testar somente o estado fonte
-                    if (e.getId() == source):
+                elif existe_destino:  # Se existe o estado de destino, falta testar somente o estado fonte
+                    if e.getId() == source:
                         existe_fonte = True  # Se existe, sai do laço, pois já foram verificados os 2 estados.
                         break
                 else:  # Se ainda não foi verificada a existência de nenhum estado, verifica-se.
-                    if (e.getId() == source):
+                    if e.getId() == source:
                         existe_fonte = True
                         break
 
-                    if (e.getId() == target):
+                    if e.getId() == target:
                         existe_destino = True
                         break
 
-        if (not existe_destino):
+        if not existe_destino:
             print("ERRO! O estado de destino não existe neste autômato!")
-        elif (not existe_fonte):
+        elif not existe_fonte:
             print("ERRO! O estado fonte não existe neste autômato!")
         else:  # Caso os dois estados existam, verifica-se se a transição já existe antes de adiconá-la.
 
             for t in transicoes:
                 # Testa se a transição já existe
-                if (t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
+                if t.getFrom() == source and t.getTo() == target and t.getRead() == consume:
                     erro = 1
                     break
 
-            if (erro == 1):
+            if erro == 1:
                 print("ERRO! Transição já existente!")
             else:  # Se não existir, adiciona-a à lista de transições do AFD.
 
@@ -979,16 +985,16 @@ class AFDController(object):
 
         # Testa primeiro se o estado existe antes de deletá-lo
         for e in estados:
-            if (e.getId() == id):
+            if e.getId() == id:
                 existe = True
                 break
 
-        if (not existe):
+        if not existe:
             return "ERRO! Estado inexistente!"
 
         else:  # Se existir, deleta-o
             for e in estados:
-                if (e.getId() == id):
+                if e.getId() == id:
                     del_state = e
                     break
 
@@ -1009,12 +1015,12 @@ class AFDController(object):
         existe = False
 
         for t in transicoes:
-            if (t.getFrom() == source and t.getTo() == target and t.getRead() == consume):
+            if t.getFrom() == source and t.getTo() == target and t.getRead() == consume:
                 del_transition = t
                 existe = True
                 break
 
-        if (existe):  # Se a transição existe, deleta.
+        if existe:  # Se a transição existe, deleta.
             index = transicoes.index(del_transition)
             del transicoes[index]
             print("Transição de ID = (" + str(index) + ") deletada com sucesso!")
