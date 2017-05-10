@@ -555,8 +555,7 @@ class AFDController(object):
             return afd_uniao
 
     def monta_transicoes(self, estados, alfabeto, trans_estadosm1, trans_estadosm2, estado_id):
-
-        '''
+        """
         Método responsável por montar as transições do novo AFD, através do novo conjunto de estados,
         do novo alfabeto, das transições dos estados dos autômatos m1 e m2, e da tabela de transições
         de cada estado do autômato.
@@ -567,7 +566,7 @@ class AFDController(object):
         :param trans_estadosm2:
         :param estado_id:
         :return: novas_transicoes:
-        '''
+        """
 
         novas_transicoes = [] #Lista contendo as novas transições do AFD resultante.
         id_transicao = 0  # inicializa o contador do ID das transições
@@ -597,7 +596,6 @@ class AFDController(object):
                 id_transicao += 1
 
         return novas_transicoes
-
 
     def tabela_transicoes(self, transicoes_m1, transicoes_m2):
 
@@ -786,9 +784,9 @@ class AFDController(object):
         """
         '''
         a diferenca pode ser feita do complemento de m1 em intercessao com m2
-        return -> ¬m1 ∩ m2.
+        return -> m1 ∩ ¬m2.
         '''
-        return self.intersection(self.complement(m1, 'dif.jff'), m2)
+        return self.intersection(m1, self.complement(m2, 'dif.jff'))
 
     def accept(self, afd, word):
         """
