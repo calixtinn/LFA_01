@@ -28,7 +28,7 @@ class AFDController(object):
         alphabet = []  # alfabeto que o automato suporta
 
         s_initial = ""  # Guardará o ID do estado inicial
-        doc = ET.parse("Input/" + jffFile)  # Recebendo o arquivo de entrada via parametro da função.
+        doc = ET.parse(jffFile)  # Recebendo o arquivo de entrada via parametro da função.
         root = doc.getroot()  # Recebendo a tag root
 
         # iterando em cada tag State para pegar as informações
@@ -281,8 +281,8 @@ class AFDController(object):
                                     else:
                                         slot = tabela_equivalencia[chave_destino]
 
-                                    if (
-                                                slot == "X"):  # Se não forem equivalentes. automaticamente os estados que estãos endo testados nnão são
+                                    # Se não forem equivalentes. automaticamente os estados que estãos endo testados nnão são
+                                    if slot == "X":
                                         if possivel_chave not in tabela_equivalencia:
                                             possivel_chave = estado_j + "," + estado_i
                                             tabela_equivalencia[possivel_chave] = "X"
@@ -300,8 +300,8 @@ class AFDController(object):
                                                 tabela_equivalencia[atualizar] = "X"
                                     # Caso não tiverem sido marcados ainda, amarra-se.
                                     elif slot == "N":
-                                        amarrados[
-                                            chave_destino] = possivel_chave  # Se eu marcar chave destino, terei que marcar possivel chave
+                                        # Se eu marcar chave destino, terei que marcar possivel chave
+                                        amarrados[chave_destino] = possivel_chave
 
                 # Se já não forem equivalentes (final com não final) atualiza-se a tabela sem passar pelo procedimento.
                 else:
@@ -321,8 +321,8 @@ class AFDController(object):
         keys = tabela_equivalencia.keys()  # recebe as chaves da tabela
 
         for i in keys:
-            if (tabela_equivalencia[
-                    i] == "N"):  # As chaves que contiverem um N (espaço em branco) simbolizam estados equivalentes
+            # As chaves que contiverem um N (espaço em branco) simbolizam estados equivalentes
+            if tabela_equivalencia[i] == "N":
                 lista_equivalentes.append(i)
 
         return lista_equivalentes  # retorna a lista de equivalências.
@@ -412,7 +412,7 @@ class AFDController(object):
 
         return afd
 
-    def complement(self, automata, jffin):  # Rever depois se he realmente necessario esse arquivo de saida
+    def complement(self, automata, jffin):
         """
         Metodo responsavel por realizar o complemento AFD.
         :type automata: AFD
@@ -432,7 +432,7 @@ class AFDController(object):
         automata.setStates(stateList, final_list)
 
         # se o parametro para gerar saida nao estiver vazio, gera o arquivo de saida
-        if not jffin:
+        if jffin != '':
             jffout = "neg_" + jffin
             self.save(automata, jffout)
 
@@ -514,7 +514,7 @@ class AFDController(object):
                 e1 = aux[0]
                 e2 = aux[1]
 
-                if ((e1 == inicial_min1 and e2 == inicial_min2) or (e1 == inicial_min2 and e2 == inicial_min1)):
+                if (e1 == inicial_min1 and e2 == inicial_min2) or (e1 == inicial_min2 and e2 == inicial_min1):
                     mensagem = "Os Autômatos são equivalentes!"
                     return mensagem
 
@@ -560,8 +560,8 @@ class AFDController(object):
             print("ERRO!, não há estado inicial nesse autômato. Verifique o arquivo .jff")
 
         else:
-            afd_uniao = AFD(estados_uniao, transicoes_uniao, inicial_uniao, finais_uniao,
-                            alfabeto_uniao)  # Cria o novo afd
+            # Cria o novo afd
+            afd_uniao = AFD(estados_uniao, transicoes_uniao, inicial_uniao, finais_uniao,alfabeto_uniao)
             return afd_uniao
 
     def monta_transicoes(self, estados, alfabeto, trans_estadosm1, trans_estadosm2, estado_id):
@@ -609,7 +609,7 @@ class AFDController(object):
 
     def tabela_transicoes(self, transicoes_m1, transicoes_m2):
 
-        '''
+        """
         Método responsável por criar e retornar as tabelas e transições de cada estado.
         Chave = ID do estado
         Valor = Transições
@@ -622,7 +622,7 @@ class AFDController(object):
         :param transicoes_m1:
         :param transicoes_m2:
         :return: trans_estadosm1, trans_estadosm2
-        '''
+        """
 
         trans_estadosm1 = {}  # Tabelas de transições dos estados de m1
         trans_estadosm2 = {}  # Tabelas de transições dos estados de m2
@@ -778,7 +778,7 @@ class AFDController(object):
                                                  trans_estadosm2,
                                                  estado_id_intercessao)
 
-        if (inicial_intercessao == ""):
+        if inicial_intercessao == "":
             print("ERRO!, não há estado inicial nesse autômato. Verifique o arquivo .jff")
 
         else:
@@ -801,7 +801,7 @@ class AFDController(object):
     def accept(self, afd, word):
         """
         Metodo responsavel por verificar se uma determinada palavra é aceita pelo AFD.
-        :param AFD
+        :param afd
         :param word
         :rtype boolean
         """
@@ -859,7 +859,8 @@ class AFDController(object):
                 if not existe:  # Se não houve nenhuma transição com o estado e caractere passado, erro.
                     erro = 1
                     break
-                for t in transicoes:  # Percorre todas as transições procurando a transição entre o caractere da palavra e o estado passado
+                # Percorre todas as transições procurando a transição entre o caractere da palavra e o estado passado
+                for t in transicoes:
                     if t.getFrom() == id and t.getRead() == word[i]:  # se for o estado desejado e o caractere desejado
                         id = t.getTo()  # movo para o próximo estado
                         existe = True
