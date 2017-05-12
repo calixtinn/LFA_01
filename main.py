@@ -1,7 +1,6 @@
 from Controller.AFDController import AFDController
 from Model.State import State
 from Model.Transition import Transition
-from View.Entrada import Entrada
 import copy
 
 AF = AFDController()
@@ -9,7 +8,7 @@ AF = AFDController()
 #entrada = input("Digite o arquivo de entrada: ")
 #entrada = "aut_eq2.jff"
 #automata = AF.load(entrada)
-#automata_copy = copy.deepcopy(automata) # Cópia do Objeto automata.
+#automata_copy = copy.deepcopy(automata) # Copia do Objeto automata.
 
 #automata.printAutomata()
 
@@ -105,7 +104,9 @@ AF = AFDController()
 
 #resultado = AF.intersection(m1, m2)
 
-#AF.save(resultado, "intercessao_a_impar_b_par.jff")
+#AF.save(resultado, "intercessao_a_impar_b_par.jff"
 
+from tkinter.filedialog import askopenfilename
+filename = askopenfilename()
 
-input1 = Entrada()
+print(filename)
