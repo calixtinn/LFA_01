@@ -470,8 +470,10 @@ class AFDController(object):
 
             estados_min1 = min_m1.getStates()
             estados_min2 = min_m2.getStates()
+
             transicoes_min1 = min_m1.getTransitions()
             transicoes_min2 = min_m2.getTransitions()
+
             inicial_min1 = str(min_m1.getInitial())
             estados_finais = min_m1.getFinals()
             alfabeto = min_m1.getAlphabet()

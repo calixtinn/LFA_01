@@ -1,6 +1,7 @@
 from Controller.AFDController import AFDController
 from Model.State import State
 from Model.Transition import Transition
+from View.Entrada import Entrada
 import copy
 
 AF = AFDController()
@@ -105,3 +106,6 @@ AF = AFDController()
 #resultado = AF.intersection(m1, m2)
 
 #AF.save(resultado, "intercessao_a_impar_b_par.jff")
+
+
+input1 = Entrada()
