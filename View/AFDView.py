@@ -6,6 +6,21 @@ class AFDView(object):
     Classe que representa a visão todas as funcionalidade um Automoto Finito Deterministico.
     """
 
+    def verificaEntrada(self, fileName):
+        """
+        Método responsável por verificar o formato do arquivo de entrada.
+        :rtype: bool
+        """
+        resulSplit = fileName.split('.')
+
+        # Verifica se o arquivo esta no formado do JFlap (.jff)
+        if len(resulSplit) >= 2 and resulSplit[len(resulSplit) - 1] == 'jff':
+            print("Arquivo selecionado: " + fileName)
+            return True
+        else:
+            print('Arquivo de entrada com formato inválido!')
+            return False
+
     def entrada(self, multiEntrada=False):
         """
         Método reponsavel por ler a entrada do algoritmo.
@@ -15,50 +30,52 @@ class AFDView(object):
         sendo o valor True, será questionado ao usuário, duas vezes o aquivo de entrada, sendo
         consequentemente o caminho de entrada do AFD 1 e do AFD 2. Se também a flag multiEntrada
         for True, será retornado um array com os caminhos dos AFDs. Por padrão a flag multiEntrada
-        é setada como False, sendo assim, pode ser omitida ao usar a chamado do método.
+        é setada como False, sendo assim, pode ser omitida ao usar a chamado do método e será 
+        retornado apenas uma string com o caminho do arquivo. Caso o usuário aperte no botão de
+        cancelar, retornará False indicando que foi cancelada a entrada de dados.
         
+        :rtype: bool | list | string
         :type multiEntrada: bool
-        :rtype: object
-        :return: O caminho do arquivo de o nome estiver no formato correto ou None se não estiver
+        :return: O caminho do arquivo de o nome estiver no formato correto, False se não estiver ou
+                 uma lista de caminho dos arquivos caso seja multiEntrada
         """
 
+        # Lê uma entrada simples, com apenas um arquivo jff
         if not multiEntrada:
-            filename = askopenfilename()
 
-            if filename:
-                resulSplit = filename.split('.')
+            # Repete até que o usuário informe um arquivo
+            while True:
+                # Abre a janela para selecionar um arquivo
+                filename = askopenfilename(filetypes=(("Arquivo JFlap", "*.jff"), ("All files", "*.*")))
 
-                # Verifica se o arquivo esta no formado do JFlap (.jff)
-                if len(resulSplit) >= 2 and resulSplit[len(resulSplit) - 1] == 'jff':
-                    return filename
+                # Verifica se foi selecionado algum arquivo
+                if filename:
+                    if self.verificaEntrada(filename):
+                        return filename
                 else:
-                    print('Arquivo de entrada com formato inválido!')
-                    return None
-            else:
-                print("Botao cancelar")
+                    # Apertou o botão de cancelar
+                    return False
 
+        # Lê mais de um arquivo (dois AFDs)
         else:
             arrayCaminhoAfds = []
             i = 0
+            # Faz até a quantidade de arquivos, neste caso será necessario 2 arquivos
             while i < 2:
-                filename = askopenfilename()
+                # Abre a janela para selecionar um arquivo
+                filename = askopenfilename(filetypes=(("Arquivo JFlap", "*.jff"), ("All files", "*.*")))
 
-                # Se retornou algo do widget, realiza o split
+                # Verifica se foi selecionado algum arquivo
                 if filename:
-                    resulSplit = filename.split('.')
-
-                    # Verifica se o arquivo esta no formado do JFlap (.jff)
-                    if len(resulSplit) >= 2 and resulSplit[len(resulSplit) - 1] == 'jff':
+                    # Verifica se o arquivo está num formato válido
+                    if self.verificaEntrada(filename):
+                        # Adiciona o caminho do arquivo na lista de caminhos
                         arrayCaminhoAfds.append(filename)
-                        print("Arquivo selecionado: " + filename)
                         i += 1
-                    else:
-                        print("O arquivo não apresenta um formato inválido!")
                 else:
-                    print("Botao cancelar")
+                    # Apertou o botão de cancelar
+                    return False
 
-            print(arrayCaminhoAfds)
-            print(len(arrayCaminhoAfds))
             # Retorna a lista de caminhos
             return arrayCaminhoAfds
 
