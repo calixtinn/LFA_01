@@ -138,3 +138,51 @@ class AFDView(object):
                 self.imprimeTerminal()
             else:
                 print("\n Não é uma opção válida, tente novamente.")
+
+    def abrirArquivo(self):
+        pass
+
+    def salvaAfd(self):
+        pass
+
+    def equivalenciaEstados(self):
+        pass
+
+    def menimoAfd(self):
+        pass
+
+    def equivalenciaAfds(self):
+        pass
+
+    def complementoAfd(self):
+        pass
+
+    def uniaoAfds(self):
+        pass
+
+    def intercessaoAfds(self):
+        pass
+
+    def diferencaAfds(self):
+        pass
+
+    def testaPalavra(self):
+        pass
+
+    def testaMovimento(self):
+        pass
+
+    def adicionaEstado(self):
+        pass
+
+    def deletaEstado(self):
+        pass
+
+    def adicionaTransicao(self):
+        pass
+
+    def deletaTransicao(self):
+        pass
+
+    def imprimeTerminal(self):
+        pass
