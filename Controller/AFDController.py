@@ -18,7 +18,9 @@ class AFDController(object):
 
     def load(self, jffFile):
         """
-        Metodo responsavel por ler um arquivo XML em formato jff conteudo o AFD.
+        Metodo responsavel por ler um arquivo XML em formato jff conteudo o AFD. 
+        :return: Retorna uma instancia criada de um AFD
+        :rtype: AFD
         :param jffFile
         :rtype AFD
         """
@@ -27,8 +29,11 @@ class AFDController(object):
         finals = []  # Lista de estados finais
         alphabet = []  # alfabeto que o automato suporta
 
-        s_initial = ""  # Guardará o ID do estado inicial
-        doc = ET.parse("Input/" + jffFile)  # Recebendo o arquivo de entrada via parametro da função.
+        # Guardará o ID do estado inicial
+        s_initial = ""
+        # Recebendo o arquivo de entrada via parametro da função.
+        # Não tem prefixo porque agora irá pegar dinamicamento no sistema operacional
+        doc = ET.parse(jffFile)
         root = doc.getroot()  # Recebendo a tag root
 
         # iterando em cada tag State para pegar as informações

@@ -1,22 +1,66 @@
 from tkinter.filedialog import askopenfilename
-from pip._vendor.distlib.compat import raw_input
+
 
 class AFDView(object):
     """
-    Classe que implementa todas as funcionalidade um Automoto Finito Deterministico.
+    Classe que representa a visão todas as funcionalidade um Automoto Finito Deterministico.
     """
 
-    def entrada(self):
-        filename = askopenfilename()
-        resulSplit = filename.split('jff')
+    def entrada(self, multiEntrada=False):
+        """
+        Método reponsavel por ler a entrada do algoritmo.
+        Este método recebe como parâmetro uma flag informando se a entrada deve ser chamada mais
+        de uma vez, por exemplo, é utilizado se for necessário ler dois arquivo de uma vez só.
+        O valor de de multiEntrada será True quando será necessário obter dois AFDs, desta forma,
+        sendo o valor True, será questionado ao usuário, duas vezes o aquivo de entrada, sendo
+        consequentemente o caminho de entrada do AFD 1 e do AFD 2. Se também a flag multiEntrada
+        for True, será retornado um array com os caminhos dos AFDs. Por padrão a flag multiEntrada
+        é setada como False, sendo assim, pode ser omitida ao usar a chamado do método.
+        
+        :type multiEntrada: bool
+        :rtype: object
+        :return: O caminho do arquivo de o nome estiver no formato correto ou None se não estiver
+        """
 
-        if len(resulSplit) is 1:
-            print('Arquivo de entrada no formato inválido!')
+        if not multiEntrada:
+            filename = askopenfilename()
+
+            if filename:
+                resulSplit = filename.split('.')
+
+                # Verifica se o arquivo esta no formado do JFlap (.jff)
+                if len(resulSplit) >= 2 and resulSplit[len(resulSplit) - 1] == 'jff':
+                    return filename
+                else:
+                    print('Arquivo de entrada com formato inválido!')
+                    return None
+            else:
+                print("Botao cancelar")
+
         else:
-            print('Certo')
+            arrayCaminhoAfds = []
+            i = 0
+            while i < 2:
+                filename = askopenfilename()
 
-    def abrirArquivo(self):
-        pass
+                # Se retornou algo do widget, realiza o split
+                if filename:
+                    resulSplit = filename.split('.')
+
+                    # Verifica se o arquivo esta no formado do JFlap (.jff)
+                    if len(resulSplit) >= 2 and resulSplit[len(resulSplit) - 1] == 'jff':
+                        arrayCaminhoAfds.append(filename)
+                        print("Arquivo selecionado: " + filename)
+                        i += 1
+                    else:
+                        print("O arquivo não apresenta um formato inválido!")
+                else:
+                    print("Botao cancelar")
+
+            print(arrayCaminhoAfds)
+            print(len(arrayCaminhoAfds))
+            # Retorna a lista de caminhos
+            return arrayCaminhoAfds
 
     def menu(self):
         opcao = True
