@@ -40,7 +40,7 @@ class AFDView(object):
             15.Deletar transição do AFD
             16.Imprimir AFD no terminal
             """)
-            opcao = int(raw_input("O que você gostaria de fazer? "))
+            opcao = int(input("O que você gostaria de fazer? "))
             if opcao is 0:
                 opcao = None
             elif opcao is 1:

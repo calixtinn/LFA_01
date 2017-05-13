@@ -2,7 +2,7 @@
 Classe AFDController
 @author: Matheus Calixto | Samuel Terra
 
-Classe que implementa todas as funcionalidade um Automoto Finito Deterministico.
+Classe que implementa todas as funcionalidades de um Automoto Finito Deterministico.
 """
 import xml.etree.ElementTree as ET
 from Model.State import State
@@ -28,7 +28,7 @@ class AFDController(object):
         alphabet = []  # alfabeto que o automato suporta
 
         s_initial = ""  # Guardará o ID do estado inicial
-        doc = ET.parse(jffFile)  # Recebendo o arquivo de entrada via parametro da função.
+        doc = ET.parse("Input/" + jffFile)  # Recebendo o arquivo de entrada via parametro da função.
         root = doc.getroot()  # Recebendo a tag root
 
         # iterando em cada tag State para pegar as informações
@@ -498,8 +498,12 @@ class AFDController(object):
             id_cont = n_transicoes_m1
 
             for t in transicoes_min2:
-                t.setId(str(id_cont))
-                id_cont += 1
+                old_from = int(t.getFrom())  # Recebe o ID antigo do estado fonte
+                old_to = int(t.getTo())  # Recebe o ID antigo do estado destino
+                t.setId(str(id_cont))  # Altera o ID com base no contador atual
+                id_cont += 1  # Incrementa o contador
+                t.setFrom(str(old_from + n_estados_m1))  # Atualiza o novo ID do estado fonte
+                t.setTo(str(old_to + n_estados_m1))     # Atualiza o novo ID do estado destino
 
             novos_estados = estados_min1 + estados_min2  # Nova lista de estados
             novas_transicoes = transicoes_min1 + transicoes_min2  # Nova lista de transições
@@ -561,7 +565,7 @@ class AFDController(object):
 
         else:
             # Cria o novo afd
-            afd_uniao = AFD(estados_uniao, transicoes_uniao, inicial_uniao, finais_uniao,alfabeto_uniao)
+            afd_uniao = AFD(estados_uniao, transicoes_uniao, inicial_uniao, finais_uniao, alfabeto_uniao)
             return afd_uniao
 
     def monta_transicoes(self, estados, alfabeto, trans_estadosm1, trans_estadosm2, estado_id):
