@@ -143,7 +143,7 @@ class AFDView(object):
         controller = AFDController()
         estadosFinais = controller.final(afd)
 
-        print("Lista de estados iniciais:")
+        print("Lista de estados finais:")
         for e in estadosFinais:
             print(e)
 

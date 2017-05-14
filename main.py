@@ -116,6 +116,6 @@ AF = AFDController()
 
 
 view = AFDView()
-#view.entrada()
-#view.entrada(True)
+# view.entrada()
+# view.entrada(True)
 view.menuPrincipal()
