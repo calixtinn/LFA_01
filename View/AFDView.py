@@ -134,8 +134,6 @@ class AFDView(object):
                 self.deletaTransicao()
             elif opcao is 14:
                 self.imprimeTerminal()
-            elif opcao is 15:
-                self.salvaAfd("")
             else:
                 print("\n Não é uma opção válida, tente novamente.")
 
@@ -155,7 +153,7 @@ class AFDView(object):
 
     def equivalenciaEstados(self):
         print("Verificar equivalência de estados")
-        print("Informe o automato que deseja verificar a esquivalência de estados...")
+        print("Informe o automato que deseja verificar a esquivalência de estados...\n")
 
         afdEntrada = self.entrada()
         controller = AFDController()
@@ -165,14 +163,24 @@ class AFDView(object):
 
     def minimoAfd(self):
         print("Obter o AFD mínimo")
-        print("Informe o automato a ser minimizado...")
+        print("Informe o automato a ser minimizado...\n")
         afdEntrada = self.entrada()
         controller = AFDController()
         afd = controller.load(afdEntrada)
         afdMinimo = controller.minimum(afd)
 
     def equivalenciaAfds(self):
-        pass
+        print("Obter o AFD mínimo")
+        print("Informe o automato a ser minimizado...\n")
+        afdEntrada = self.entrada(True)
+
+        controller = AFDController()
+        afd1 = controller.load(afdEntrada[0])
+        afd2 = controller.load(afdEntrada[1])
+
+        resultEquivalents = controller.equivalent_automatas(afd1, afd2)
+
+        print(resultEquivalents)
 
     def complementoAfd(self):
         pass

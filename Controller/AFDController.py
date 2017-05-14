@@ -336,7 +336,6 @@ class AFDController(object):
         """
         Metodo responsavel por realizar a minimização do AFD.
         :param afd
-        :param jffin
         :rtype AFD
         """
 
@@ -440,11 +439,11 @@ class AFDController(object):
 
         return automata
 
-    def equivalent_automatas(self, min_m1, min_m2):
+    def equivalent_automatas(self, automata1, automata2):
         """
         Metodo responsavel por verificar a equivalencia de dois AFDs.
-        :param min_m2: AFD
-        :param min_m1: AFD
+        :param automata1: AFD
+        :param automata2: AFD
         :rtype string
         """
         '''
@@ -455,6 +454,9 @@ class AFDController(object):
             quantidade de estados
             estado inicial
         '''
+        min_m1 = self.minimum(automata1)
+        min_m2 = self.minimum(automata2)
+
         n_estados_m1 = len(min_m1.getStates())
         n_estados_m2 = len(min_m2.getStates())
         n_transicoes_m1 = len(min_m1.getTransitions())
@@ -521,10 +523,10 @@ class AFDController(object):
                 e2 = aux[1]
 
                 if (e1 == inicial_min1 and e2 == inicial_min2) or (e1 == inicial_min2 and e2 == inicial_min1):
-                    mensagem = "Os Autômatos são equivalentes!"
+                    mensagem = "\nOs Autômatos são equivalentes!"
                     return mensagem
 
-        mensagem = "Os estados iniciais dos dois AFD's não são equivalentes. Logo os AFD's NÃO são equivalentes"
+        mensagem = "\nOs estados iniciais dos dois AFD's não são equivalentes. Logo os AFD's NÃO são equivalentes"
         return mensagem
 
     def union(self, m1, m2):
