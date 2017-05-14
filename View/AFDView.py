@@ -187,6 +187,8 @@ class AFDView(object):
         afd = controller.load(afdEntrada)
         afdMinimo = controller.minimum(afd)
 
+        self.salvaAfd(afdMinimo)
+
     def equivalenciaAfds(self):
         print("Obter a equivalência de dois automatos")
         print("Informe os automatos que deseja verificar a equivalência...\n")
