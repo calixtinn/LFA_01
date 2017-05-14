@@ -332,11 +332,11 @@ class AFDController(object):
 
         return lista_equivalentes  # retorna a lista de equivalências.
 
-    def minimum(self, afd, jffin):
+    def minimum(self, afd):
         """
         Metodo responsavel por realizar a minimização do AFD.
-        :param AFD
-        :param jff_entrada
+        :param afd
+        :param jffin
         :rtype AFD
         """
 
@@ -411,9 +411,6 @@ class AFDController(object):
                 e1 = e2
                 e2 = aux
             mensagem = self.deleteState(afd, e1)
-
-        jffout = "min_" + jffin
-        self.save(afd, jffout)
 
         return afd
 

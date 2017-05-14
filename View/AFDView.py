@@ -1,4 +1,6 @@
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+
+from Controller.AFDController import AFDController
 
 
 class AFDView(object):
@@ -84,72 +86,90 @@ class AFDView(object):
         while opcao:
             print("""
             0.Sair
-            1.Abir arquivo do JFlap
-            2.Salvar AFD como arquivo do JFlap
-            3.Ver estados equivalentes
-            4.Obter AFD mínimo
-            5.Verificar equivalência de dois AFDs
-            6.Realizar complemento do AFD
-            7.Realizar união de dois AFDs
-            8.Realizar intercessão de dois AFDs
-            9.Realizar diferença de dois AFDs
-            10.Testar palavra no AFD
-            11.Testar movimento do AFD
-            12.Adicionar estado ao AFD
-            13.Deletar estado do AFD
-            14.Adicionar transição ao AFD
-            15.Deletar transição do AFD
-            16.Imprimir AFD no terminal
+            1.Ver estados equivalentes
+            
+            2.Obter AFD mínimo
+            
+            3.Verificar equivalência de dois AFDs
+            4.Realizar complemento do AFD
+            5.Realizar união de dois AFDs
+            6.Realizar intercessão de dois AFDs
+            7.Realizar diferença de dois AFDs
+            8.Testar palavra no AFD
+            9.Testar movimento do AFD
+            10.Adicionar estado ao AFD
+            11.Deletar estado do AFD
+            12.Adicionar transição ao AFD
+            13.Deletar transição do AFD
+            14.Imprimir AFD no terminal
             """)
             opcao = int(input("O que você gostaria de fazer? "))
             if opcao is 0:
                 opcao = None
             elif opcao is 1:
-                self.abrirArquivo()
-            elif opcao is 2:
-                self.salvaAfd()
-            elif opcao is 3:
                 self.equivalenciaEstados()
-            elif opcao is 4:
-                self.menimoAfd()
-            elif opcao is 5:
+            elif opcao is 2:
+                self.minimoAfd()
+            elif opcao is 3:
                 self.equivalenciaAfds()
-            elif opcao is 6:
+            elif opcao is 4:
                 self.complementoAfd()
-            elif opcao is 7:
+            elif opcao is 5:
                 self.uniaoAfds()
-            elif opcao is 8:
+            elif opcao is 6:
                 self.intercessaoAfds()
-            elif opcao is 9:
+            elif opcao is 7:
                 self.diferencaAfds()
-            elif opcao is 10:
+            elif opcao is 8:
                 self.testaPalavra()
-            elif opcao is 11:
+            elif opcao is 9:
                 self.testaMovimento()
-            elif opcao is 12:
+            elif opcao is 10:
                 self.adicionaEstado()
-            elif opcao is 13:
+            elif opcao is 11:
                 self.deletaEstado()
-            elif opcao is 14:
+            elif opcao is 12:
                 self.adicionaTransicao()
-            elif opcao is 15:
+            elif opcao is 13:
                 self.deletaTransicao()
-            elif opcao is 16:
+            elif opcao is 14:
                 self.imprimeTerminal()
+            elif opcao is 15:
+                self.salvaAfd("")
             else:
                 print("\n Não é uma opção válida, tente novamente.")
 
-    def abrirArquivo(self):
-        pass
+    def salvaAfd(self, file):
+        title = 'Salvar automato como'
+        ftypes = [('Arquivo do JFlap', '.jff'), ('All files', '*')]
 
-    def salvaAfd(self):
-        pass
+        # Pega o caminho para salvar
+        caminho = asksaveasfilename(filetypes=ftypes, title=title, defaultextension='.jff')
+        if not caminho:
+            return
+
+        # manda escrever no arquivo
+        #open(caminho, 'w')
+        #jffout = "min_" + jffin
+        #self.save(afd, jffout)
 
     def equivalenciaEstados(self):
-        pass
+        print("Verificar equivalência de estados")
+        print("Informe o automato que deseja verificar a esquivalência de estados...")
 
-    def menimoAfd(self):
-        pass
+        afdEntrada = self.entrada()
+        controller = AFDController()
+        afd = controller.load(afdEntrada)
+        listaEstadosEquivalentes = controller.equivalent_states(afd)
+        print("Lista de estados equivalentes: " + str(listaEstadosEquivalentes))
+
+    def minimoAfd(self):
+        print("Obter o AFD mínimo")
+        print("Informe o automato a ser minimizado...")
+        afdEntrada = self.entrada()
+        controller = AFDController()
+        afd = controller.load(afdEntrada)
+        afdMinimo = controller.minimum(afd)
 
     def equivalenciaAfds(self):
         pass
