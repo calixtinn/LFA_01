@@ -239,7 +239,17 @@ class AFDView(object):
         self.salvaAfd(resultIntercessao)
 
     def diferencaAfds(self):
-        pass
+        print("Obter a diferença de dois automatos")
+        print("Informe os automatos que deseja realizar a diferença...\n")
+        afdEntrada = self.entrada(True)
+
+        controller = AFDController()
+        afd1 = controller.load(afdEntrada[0])
+        afd2 = controller.load(afdEntrada[1])
+
+        resultDiferenca = controller.difference(afd1, afd2)
+
+        self.salvaAfd(resultDiferenca)
 
     def testaPalavra(self):
         pass
