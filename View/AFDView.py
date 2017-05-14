@@ -170,8 +170,8 @@ class AFDView(object):
         afdMinimo = controller.minimum(afd)
 
     def equivalenciaAfds(self):
-        print("Obter o AFD mínimo")
-        print("Informe o automato a ser minimizado...\n")
+        print("Obter a equivalência de dois automatos")
+        print("Informe os automatos que deseja verificar a equivalência...\n")
         afdEntrada = self.entrada(True)
 
         controller = AFDController()
@@ -183,7 +183,12 @@ class AFDView(object):
         print(resultEquivalents)
 
     def complementoAfd(self):
-        pass
+        print("Obter o complemento de um AFD")
+        print("Informe o automato que deseja obter o complemento...\n")
+        afdEntrada = self.entrada()
+        controller = AFDController()
+        afd = controller.load(afdEntrada)
+        afdComplemento = controller.complement(afd)
 
     def uniaoAfds(self):
         pass

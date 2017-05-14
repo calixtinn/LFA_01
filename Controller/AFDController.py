@@ -413,11 +413,10 @@ class AFDController(object):
 
         return afd
 
-    def complement(self, automata, jffin):
+    def complement(self, automata):
         """
         Metodo responsavel por realizar o complemento AFD.
         :type automata: AFD
-        :type jffin: String
         :rtype AFD
         """
         stateList = automata.getStates()
@@ -431,11 +430,6 @@ class AFDController(object):
                 final_list.append(theState)
 
         automata.setStates(stateList, final_list)
-
-        # se o parametro para gerar saida nao estiver vazio, gera o arquivo de saida
-        if jffin != '':
-            jffout = "neg_" + jffin
-            self.save(automata, jffout)
 
         return automata
 
