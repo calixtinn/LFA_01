@@ -85,7 +85,44 @@ class AFDView(object):
             # Retorna a lista de caminhos
             return arrayCaminhoAfds
 
-    def menu(self):
+    def menuModificaAutomato(self):
+        opcao = True
+        while opcao:
+            print("""
+                    0.Sair
+                    1.Adicionar estado
+                    2.Adicionar transição
+                    3.Remove estado
+                    4.Remove transição
+                    """)
+            opcao = int(input("O que você gostaria de fazer? "))
+
+            if opcao is 0:
+                opcao = None
+            elif opcao is 10:
+                self.adicionaEstado()
+            elif opcao is 11:
+                self.deletaEstado()
+            elif opcao is 12:
+                self.adicionaTransicao()
+            elif opcao is 13:
+                self.deletaTransicao()
+            else:
+                print("\n Não é uma opção válida, tente novamente.")
+
+    def adicionaEstado(self):
+        pass
+
+    def deletaEstado(self):
+        pass
+
+    def adicionaTransicao(self):
+        pass
+
+    def deletaTransicao(self):
+        pass
+
+    def menuPrincipal(self):
         opcao = True
         while opcao:
             print("""
@@ -129,14 +166,6 @@ class AFDView(object):
             elif opcao is 9:
                 self.testaMovimento()
             elif opcao is 10:
-                self.adicionaEstado()
-            elif opcao is 11:
-                self.deletaEstado()
-            elif opcao is 12:
-                self.adicionaTransicao()
-            elif opcao is 13:
-                self.deletaTransicao()
-            elif opcao is 14:
                 self.imprimeTerminal()
             else:
                 print("\n Não é uma opção válida, tente novamente.")
@@ -255,18 +284,6 @@ class AFDView(object):
         pass
 
     def testaMovimento(self):
-        pass
-
-    def adicionaEstado(self):
-        pass
-
-    def deletaEstado(self):
-        pass
-
-    def adicionaTransicao(self):
-        pass
-
-    def deletaTransicao(self):
         pass
 
     def imprimeTerminal(self):
