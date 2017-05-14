@@ -226,7 +226,17 @@ class AFDView(object):
         self.salvaAfd(resultUniao)
 
     def intercessaoAfds(self):
-        pass
+        print("Obter a intercessão de dois automatos")
+        print("Informe os automatos que deseja realizar a intercessão...\n")
+        afdEntrada = self.entrada(True)
+
+        controller = AFDController()
+        afd1 = controller.load(afdEntrada[0])
+        afd2 = controller.load(afdEntrada[1])
+
+        resultIntercessao = controller.intersection(afd1, afd2)
+
+        self.salvaAfd(resultIntercessao)
 
     def diferencaAfds(self):
         pass
