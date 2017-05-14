@@ -883,9 +883,18 @@ class AFDController(object):
     def final(self, afd):
         """
         Metodo responsavel por retornar os estados finais do AFD.
-        :rtype Lista
+        :rtype List
         """
-        return afd.getFinals()
+
+        idEstadosFinais = afd.getFinals()
+        estadosAfd = afd.getStates()
+        nomesEstadosFinais = []
+
+        for e in estadosAfd:
+            if e.getId() in idEstadosFinais:
+                nomesEstadosFinais.append(e.getName())
+
+        return nomesEstadosFinais
 
     def addState(self, afd, name, initial, final):
         """
