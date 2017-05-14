@@ -213,7 +213,17 @@ class AFDView(object):
         self.salvaAfd(afdComplemento)
 
     def uniaoAfds(self):
-        pass
+        print("Obter a inião de dois automatos")
+        print("Informe os automatos que deseja realizar a união...\n")
+        afdEntrada = self.entrada(True)
+
+        controller = AFDController()
+        afd1 = controller.load(afdEntrada[0])
+        afd2 = controller.load(afdEntrada[1])
+
+        resultUniao = controller.union(afd1, afd2)
+
+        self.salvaAfd(resultUniao)
 
     def intercessaoAfds(self):
         pass
