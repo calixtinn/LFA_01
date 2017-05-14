@@ -142,17 +142,32 @@ class AFDView(object):
                 print("\n Não é uma opção válida, tente novamente.")
 
     def salvaAfd(self, afd):
-        title = 'Salvar automato como'
-        ftypes = [('Arquivo do JFlap', '.jff'), ('All files', '*')]
 
-        # Pega o caminho para salvar
-        caminho = asksaveasfilename(filetypes=ftypes, title=title, defaultextension='.jff')
-        if not caminho:
-            print("Operação cancelada.")
-            return False
+        sair = False
 
-        controller = AFDController()
-        controller.save(afd, caminho)
+        while not sair:
+
+            opcao = input("Deseja salvar o automato? (s/n) ")
+
+            if opcao.lower() == "s":
+                title = 'Salvar automato como'
+                ftypes = [('Arquivo do JFlap', '.jff'), ('All files', '*')]
+
+                # Pega o caminho para salvar
+                caminho = asksaveasfilename(filetypes=ftypes, title=title, defaultextension='.jff')
+                if not caminho:
+                    print("Operação cancelada.")
+                    sair = True
+
+                controller = AFDController()
+                controller.save(afd, caminho)
+                print("Automato salvo com sucesso!")
+                sair = True
+            elif opcao.lower() == "n":
+                print("Você escolheu não salvar")
+                sair = True
+            else:
+                print("Opção inválida")
 
     def equivalenciaEstados(self):
         print("Verificar equivalência de estados")

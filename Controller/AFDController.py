@@ -98,7 +98,6 @@ class AFDController(object):
         :type automata: AFD
         :param automata
         :param jffFile
-        :rtype bool
         """
         # Cria um documento (root) Dom para gerar o xml
         doc = Document()
