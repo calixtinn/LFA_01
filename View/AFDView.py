@@ -86,29 +86,42 @@ class AFDView(object):
             return arrayCaminhoAfds
 
     def menuModificaAutomato(self):
+
+        automato = None
+
         opcao = True
         while opcao:
+            if automato is None:
+                print("Automato ainda não selecionado.")
+            else:
+                print("Automato selecionado")
             print("""
-                    0.Sair
-                    1.Adicionar estado
-                    2.Adicionar transição
-                    3.Remove estado
-                    4.Remove transição
+                    0.Voltar ao menu anterior
+                    1.Carregar automato
+                    2.Liberar automato
+                    3.Adicionar estado
+                    4.Adicionar transição
+                    5.Remove estado
+                    6.Remove transição
                     """)
             opcao = int(input("O que você gostaria de fazer? "))
 
             if opcao is 0:
                 opcao = None
-            elif opcao is 10:
+            elif opcao is 1:
+                automato = self.entrada()
+            elif opcao is 2:
+                automato = None
+            elif opcao is 3:
                 self.adicionaEstado()
-            elif opcao is 11:
+            elif opcao is 4:
                 self.deletaEstado()
-            elif opcao is 12:
+            elif opcao is 5:
                 self.adicionaTransicao()
-            elif opcao is 13:
+            elif opcao is 6:
                 self.deletaTransicao()
             else:
-                print("\n Não é uma opção válida, tente novamente.")
+                print("\nNão é uma opção válida, tente novamente.")
 
     def adicionaEstado(self):
         pass
@@ -130,19 +143,14 @@ class AFDView(object):
             1.Ver estados equivalentes
             2.Obter AFD mínimo
             3.Verificar equivalência de dois AFDs
-            
             4.Realizar complemento do AFD
-            
             5.Realizar união de dois AFDs
             6.Realizar intercessão de dois AFDs
             7.Realizar diferença de dois AFDs
             8.Testar palavra no AFD
             9.Testar movimento do AFD
-            10.Adicionar estado ao AFD
-            11.Deletar estado do AFD
-            12.Adicionar transição ao AFD
-            13.Deletar transição do AFD
-            14.Imprimir AFD no terminal
+            10.Modificar automato
+            11.Imprimir AFD no terminal
             """)
             opcao = int(input("O que você gostaria de fazer? "))
             if opcao is 0:
@@ -166,6 +174,8 @@ class AFDView(object):
             elif opcao is 9:
                 self.testaMovimento()
             elif opcao is 10:
+                self.menuModificaAutomato()
+            elif opcao is 11:
                 self.imprimeTerminal()
             else:
                 print("\n Não é uma opção válida, tente novamente.")
