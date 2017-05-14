@@ -99,40 +99,64 @@ class AFDView(object):
                     0.Voltar ao menu anterior
                     1.Carregar automato
                     2.Liberar automato
-                    3.Adicionar estado
-                    4.Adicionar transição
-                    5.Remove estado
-                    6.Remove transição
+                    3.Ver estado inicial
+                    4.Ver lista de estados finais
+                    5.Adicionar estado
+                    6.Adicionar transição
+                    7.Remove estado
+                    8.Remove transição
                     """)
-            opcao = int(input("O que você gostaria de fazer? "))
+            opcao = int(input("O que você gostaria de fazer?"))
 
             if opcao is 0:
                 opcao = None
             elif opcao is 1:
-                automato = self.entrada()
+                automato = self.carregaAutomato()
             elif opcao is 2:
                 automato = None
             elif opcao is 3:
-                self.adicionaEstado()
+                self.getEstadoInicial(automato)
             elif opcao is 4:
-                self.deletaEstado()
+                self.getEstadosFinais(automato)
             elif opcao is 5:
-                self.adicionaTransicao()
+                self.adicionaEstado(automato)
             elif opcao is 6:
-                self.deletaTransicao()
+                self.deletaEstado(automato)
+            elif opcao is 7:
+                self.adicionaTransicao(automato)
+            elif opcao is 8:
+                self.deletaTransicao(automato)
             else:
                 print("\nNão é uma opção válida, tente novamente.")
 
-    def adicionaEstado(self):
+    def carregaAutomato(self):
+        afdEntrada = self.entrada()
+        controller = AFDController()
+        return controller.load(afdEntrada)
+
+    def getEstadoInicial(self, afd):
+        controller = AFDController()
+        estadoInicial = controller.initial(afd)
+        print("Estado inicial do automato: " + estadoInicial.getName())
+
+    def getEstadosFinais(self, afd):
+        controller = AFDController()
+        estadosFinais = controller.final(afd)
+
+        print("Lista de estados iniciais:")
+        for e in estadosFinais:
+            print(e)
+
+    def adicionaEstado(self, afd):
         pass
 
-    def deletaEstado(self):
+    def deletaEstado(self, afd):
         pass
 
-    def adicionaTransicao(self):
+    def adicionaTransicao(self, afd):
         pass
 
-    def deletaTransicao(self):
+    def deletaTransicao(self, afd):
         pass
 
     def menuPrincipal(self):
@@ -152,7 +176,7 @@ class AFDView(object):
             10.Modificar automato
             11.Imprimir AFD no terminal
             """)
-            opcao = int(input("O que você gostaria de fazer? "))
+            opcao = int(input("O que você gostaria de fazer?"))
             if opcao is 0:
                 opcao = None
             elif opcao is 1:
