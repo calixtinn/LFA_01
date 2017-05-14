@@ -797,7 +797,7 @@ class AFDController(object):
         :param m2
         :rtype AFD
         """
-        return self.intersection(m1, self.complement(m2, 'dif.jff'))
+        return self.intersection(m1, self.complement(m2))
 
     def accept(self, afd, word):
         """
