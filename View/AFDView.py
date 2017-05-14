@@ -41,6 +41,8 @@ class AFDView(object):
         :return: O caminho do arquivo de o nome estiver no formato correto, False se não estiver ou
                  uma lista de caminho dos arquivos caso seja multiEntrada
         """
+        title = 'Abrir automato do JFlap'
+        ftypes = [('Arquivo do JFlap', '.jff'), ('All files', '*')]
 
         # Lê uma entrada simples, com apenas um arquivo jff
         if not multiEntrada:
@@ -48,7 +50,7 @@ class AFDView(object):
             # Repete até que o usuário informe um arquivo
             while True:
                 # Abre a janela para selecionar um arquivo
-                filename = askopenfilename(filetypes=(("Arquivo JFlap", "*.jff"), ("All files", "*.*")))
+                filename = askopenfilename(filetypes=ftypes, title=title)
 
                 # Verifica se foi selecionado algum arquivo
                 if filename:
@@ -56,16 +58,17 @@ class AFDView(object):
                         return filename
                 else:
                     # Apertou o botão de cancelar
+                    print("Operação cancelada.")
                     return False
 
-        # Lê mais de um arquivo (dois AFDs)
+        # Lê mais de um arquivo (dois AFDs no contexto do trabalho)
         else:
             arrayCaminhoAfds = []
             i = 0
             # Faz até a quantidade de arquivos, neste caso será necessario 2 arquivos
             while i < 2:
                 # Abre a janela para selecionar um arquivo
-                filename = askopenfilename(filetypes=(("Arquivo JFlap", "*.jff"), ("All files", "*.*")))
+                filename = askopenfilename(filetypes=ftypes, title=title)
 
                 # Verifica se foi selecionado algum arquivo
                 if filename:
@@ -76,6 +79,7 @@ class AFDView(object):
                         i += 1
                 else:
                     # Apertou o botão de cancelar
+                    print("Operação cancelada.")
                     return False
 
             # Retorna a lista de caminhos
@@ -87,11 +91,11 @@ class AFDView(object):
             print("""
             0.Sair
             1.Ver estados equivalentes
-            
             2.Obter AFD mínimo
-            
             3.Verificar equivalência de dois AFDs
+            
             4.Realizar complemento do AFD
+            
             5.Realizar união de dois AFDs
             6.Realizar intercessão de dois AFDs
             7.Realizar diferença de dois AFDs
@@ -137,19 +141,18 @@ class AFDView(object):
             else:
                 print("\n Não é uma opção válida, tente novamente.")
 
-    def salvaAfd(self, file):
+    def salvaAfd(self, afd):
         title = 'Salvar automato como'
         ftypes = [('Arquivo do JFlap', '.jff'), ('All files', '*')]
 
         # Pega o caminho para salvar
         caminho = asksaveasfilename(filetypes=ftypes, title=title, defaultextension='.jff')
         if not caminho:
-            return
+            print("Operação cancelada.")
+            return False
 
-        # manda escrever no arquivo
-        #open(caminho, 'w')
-        #jffout = "min_" + jffin
-        #self.save(afd, jffout)
+        controller = AFDController()
+        controller.save(afd, caminho)
 
     def equivalenciaEstados(self):
         print("Verificar equivalência de estados")
@@ -189,6 +192,8 @@ class AFDView(object):
         controller = AFDController()
         afd = controller.load(afdEntrada)
         afdComplemento = controller.complement(afd)
+
+        self.salvaAfd(afdComplemento)
 
     def uniaoAfds(self):
         pass

@@ -178,7 +178,7 @@ class AFDController(object):
             structure.appendChild(automaton)
 
         # Gera o arquivo de saida com algumas confuracoes do arquivo (identacao, nova linha, codificacao)
-        doc.writexml(open('Output/' + jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
+        doc.writexml(open(jffFile, 'w'), addindent='	', newl='\n', encoding='UTF-8')
 
         # Libera memoria
         doc.unlink()
