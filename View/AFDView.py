@@ -95,6 +95,7 @@ class AFDView(object):
                 print("Automato ainda não selecionado.")
             else:
                 print("Automato selecionado")
+
             print("""
                     0.Voltar ao menu anterior
                     1.Carregar automato
@@ -105,6 +106,7 @@ class AFDView(object):
                     6.Adicionar transição
                     7.Remove estado
                     8.Remove transição
+                    9.Salvar automato em arquivo do JFlap
                     """)
             opcao = int(input("O que você gostaria de fazer?"))
 
@@ -126,6 +128,8 @@ class AFDView(object):
                 self.adicionaTransicao(automato)
             elif opcao is 8:
                 self.deletaTransicao(automato)
+            elif opcao is 9:
+                self.salvaAfd(automato)
             else:
                 print("\nNão é uma opção válida, tente novamente.")
 
@@ -135,17 +139,40 @@ class AFDView(object):
         return controller.load(afdEntrada)
 
     def getEstadoInicial(self, afd):
-        controller = AFDController()
-        estadoInicial = controller.initial(afd)
+        controller      = AFDController()
+        estadoInicial   = controller.initial(afd)
         print("Estado inicial do automato: " + estadoInicial.getName())
 
     def getEstadosFinais(self, afd):
-        controller = AFDController()
-        estadosFinais = controller.final(afd)
+        controller      = AFDController()
+        estadosFinais   = controller.final(afd)
 
         print("Lista de estados finais:")
         for e in estadosFinais:
             print(e)
+
+    def obtemEntrada(self, mensagem, simples=False):
+        questao = None
+
+        # Tipo 1: Questões de "Sim" ou "Não"
+        if not simples:
+            sair = False
+            while not sair:
+                questao = str(input(mensagem + " (s/n)"))
+                if questao.lower() == "s":
+                    questao = True
+                    sair = True
+                elif questao.lower() == "n":
+                    questao = False
+                    sair = True
+                else:
+                    print("\nNão é uma opção válida, tente novamente.")
+
+        # Tipo 2: Questões simples, apenas obeter um texto de entrada
+        else:
+            questao = str(input(mensagem))
+
+        return questao
 
     def adicionaEstado(self, afd):
         pass
@@ -202,7 +229,7 @@ class AFDView(object):
             elif opcao is 11:
                 self.imprimeTerminal()
             else:
-                print("\n Não é uma opção válida, tente novamente.")
+                print("\nNão é uma opção válida, tente novamente.")
 
     def salvaAfd(self, afd):
 
