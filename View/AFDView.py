@@ -175,7 +175,15 @@ class AFDView(object):
         return questao
 
     def adicionaEstado(self, afd):
-        pass
+        print("Adicionar estado ao automato")
+
+        name = self.obtemEntrada("Informe o nome do novo estado:", True)
+        initial = self.obtemEntrada("Este estado é inicial?")
+        final = self.obtemEntrada("Este estado é final?")
+
+        controller = AFDController()
+
+        controller.addState(afd, name, initial, final)
 
     def deletaEstado(self, afd):
         pass
