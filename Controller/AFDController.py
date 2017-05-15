@@ -927,7 +927,7 @@ class AFDController(object):
         else:
             x /= len(estados)  # x = x / quantidade de estados
             y /= len(estados)
-            novo_estado = State(id, name, str(x), str(y), final, initial)
+            novo_estado = State(id, name, str(x), str(y), initial, final)
             estados.append(novo_estado)
             print("Estado com ID = (" + id + ") adicionado com sucesso!")
 
