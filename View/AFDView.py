@@ -103,8 +103,8 @@ class AFDView(object):
                     3.Ver estado inicial
                     4.Ver lista de estados finais
                     5.Adicionar estado
-                    6.Adicionar transição
-                    7.Remove estado
+                    6.Remove estado
+                    7.Adiciona transição
                     8.Remove transição
                     9.Salvar automato em arquivo do JFlap
                     """)
@@ -183,7 +183,7 @@ class AFDView(object):
 
         controller = AFDController()
 
-        controller.addState(afd, name, initial, final)
+        return controller.addState(afd, name, initial, final)
 
     def deletaEstado(self, afd):
         print("Deletar estado do automato")
