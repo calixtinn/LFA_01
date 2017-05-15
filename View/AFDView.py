@@ -155,7 +155,7 @@ class AFDView(object):
         questao = None
 
         # Tipo 1: Questões de "Sim" ou "Não"
-        if not simples:
+        if simples:
             sair = False
             while not sair:
                 questao = str(input(mensagem + " (s/n)"))
@@ -177,16 +177,22 @@ class AFDView(object):
     def adicionaEstado(self, afd):
         print("Adicionar estado ao automato")
 
-        name = self.obtemEntrada("Informe o nome do novo estado:", True)
-        initial = self.obtemEntrada("Este estado é inicial?")
-        final = self.obtemEntrada("Este estado é final?")
+        name = self.obtemEntrada("Informe o nome do novo estado:")
+        initial = self.obtemEntrada("Este estado é inicial?", True)
+        final = self.obtemEntrada("Este estado é final?", True)
 
         controller = AFDController()
 
         controller.addState(afd, name, initial, final)
 
     def deletaEstado(self, afd):
-        pass
+        print("Deletar estado do automato")
+
+        id = self.obtemEntrada("Informe o id do novo estado:")
+
+        controller = AFDController()
+
+        controller.deleteState(afd, id)
 
     def adicionaTransicao(self, afd):
         pass
