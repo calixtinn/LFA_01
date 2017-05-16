@@ -247,7 +247,8 @@ class AFDController(object):
 
                     for a in alfabeto:  # Para cada caracter do alfabeto...
 
-                        if a in trans_i and a in trans_j:  # Se houver transições com o caractere do alfabeto em ambos os estados.
+                        if a in trans_i and a in trans_j:   # Se houver transições com o caractere do alfabeto em
+                                                            # ambos os estados.
 
                             destino_i = trans_i[a]  # Salva o destino do estado i ao ler o caractere em questão
                             destino_j = trans_j[a]  # Faz o mesmo para o estado j
@@ -931,6 +932,8 @@ class AFDController(object):
             estados.append(novo_estado)
             print("Estado com ID = (" + id + ") adicionado com sucesso!")
 
+        return afd
+
     def addTransition(self, afd, source, target, consume):
         """
         Metodo responsavel por adicionar transições ao AFD.
@@ -969,8 +972,10 @@ class AFDController(object):
 
         if not existe_destino:
             print("ERRO! O estado de destino não existe neste autômato!")
+            return None
         elif not existe_fonte:
             print("ERRO! O estado fonte não existe neste autômato!")
+            return None
         else:  # Caso os dois estados existam, verifica-se se a transição já existe antes de adiconá-la.
 
             for t in transicoes:
@@ -981,11 +986,13 @@ class AFDController(object):
 
             if erro == 1:
                 print("ERRO! Transição já existente!")
+                return None
             else:  # Se não existir, adiciona-a à lista de transições do AFD.
 
                 nova_transicao = Transition(id, source, target, consume)
                 transicoes.append(nova_transicao)
                 print("Transição com ID = (" + id + ") adicionada com sucesso!")
+                return afd
 
     def deleteState(self, afd, id):
         """
@@ -1003,7 +1010,8 @@ class AFDController(object):
                 break
 
         if not existe:
-            return "ERRO! Estado inexistente!"
+            print("ERRO! Estado inexistente!")
+            return None
 
         else:  # Se existir, deleta-o
             for e in estados:
@@ -1014,7 +1022,8 @@ class AFDController(object):
             index = estados.index(del_state)
 
             del estados[index]
-            return "Estado de ID = (" + id + ") deletado com sucesso!"
+            print("Estado de ID = (" + id + ") deletado com sucesso!")
+            return afd
 
     def deleteTransition(self, afd, source, target, consume):
         """
@@ -1037,6 +1046,8 @@ class AFDController(object):
             index = transicoes.index(del_transition)
             del transicoes[index]
             print("Transição de ID = (" + str(index) + ") deletada com sucesso!")
+            return afd
         # Se não, retorna erro!
         else:
             print("ERRO! Esta transição não existe neste AFD!")
+            return None
