@@ -103,8 +103,8 @@ class AFDView(object):
                     3.Ver estado inicial
                     4.Ver lista de estados finais
                     5.Adicionar estado
-                    6.Remove estado
-                    7.Adiciona transição
+                    6.Adicionar transição
+                    7.Remove estado
                     8.Remove transição
                     9.Salvar automato em arquivo do JFlap
                     """)
@@ -121,11 +121,11 @@ class AFDView(object):
             elif opcao is 4:
                 self.getEstadosFinais(automato)
             elif opcao is 5:
-                automato = self.adicionaEstado(automato)
+                self.adicionaEstado(automato)
             elif opcao is 6:
-                automato = self.deletaEstado(automato)
-            elif opcao is 7:
                 self.adicionaTransicao(automato)
+            elif opcao is 7:
+                self.deletaEstado(automato)
             elif opcao is 8:
                 self.deletaTransicao(automato)
             elif opcao is 9:
@@ -155,7 +155,7 @@ class AFDView(object):
         questao = None
 
         # Tipo 1: Questões de "Sim" ou "Não"
-        if simples:
+        if not simples:
             sair = False
             while not sair:
                 questao = str(input(mensagem + " (s/n)"))
@@ -177,22 +177,21 @@ class AFDView(object):
     def adicionaEstado(self, afd):
         print("Adicionar estado ao automato")
 
-        name = self.obtemEntrada("Informe o nome do novo estado:")
-        initial = self.obtemEntrada("Este estado é inicial?", True)
-        final = self.obtemEntrada("Este estado é final?", True)
+        name = self.obtemEntrada("Informe o nome do novo estado:", True)
+        initial = self.obtemEntrada("Este estado é inicial?")
+        final = self.obtemEntrada("Este estado é final?")
 
         controller = AFDController()
 
-        return controller.addState(afd, name, initial, final)
+        controller.addState(afd, name, initial, final)
 
     def deletaEstado(self, afd):
-        print("Deletar estado do automato")
+        print("Remover estado do automato")
 
-        id = self.obtemEntrada("Informe o id do novo estado:")
-
+        id = "2" # Só pra testes!
         controller = AFDController()
+        controller.deleteState(afd, id)
 
-        return controller.deleteState(afd, id)
 
     def adicionaTransicao(self, afd):
         pass

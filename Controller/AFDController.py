@@ -910,6 +910,7 @@ class AFDController(object):
         # o próximo id disponível será = 5.
 
         estados = afd.getStates()
+        finais = afd.getFinals()
         id = str(len(estados))
         erro = 0
 
@@ -925,11 +926,15 @@ class AFDController(object):
 
         if erro == 1:
             print("ERRO! NOME existente!")
+            return None
         else:
             x /= len(estados)  # x = x / quantidade de estados
             y /= len(estados)
             novo_estado = State(id, name, str(x), str(y), initial, final)
             estados.append(novo_estado)
+            if final:
+                finais.append(id)
+                afd.setFinals(finais)
             print("Estado com ID = (" + id + ") adicionado com sucesso!")
 
         return afd
@@ -1001,6 +1006,7 @@ class AFDController(object):
         :rtype string
         """
         estados = afd.getStates()
+        finais = afd.getFinals()
         existe = False
 
         # Testa primeiro se o estado existe antes de deletá-lo
@@ -1022,6 +1028,9 @@ class AFDController(object):
             index = estados.index(del_state)
 
             del estados[index]
+            if id in finais:
+                index = finais.index(id)
+                del finais[index]
             print("Estado de ID = (" + id + ") deletado com sucesso!")
             return afd
 
