@@ -123,11 +123,11 @@ class AFDView(object):
             elif opcao is 5:
                 automato = self.adicionaEstado(automato)
             elif opcao is 6:
-                self.adicionaTransicao(automato)
+                automato = self.adicionaTransicao(automato)
             elif opcao is 7:
-                self.deletaEstado(automato)
+                automato = self.deletaEstado(automato)
             elif opcao is 8:
-                self.deletaTransicao(automato)
+                automato = self.deletaTransicao(automato)
             elif opcao is 9:
                 self.salvaAfd(automato)
             else:
@@ -188,10 +188,10 @@ class AFDView(object):
     def deletaEstado(self, afd):
         print("Remover estado do automato")
 
-        id = "2" # Só pra testes!
-        controller = AFDController()
-        controller.deleteState(afd, id)
+        id = self.obtemEntrada("Informe o ID do estado a ser deletado:", True)
 
+        controller = AFDController()
+        return controller.deleteState(afd, id)
 
     def adicionaTransicao(self, afd):
         pass
