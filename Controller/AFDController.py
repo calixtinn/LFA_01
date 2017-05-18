@@ -914,6 +914,12 @@ class AFDController(object):
         id = str(len(estados))
         erro = 0
 
+        # Verifica a tentativa de adicionar mais um estado inicial no AFD, o que não é permitido.
+
+        if initial and afd.getInitial() != None:
+            print("ERRO! O autômato já possui um estado inicial! Impossível adicionar este estado.")
+            return afd
+
         x = 0.0
         y = 0.0
 
@@ -926,7 +932,7 @@ class AFDController(object):
 
         if erro == 1:
             print("ERRO! NOME existente!")
-            return None
+            return afd
         else:
             x /= len(estados)  # x = x / quantidade de estados
             y /= len(estados)
@@ -934,7 +940,6 @@ class AFDController(object):
             estados.append(novo_estado)
             if final:
                 finais.append(id)
-                afd.setFinals(finais)
             print("Estado com ID = (" + id + ") adicionado com sucesso!")
 
         return afd
