@@ -252,7 +252,7 @@ class AFDView(object):
         pass
 
     def imprimeTerminal(self, afd):
-        pass
+        afd.printAutomata()
 
     def menuPrincipal(self):
         opcao = True
