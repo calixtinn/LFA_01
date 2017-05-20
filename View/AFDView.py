@@ -283,7 +283,7 @@ class AFDView(object):
             5.Realizar união de dois AFDs
             6.Realizar intercessão de dois AFDs
             7.Realizar diferença de dois AFDs
-            8.Modificar automato
+            8.Editar automato
             """)
             opcao = int(input("O que você gostaria de fazer?"))
             if opcao is 0:
@@ -430,4 +430,3 @@ class AFDView(object):
             resultDiferenca = controller.difference(afd1, afd2)
 
             self.salvaAfd(resultDiferenca)
-
