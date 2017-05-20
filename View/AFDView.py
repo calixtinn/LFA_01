@@ -23,7 +23,7 @@ class AFDView(object):
             print('Arquivo de entrada com formato inválido!')
             return False
 
-    def entrada(self, multiEntrada=False):
+    def obtemEntradaAfd(self, multiEntrada=False):
         """
         Método reponsavel por ler a entrada do algoritmo.
         Este método recebe como parâmetro uma flag informando se a entrada deve ser chamada mais
@@ -134,7 +134,7 @@ class AFDView(object):
                 print("\nNão é uma opção válida, tente novamente.")
 
     def carregaAutomato(self):
-        afdEntrada = self.entrada()
+        afdEntrada = self.obtemEntradaAfd()
         controller = AFDController()
         return controller.load(afdEntrada)
 
@@ -151,7 +151,7 @@ class AFDView(object):
         for e in estadosFinais:
             print(e)
 
-    def obtemEntrada(self, mensagem, simples=False):
+    def obtemEntradaTerminal(self, mensagem, simples=False):
         questao = None
 
         # Tipo 1: Questões de "Sim" ou "Não"
@@ -177,9 +177,9 @@ class AFDView(object):
     def adicionaEstado(self, afd):
         print("Adicionar estado ao automato")
 
-        name = self.obtemEntrada("Informe o nome do novo estado:", True)
-        initial = self.obtemEntrada("Este estado é inicial?")
-        final = self.obtemEntrada("Este estado é final?")
+        name = self.obtemEntradaTerminal("Informe o nome do novo estado:", True)
+        initial = self.obtemEntradaTerminal("Este estado é inicial?")
+        final = self.obtemEntradaTerminal("Este estado é final?")
 
         controller = AFDController()
 
@@ -188,10 +188,13 @@ class AFDView(object):
     def deletaEstado(self, afd):
         print("Remover estado do automato")
 
-        id = self.obtemEntrada("Informe o ID do estado a ser deletado:", True)
+        id = self.obtemEntradaTerminal("Informe o ID do estado a ser deletado:", True)
 
         controller = AFDController()
-        return controller.deleteState(afd, id)
+        af = controller.deleteState(afd, id)
+
+        if af:
+            return af
 
     def adicionaTransicao(self, afd):
         pass
@@ -276,83 +279,97 @@ class AFDView(object):
         print("Verificar equivalência de estados")
         print("Informe o automato que deseja verificar a esquivalência de estados...\n")
 
-        afdEntrada = self.entrada()
-        controller = AFDController()
-        afd = controller.load(afdEntrada)
-        listaEstadosEquivalentes = controller.equivalent_states(afd)
-        print("Lista de estados equivalentes: " + str(listaEstadosEquivalentes))
+        afdEntrada = self.obtemEntradaAfd()
+        if afdEntrada:
+            controller = AFDController()
+            afd = controller.load(afdEntrada)
+            listaEstadosEquivalentes = controller.equivalent_states(afd)
+            print("Lista de estados equivalentes: " + str(listaEstadosEquivalentes))
 
     def minimoAfd(self):
         print("Obter o AFD mínimo")
         print("Informe o automato a ser minimizado...\n")
-        afdEntrada = self.entrada()
-        controller = AFDController()
-        afd = controller.load(afdEntrada)
-        afdMinimo = controller.minimum(afd)
 
-        self.salvaAfd(afdMinimo)
+        afdEntrada = self.obtemEntradaAfd()
+
+        if afdEntrada:
+            controller = AFDController()
+            afd = controller.load(afdEntrada)
+            afdMinimo = controller.minimum(afd)
+
+            self.salvaAfd(afdMinimo)
 
     def equivalenciaAfds(self):
         print("Obter a equivalência de dois automatos")
         print("Informe os automatos que deseja verificar a equivalência...\n")
-        afdEntrada = self.entrada(True)
+        afdEntrada = self.obtemEntradaAfd(True)
 
-        controller = AFDController()
-        afd1 = controller.load(afdEntrada[0])
-        afd2 = controller.load(afdEntrada[1])
+        if afdEntrada:
+            controller = AFDController()
+            afd1 = controller.load(afdEntrada[0])
+            afd2 = controller.load(afdEntrada[1])
 
-        resultEquivalents = controller.equivalent_automatas(afd1, afd2)
+            resultEquivalents = controller.equivalent_automatas(afd1, afd2)
 
-        print(resultEquivalents)
+            print(resultEquivalents)
 
     def complementoAfd(self):
         print("Obter o complemento de um AFD")
         print("Informe o automato que deseja obter o complemento...\n")
-        afdEntrada = self.entrada()
-        controller = AFDController()
-        afd = controller.load(afdEntrada)
-        afdComplemento = controller.complement(afd)
 
-        self.salvaAfd(afdComplemento)
+        afdEntrada = self.obtemEntradaAfd()
+
+        if afdEntrada:
+            controller = AFDController()
+            afd = controller.load(afdEntrada)
+            afdComplemento = controller.complement(afd)
+
+            self.salvaAfd(afdComplemento)
 
     def uniaoAfds(self):
         print("Obter a inião de dois automatos")
         print("Informe os automatos que deseja realizar a união...\n")
-        afdEntrada = self.entrada(True)
 
-        controller = AFDController()
-        afd1 = controller.load(afdEntrada[0])
-        afd2 = controller.load(afdEntrada[1])
+        afdEntrada = self.obtemEntradaAfd(True)
 
-        resultUniao = controller.union(afd1, afd2)
+        if afdEntrada:
+            controller = AFDController()
+            afd1 = controller.load(afdEntrada[0])
+            afd2 = controller.load(afdEntrada[1])
 
-        self.salvaAfd(resultUniao)
+            resultUniao = controller.union(afd1, afd2)
+
+            self.salvaAfd(resultUniao)
 
     def intercessaoAfds(self):
         print("Obter a intercessão de dois automatos")
         print("Informe os automatos que deseja realizar a intercessão...\n")
-        afdEntrada = self.entrada(True)
 
-        controller = AFDController()
-        afd1 = controller.load(afdEntrada[0])
-        afd2 = controller.load(afdEntrada[1])
+        afdEntrada = self.obtemEntradaAfd(True)
 
-        resultIntercessao = controller.intersection(afd1, afd2)
+        if afdEntrada:
+            controller = AFDController()
+            afd1 = controller.load(afdEntrada[0])
+            afd2 = controller.load(afdEntrada[1])
 
-        self.salvaAfd(resultIntercessao)
+            resultIntercessao = controller.intersection(afd1, afd2)
+
+            self.salvaAfd(resultIntercessao)
 
     def diferencaAfds(self):
         print("Obter a diferença de dois automatos")
         print("Informe os automatos que deseja realizar a diferença...\n")
-        afdEntrada = self.entrada(True)
 
-        controller = AFDController()
-        afd1 = controller.load(afdEntrada[0])
-        afd2 = controller.load(afdEntrada[1])
+        afdEntrada = self.obtemEntradaAfd(True)
 
-        resultDiferenca = controller.difference(afd1, afd2)
+        if afdEntrada:
+            controller = AFDController()
+            afd1 = controller.load(afdEntrada[0])
+            afd2 = controller.load(afdEntrada[1])
 
-        self.salvaAfd(resultDiferenca)
+            resultDiferenca = controller.difference(afd1, afd2)
+
+            self.salvaAfd(resultDiferenca)
 
     def testaPalavra(self):
         pass
