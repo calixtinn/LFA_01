@@ -106,7 +106,10 @@ class AFDView(object):
                     6.Adicionar transição
                     7.Remove estado
                     8.Remove transição
-                    9.Salvar automato em arquivo do JFlap
+                    9.Testar palavra
+                    10.Testar movimento
+                    11.Imprimir AFD no terminal
+                    12.Salvar automato em arquivo do JFlap
                     """)
             opcao = int(input("O que você gostaria de fazer?"))
 
@@ -129,6 +132,12 @@ class AFDView(object):
             elif opcao is 8:
                 automato = self.deletaTransicao(automato)
             elif opcao is 9:
+                self.testaPalavra(automato)
+            elif opcao is 10:
+                self.testaMovimento(automato)
+            elif opcao is 11:
+                self.imprimeTerminal(automato)
+            elif opcao is 12:
                 self.salvaAfd(automato)
             else:
                 print("\nNão é uma opção válida, tente novamente.")
@@ -236,6 +245,15 @@ class AFDView(object):
             if af:
                 return af
 
+    def testaPalavra(self, afd):
+        pass
+
+    def testaMovimento(self, afd):
+        pass
+
+    def imprimeTerminal(self, afd):
+        pass
+
     def menuPrincipal(self):
         opcao = True
         while opcao:
@@ -248,10 +266,7 @@ class AFDView(object):
             5.Realizar união de dois AFDs
             6.Realizar intercessão de dois AFDs
             7.Realizar diferença de dois AFDs
-            8.Testar palavra no AFD
-            9.Testar movimento do AFD
-            10.Modificar automato
-            11.Imprimir AFD no terminal
+            8.Modificar automato
             """)
             opcao = int(input("O que você gostaria de fazer?"))
             if opcao is 0:
@@ -271,13 +286,7 @@ class AFDView(object):
             elif opcao is 7:
                 self.diferencaAfds()
             elif opcao is 8:
-                self.testaPalavra()
-            elif opcao is 9:
-                self.testaMovimento()
-            elif opcao is 10:
                 self.menuModificaAutomato()
-            elif opcao is 11:
-                self.imprimeTerminal()
             else:
                 print("\nNão é uma opção válida, tente novamente.")
 
@@ -405,11 +414,3 @@ class AFDView(object):
 
             self.salvaAfd(resultDiferenca)
 
-    def testaPalavra(self):
-        pass
-
-    def testaMovimento(self):
-        pass
-
-    def imprimeTerminal(self):
-        pass
