@@ -212,7 +212,7 @@ class AFDView(object):
 
             source  = self.obtemEntradaTerminal("Informe o ID do estado de origem:", True)
             target  = self.obtemEntradaTerminal("Informe o ID do estado de destino:", True)
-            consume = self.obtemEntradaTerminal("Informe o item do alfabeto que irá consumir", True)
+            consume = self.obtemEntradaTerminal("Informe o item do alfabeto de consumo:", True)
 
             controller = AFDController()
 
@@ -222,7 +222,19 @@ class AFDView(object):
                 return af
 
     def deletaTransicao(self, afd):
-        pass
+        if afd:
+            print("Deletar transição ao automato")
+
+            source  = self.obtemEntradaTerminal("Informe o ID do estado de origem:", True)
+            target  = self.obtemEntradaTerminal("Informe o ID do estado de destino:", True)
+            consume = self.obtemEntradaTerminal("Informe o item do alfabeto de consumo:", True)
+
+            controller = AFDController()
+
+            af = controller.deleteTransition(afd, source, target, consume)
+
+            if af:
+                return af
 
     def menuPrincipal(self):
         opcao = True
