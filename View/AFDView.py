@@ -246,10 +246,27 @@ class AFDView(object):
                 return af
 
     def testaPalavra(self, afd):
-        pass
+        if afd:
+            print("Testar palavra no autmato")
+
+            word = self.obtemEntradaTerminal("Informe a palavra que deseja testar:", True)
+
+            controller = AFDController()
+            result = controller.accept(afd, word)
+
+            print(result)
 
     def testaMovimento(self, afd):
-        pass
+        if afd:
+            print("Testar um movimento com uma palavra a partir de um estado")
+
+            word = self.obtemEntradaTerminal("Informe a palavra que deseja testar:", True)
+            id = self.obtemEntradaTerminal("Informe o Id do estado a ser testado:", True)
+
+            controller = AFDController()
+            result = controller.move(afd, id, word)
+
+            print(result)
 
     def imprimeTerminal(self, afd):
         afd.printAutomata()
