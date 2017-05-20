@@ -135,21 +135,26 @@ class AFDView(object):
 
     def carregaAutomato(self):
         afdEntrada = self.obtemEntradaAfd()
-        controller = AFDController()
-        return controller.load(afdEntrada)
+        if afdEntrada:
+            controller = AFDController()
+            return controller.load(afdEntrada)
+        else:
+            return None
 
     def getEstadoInicial(self, afd):
-        controller      = AFDController()
-        estadoInicial   = controller.initial(afd)
-        print("Estado inicial do automato: " + estadoInicial.getName())
+        if afd:
+            controller = AFDController()
+            estadoInicial = controller.initial(afd)
+            print("Estado inicial do automato: " + estadoInicial.getName())
 
     def getEstadosFinais(self, afd):
-        controller      = AFDController()
-        estadosFinais   = controller.final(afd)
+        if afd:
+            controller = AFDController()
+            estadosFinais = controller.final(afd)
 
-        print("Lista de estados finais:")
-        for e in estadosFinais:
-            print(e)
+            print("Lista de estados finais:")
+            for e in estadosFinais:
+                print(e)
 
     def obtemEntradaTerminal(self, mensagem, simples=False):
         questao = None
@@ -175,29 +180,46 @@ class AFDView(object):
         return questao
 
     def adicionaEstado(self, afd):
-        print("Adicionar estado ao automato")
+        if afd:
+            print("Adicionar estado ao automato")
 
-        name = self.obtemEntradaTerminal("Informe o nome do novo estado:", True)
-        initial = self.obtemEntradaTerminal("Este estado é inicial?")
-        final = self.obtemEntradaTerminal("Este estado é final?")
+            name = self.obtemEntradaTerminal("Informe o nome do novo estado:", True)
+            initial = self.obtemEntradaTerminal("Este estado é inicial?")
+            final = self.obtemEntradaTerminal("Este estado é final?")
 
-        controller = AFDController()
+            controller = AFDController()
 
-        return controller.addState(afd, name, initial, final)
+            af = controller.addState(afd, name, initial, final)
+
+            if af:
+                return af
 
     def deletaEstado(self, afd):
-        print("Remover estado do automato")
+        if afd:
+            print("Remover estado do automato")
 
-        id = self.obtemEntradaTerminal("Informe o ID do estado a ser deletado:", True)
+            id = self.obtemEntradaTerminal("Informe o ID do estado a ser deletado:", True)
 
-        controller = AFDController()
-        af = controller.deleteState(afd, id)
+            controller = AFDController()
+            af = controller.deleteState(afd, id)
 
-        if af:
-            return af
+            if af:
+                return af
 
     def adicionaTransicao(self, afd):
-        pass
+        if afd:
+            print("Adicionar transição ao automato")
+
+            source  = self.obtemEntradaTerminal("Informe o ID do estado de origem:", True)
+            target  = self.obtemEntradaTerminal("Informe o ID do estado de destino:", True)
+            consume = self.obtemEntradaTerminal("Informe o item do alfabeto que irá consumir", True)
+
+            controller = AFDController()
+
+            af = controller.addTransition(afd, source, target, consume)
+
+            if af:
+                return af
 
     def deletaTransicao(self, afd):
         pass
