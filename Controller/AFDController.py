@@ -192,7 +192,6 @@ class AFDController(object):
         """
         tabela_equivalencia = {}  # Tabela que contem a quivalência entre os estados
         lista_estados = []  # lista para o controle dos estados
-        transicoes_estados = []  # transicoes dos estados
         lista_equivalentes = []  # lista de estados equivalentes
         amarrados = {}  # Dicionario contendo as amarrações entre estados no algoritmo de equivalencia.
 
@@ -213,21 +212,15 @@ class AFDController(object):
                 e2 = lista_estados[j]
                 chave = e1 + "," + e2  # Cria uma chave para se testar na tabela. Ex: 1,2 (Estado1 equivalente a estado 2?)
                 if (estados[i].isFinal() != estados[
-                    j].isFinal()):  # Se ambos não forem finais ou não finais já não é equivalente
+                    j].isFinal()):  # Se a flag de estado final de ambos forem diferentes, já não é equivalente
                     tabela_equivalencia[chave] = "X"  # Marca na tabela Hash que não é equivalente.
                 else:
                     tabela_equivalencia[chave] = "N"  # Caso contrário, marca como N (Espaço vazio a ser testado)
         # CRIADA A TABELA
 
-        # Salva em uma lista as todas as transições de todos os estados.
-        for i in transicoes:
-            for j in range(0, n_estados):
-                if i.getFrom() == lista_estados[j]:
-                    transicoes_estados.append(i)
-
         for i in range(0, n_estados):  # Percorre a lista de estados
             trans_i = {}  # transicoes de i (dicionario)
-            for k in transicoes_estados:  # procura as transições dos respectivos estados
+            for k in transicoes:  # procura as transições dos respectivos estados
                 if k.getFrom() == lista_estados[i]:
                     trans_i[k.getRead()] = k.getTo()  # Ex: ["a"] = 1 [caractere] = para onde vai.
             # End pegar transições de I
@@ -240,7 +233,7 @@ class AFDController(object):
                 if estados[i].isFinal() == estados[j].isFinal():
 
                     trans_j = {}  # transicoes de j (dicionario)
-                    for k in transicoes_estados:  # procura as transições dos respectivos estados
+                    for k in transicoes:  # procura as transições dos respectivos estados
                         if k.getFrom() == lista_estados[j]:
                             trans_j[k.getRead()] = k.getTo()
                     # End pegar transições de j
@@ -338,7 +331,6 @@ class AFDController(object):
         :param afd
         :rtype AFD
         """
-
         transicoes = afd.getTransitions()
         equivalentes = self.equivalent_states(afd)
         inicial = afd.getInitial()
@@ -385,7 +377,6 @@ class AFDController(object):
                 to_j = transicoes[j].getTo()
                 read_j = transicoes[j].getRead()
                 if from_i == from_j and to_i == to_j and read_i == read_j:
-                    # del min_transicoes[j]
                     transicoes_iguais.append(int(transicoes[j].getId()))
 
         transicoes_iguais.sort(reverse=True)
@@ -409,7 +400,7 @@ class AFDController(object):
                 aux = e1
                 e1 = e2
                 e2 = aux
-            mensagem = self.deleteState(afd, e1)
+            afd = self.deleteState(afd, e1)
 
         return afd
 

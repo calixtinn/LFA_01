@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2017.3.27)  21 MAY 2017 13:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2017.3.27)  21 MAY 2017 16:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -267,28 +267,56 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/it' tried instead on input line 29.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 34.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 55.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 55.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./sbc-template.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--102
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--104
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
+
+ []
+
+[3] [4] (./sbc-template.aux) ) 
 Here is how much of TeX's memory you used:
- 3040 strings out of 494996
- 42574 string characters out of 6180489
- 111774 words of memory out of 5000000
- 6212 multiletter control sequences out of 15000+600000
+ 3074 strings out of 494996
+ 43104 string characters out of 6180489
+ 115774 words of memory out of 5000000
+ 6243 multiletter control sequences out of 15000+600000
  18188 words of font info for 40 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 38i,8n,28p,477b,310s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/us
-r/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
-w/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on sbc-template.pdf (1 page, 65555 bytes).
+ 38i,8n,28p,759b,310s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/ba
+se/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.
+pfb>
+Output written on sbc-template.pdf (4 pages, 84448 bytes).
 PDF statistics:
- 33 PDF objects out of 1000 (max. 8388607)
- 23 compressed objects within 1 object stream
+ 46 PDF objects out of 1000 (max. 8388607)
+ 32 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

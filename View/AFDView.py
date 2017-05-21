@@ -85,9 +85,7 @@ class AFDView(object):
             # Retorna a lista de caminhos
             return arrayCaminhoAfds
 
-    def menuModificaAutomato(self):
-
-        automato = None
+    def menuModificaAutomato(self, automato):
 
         opcao = True
         while opcao:
@@ -272,6 +270,7 @@ class AFDView(object):
 
     def menuPrincipal(self):
         opcao = True
+        automato = None
         while opcao:
             print("""
             0.Sair
@@ -288,21 +287,21 @@ class AFDView(object):
             if opcao is 0:
                 opcao = None
             elif opcao is 1:
-                self.equivalenciaEstados()
+                automato = self.equivalenciaEstados()
             elif opcao is 2:
-                self.minimoAfd()
+                automato = self.minimoAfd()
             elif opcao is 3:
-                self.equivalenciaAfds()
+                automato = self.equivalenciaAfds()
             elif opcao is 4:
-                self.complementoAfd()
+                automato = self.complementoAfd()
             elif opcao is 5:
-                self.uniaoAfds()
+                automato = self.uniaoAfds()
             elif opcao is 6:
-                self.intercessaoAfds()
+                automato = self.intercessaoAfds()
             elif opcao is 7:
-                self.diferencaAfds()
+                automato = self.diferencaAfds()
             elif opcao is 8:
-                self.menuModificaAutomato()
+                self.menuModificaAutomato(automato)
             else:
                 print("\nNão é uma opção válida, tente novamente.")
 
@@ -346,6 +345,8 @@ class AFDView(object):
             listaEstadosEquivalentes = controller.equivalent_states(afd)
             print("Lista de estados equivalentes: " + str(listaEstadosEquivalentes))
 
+        return None
+
     def minimoAfd(self):
         print("Obter o AFD mínimo")
         print("Informe o automato a ser minimizado...\n")
@@ -358,6 +359,7 @@ class AFDView(object):
             afdMinimo = controller.minimum(afd)
 
             self.salvaAfd(afdMinimo)
+        return afdMinimo
 
     def equivalenciaAfds(self):
         print("Obter a equivalência de dois automatos")
@@ -372,6 +374,7 @@ class AFDView(object):
             resultEquivalents = controller.equivalent_automatas(afd1, afd2)
 
             print(resultEquivalents)
+        return None
 
     def complementoAfd(self):
         print("Obter o complemento de um AFD")
@@ -385,6 +388,7 @@ class AFDView(object):
             afdComplemento = controller.complement(afd)
 
             self.salvaAfd(afdComplemento)
+        return afdComplemento
 
     def uniaoAfds(self):
         print("Obter a inião de dois automatos")
@@ -400,6 +404,7 @@ class AFDView(object):
             resultUniao = controller.union(afd1, afd2)
 
             self.salvaAfd(resultUniao)
+        return resultUniao
 
     def intercessaoAfds(self):
         print("Obter a intercessão de dois automatos")
@@ -415,6 +420,7 @@ class AFDView(object):
             resultIntercessao = controller.intersection(afd1, afd2)
 
             self.salvaAfd(resultIntercessao)
+        return resultIntercessao
 
     def diferencaAfds(self):
         print("Obter a diferença de dois automatos")
@@ -430,3 +436,4 @@ class AFDView(object):
             resultDiferenca = controller.difference(afd1, afd2)
 
             self.salvaAfd(resultDiferenca)
+        return resultDiferenca

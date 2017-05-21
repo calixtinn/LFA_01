@@ -47,7 +47,81 @@
 	
 	A implementação do trabalho foi realizada pelos dois alunos de maneira online, que utilizaram recursos como: IDE PyCharm e controle de versão com Git. A divisão das tarefas foi realizada de maneira igual e justa entre os integrantes, o que contribuiu de maneira excelente para o bom andamento do trabalho. As dificuldades foram solucionadas rapidamente através da troca de ideias, e as decisões de implementação foram discutidas de maneira saudável.
 	
-	Do que diz respeito ao código, 
+	\subsection{A Classe AFD}
+	
+	Do que diz respeito ao código, o objeto AFD foi construído a partir de outros objetos: Estados (States) e Transições (Transitions). O objeto State, que representa um estado de um autômato, possui os seguintes atributos:
+	
+	\begin{itemize}
+		\item \textbf{ID:} Um número inteiro salvo como caracter, que é a identificação do estado.
+		\item \textbf{Name:} O nome do estado.
+		\item \textbf{PosX:} Um número real, representando a coordenada do eixo X referente à posição do estado no plano cartesiano do software JFLAP.
+		\item \textbf{PosY:} Um número real, representando a coordenada do eixo Y referente à posição do estado no plano cartesiano do software JFLAP.
+		\item \textbf{Initial:} Uma flag booleana, indicando se o estado é um estado inicial (True) ou não (False).
+		\item \textbf{Final:} Uma flag booleana, indicando se o estado é um estado final (True) ou não (False).	
+	\end{itemize}
+
+	Já o objeto Transition que também possui uma classe própria, assim como o objeto State, representa as transições entre os estados desse AFD. Cada transição possui os seguintes atributos:
+	
+		\begin{itemize}
+		\item \textbf{ID:} Um número inteiro salvo como caracter, que é a identificação da transição.
+		\item \textbf{From:} Um número inteiro salvo como caractere, que indica o estado de partida da transição.
+		\item \textbf{To:} Um número inteiro salvo como caractere, que indica o estado de destino da transição
+		\item \textbf{Read:} Um caractere que é consumido ao se realizar uma transição de um estado a outro.
+		\end{itemize}
+	
+	Por fim, através desses objetos, o objeto AFD, que representa o autômato, é construído. A classe AFD possui os seguintes atributos:
+	
+	\begin{itemize}
+		\item \textbf{States:} Uma lista de objetos do tipo State, que comporta todos os estados do AFD.
+		\item \textbf{Trasitions:} Uma lista de objetos do tipo Transition, que comporta todas as transições do AFD.
+		\item \textbf{Initial:} Um número inteiro, salvo como caractere, que representa o estado inicial do AFD.
+		\item \textbf{Finals:} Uma lista de caracteres, contendo o ID de todos os estados que são finais.
+		\item \textbf{Alphabet:} Uma lista contendo todos os caracteres que fazem parte do alfabeto do referido AFD.
+	\end{itemize}
+
+	Com esses objetos, conclui-se a constituição da interface \textit{Model} do modelo MVC, e com isso a primeira parte do trabalho que era criar uma classe que representasse um Autômato, foi concluída.
+	
+	\subsection{Manipulação do AFD}
+	
+	Para a segunda etapa do trabalho, foi solicitado que se criasse funções para a manipulação deste AFD. Estas manipulações se dão através dos algoritmos vistos em sala de aula, e podem ser descritas a seguir:
+	
+	\begin{itemize}
+		\item \textbf{Entrada de Dados:} A entrada de dados é obtida através do Software JFLAP, que permite criar autômatos e salva-los no formato .jff, que nada mais é que o formato XML. portanto, o usuário deve construir o autômato primeiro, através do JFLAP, e depois utilizar a opção de Carregamento no programa. Para tal, foi implementada uma função de leitura de arquivos XML, onde foi utilizada a biblioteca ElementTree.
+		O arquivo jff, possui tags pré definidas que permitem a leitura fácil e obtenção das informações através do arquivo. Foram extraídas as seguintes informações deste arquivo:
+		\subitem  - ID do estado
+		\subitem  - Nome do Estado
+		\subitem  - Posição X (plano cartesiano)
+		\subitem  - Posição Y (plano cartesiano)
+		\subitem  - Flag de estado inicial
+		\subitem  - Flag de estado final
+		\subitem  - ID do estado fonte da transição
+		\subitem  - ID do estado destino da transição
+		\subitem  - Caractere consumido na transição\\
+		
+		Através da extração destes dados, foram criados objetos State, Transitions, o estado inicial do autômato, a lista de estados finais e o alfabeto, possibilitando então a criação do objeto AFD.\\
+		
+		\item \textbf{Saída de dados:} FAZER AQUI SAMUEL!!\\
+		
+		\item \textbf{Estados equivalentes:} Esta foi a função mais complicada e a principal do trabalho, pois através dela, possibilitou-se implementar as outras funções de maneira fácil. O algoritmo para a implementação desta função, foi o mesmo utilizado em sala de aula. De maneira sucinta, foram realizados os seguintes passos:
+		
+		\begin{enumerate}
+			\item Criação de uma lista com os ID's dos estados do AFD.
+			\item A partir desta lista, testa-se um a um, para verificar uma possível equivalência. É criada uma chave, contendo os ID's dos dois estados separados por vírgula. Ex: 1,2 (Estado 1 equivalente ao 2?), em uma tabela Hash, denominada Tabela de Equivalência. O valor desta chave pode ser X ou N, onde X representa que não são equivalentes e N que por hora são.
+			Em um teste inicial, é verificado se as flags destes estados são finais. Caso um for final e o outro não, já não são equivalentes, logo a chave recebe o valor X. Caso contrário, recebe N
+			\item Para cada estado, salva-se uma tabela hash  contendo como chave o caracter lido, e como valor o destino.
+			\item Para cada letra do alfabeto, obtém-se o destino da transição de cada estado, a partir das tabelas de cada estado montadas anteriormente.
+			\item Cria-se então uma chave (destino\_estado1, destino\_estado2), para se realizar o teste de equivalência na Tabela de Equivalências. Se na tabela, estes dois estados não forem equivalentes, logo os estados que estão sendo testados não são também. Então a tabela, na chave correspondente à esses estados recebe o valor X. Caso ainda não se souber se estes estados destino são equivalentes (valor N na tabela), adiciona-se à uma tabela denominada "amarrados", que possui como chave estes destinos, e como valor os estados que estão sendo testados no momento. Ou seja, Se num futuro os destinos não forem equivalentes, todos os estados que estão "amarrados" a eles também terão de ser marcados como não equivalentes
+			\item No final, do algoritmo, as chaves da tabela de equivalência que contém o valor N, são considerados Equivalentes.\\
+		\end{enumerate}
+	
+		\item \textbf{Minimização de AFD's:} A função de minimização de AFD's funciona com base na função de equivalência de estados, onde, obtida a lista de estados equivalentes, convencionou-se em eliminar o primeiro estado da chave. Ex: Chave (1,3), elimina-se o estado 1.
+		Caso o primeiro estado da chave for o inicial, elimina-se o segundo. Porém, antes de eliminar o estado do AFD, primeiro, as transições deste estado a ser eliminado são modificadas. Ou seja, todas as transições que tinham ele como destino, terão como destino o estado 2 da chave. E todas as transições que tinham o estado 1 como fonte, terão o estado 2 como fonte. Por fim, retorna-se o AFD mínimo.
+		
+	\end{itemize}
+	
+	
+	
+	
 	
 	\section{Validação}
 
