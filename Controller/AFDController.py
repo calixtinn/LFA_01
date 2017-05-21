@@ -835,7 +835,7 @@ class AFDController(object):
         :param afd
         :param id
         :param word (palavra)
-        :rtype boolean
+        
         """
 
         transicoes = afd.getTransitions()  # Pega a lista de transições do AFD
@@ -854,7 +854,6 @@ class AFDController(object):
 
         if not existe:
             print("ERRO! Estado inexistente!")
-
         else:  # Se existir, segue o algoritmo para percorrer o AFD
 
             for i in range(0, comprimento_palavra):  # Varre toda a palavra caractere por caractere
@@ -872,14 +871,12 @@ class AFDController(object):
 
             if erro == 1:  # Erro para não existência de transição e/ou estado
                 print("Palavra REJEITADA! Estado (" + id + ") não possui transição lendo o caractere " + word[i])
-                return False
             else:
                 if id in estados_finais:  # Se parou em um estado final, aceita
                     print("Palavra ACEITA! Parou no estado (" + id + ")")
-                    return True
                 else:  # Se não, rejeita.
                     print("Palavra REJEITADA! Parou no estado (" + id + ")")
-                    return False
+
 
     def final(self, afd):
         """
@@ -954,6 +951,7 @@ class AFDController(object):
         """
         transicoes = afd.getTransitions()
         estados = afd.getStates()
+        alfabeto = afd.getAlphabet()
         erro = 0
         id = str(len(transicoes))
         existe_fonte = False
@@ -982,10 +980,10 @@ class AFDController(object):
 
         if not existe_destino:
             print("ERRO! O estado de destino não existe neste autômato!")
-            return None
+            return afd
         elif not existe_fonte:
             print("ERRO! O estado fonte não existe neste autômato!")
-            return None
+            return afd
         else:  # Caso os dois estados existam, verifica-se se a transição já existe antes de adiconá-la.
 
             for t in transicoes:
@@ -996,11 +994,13 @@ class AFDController(object):
 
             if erro == 1:
                 print("ERRO! Transição já existente!")
-                return None
+                return afd
             else:  # Se não existir, adiciona-a à lista de transições do AFD.
 
                 nova_transicao = Transition(id, source, target, consume)
                 transicoes.append(nova_transicao)
+                if consume not in alfabeto:
+                    alfabeto.append(consume)
                 print("Transição com ID = (" + id + ") adicionada com sucesso!")
                 return afd
 
@@ -1022,7 +1022,7 @@ class AFDController(object):
 
         if not existe:
             print("ERRO! Estado inexistente!")
-            return None
+            return afd
 
         else:  # Se existir, deleta-o
             for e in estados:
@@ -1064,4 +1064,4 @@ class AFDController(object):
         # Se não, retorna erro!
         else:
             print("ERRO! Esta transição não existe neste AFD!")
-            return None
+            return afd

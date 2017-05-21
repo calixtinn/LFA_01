@@ -264,12 +264,11 @@ class AFDView(object):
             id = self.obtemEntradaTerminal("Informe o Id do estado a ser testado:", True)
 
             controller = AFDController()
-            result = controller.move(afd, id, word)
-
-            print(result)
+            controller.move(afd, id, word)
 
     def imprimeTerminal(self, afd):
-        afd.printAutomata()
+        if afd:
+            afd.printAutomata()
 
     def menuPrincipal(self):
         opcao = True
@@ -309,31 +308,32 @@ class AFDView(object):
 
     def salvaAfd(self, afd):
 
-        sair = False
+        if afd:
+            sair = False
 
-        while not sair:
+            while not sair:
 
-            opcao = input("Deseja salvar o automato? (s/n) ")
+                opcao = input("Deseja salvar o automato? (s/n) ")
 
-            if opcao.lower() == "s":
-                title = 'Salvar automato como'
-                ftypes = [('Arquivo do JFlap', '.jff'), ('All files', '*')]
+                if opcao.lower() == "s":
+                    title = 'Salvar automato como'
+                    ftypes = [('Arquivo do JFlap', '.jff'), ('All files', '*')]
 
-                # Pega o caminho para salvar
-                caminho = asksaveasfilename(filetypes=ftypes, title=title, defaultextension='.jff')
-                if not caminho:
-                    print("Operação cancelada.")
+                    # Pega o caminho para salvar
+                    caminho = asksaveasfilename(filetypes=ftypes, title=title, defaultextension='.jff')
+                    if not caminho:
+                        print("Operação cancelada.")
+                        sair = True
+
+                    controller = AFDController()
+                    controller.save(afd, caminho)
+                    print("Automato salvo com sucesso!")
                     sair = True
-
-                controller = AFDController()
-                controller.save(afd, caminho)
-                print("Automato salvo com sucesso!")
-                sair = True
-            elif opcao.lower() == "n":
-                print("Você escolheu não salvar")
-                sair = True
-            else:
-                print("Opção inválida")
+                elif opcao.lower() == "n":
+                    print("Você escolheu não salvar")
+                    sair = True
+                else:
+                    print("Opção inválida")
 
     def equivalenciaEstados(self):
         print("Verificar equivalência de estados")
