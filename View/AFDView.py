@@ -301,6 +301,7 @@ class AFDView(object):
             6.Realizar intercessão de dois AFDs
             7.Realizar diferença de dois AFDs
             8.Manipular automato
+            9.Help
             """)
             opcao = int(input("O que você gostaria de fazer?"))
             if opcao is 0:
@@ -321,6 +322,8 @@ class AFDView(object):
                 self.diferencaAfds()
             elif opcao is 8:
                 self.menuModificaAutomato()
+            elif opcao is 9:
+                self.helpMenuPrincipal()
             else:
                 print("\nNão é uma opção válida, tente novamente.")
 
@@ -451,3 +454,41 @@ class AFDView(object):
             resultDiferenca = controller.difference(afd1, afd2)
 
             self.salvaAfd(resultDiferenca)
+
+    def helpMenuPrincipal(self):
+        print("""
+            ********************************************************************
+            *                       HELP - MENU PRINCIPAL                      *
+            ********************************************************************
+            *           OPÇÃO               *           INFORMAÇÃO             *
+            ********************************************************************
+            * 0.Sair                        * Fecha o programa.                 *
+            ********************************************************************
+            * 1.Ver estados equivalentes    * Seleciona um autômatos e         *
+            *                               * verifica os estados equivalêntes.*                                  *
+            ********************************************************************
+            * 2.Obter AFD mínimo            * Seleciona um autômato e obtêm o  *
+            *                               * autômato mínimo equivalênte.      *
+            ********************************************************************
+            * 3.Verificar equivalência de   * Seleciona dois autômato e        *
+            * dois AFDs                     * verificando se são aquivalêntes. *
+            ********************************************************************
+            * 4.Realizar complemento do AFD * Seleciona um autômato e realiza  *
+            *                               * o complemento do mesmo.          *
+            ********************************************************************
+            * 5.Realizar união de dois AFDs * Seleciona dois autômatos e       *
+            *                               * realiza a união.                 *
+            ********************************************************************
+            * 6.Realizar intercessão de     * Seleciona dois autômatos e       *
+            * dois AFDs                     * realiza a intercessão.           *
+            ********************************************************************
+            * 7.Realizar diferença de dois  * Seleciona dois autômatos e       *
+            * AFDs                          * realiza a diferença.             *
+            ********************************************************************
+            * 8.Manipular automato          * Abre um menu onde é possível     *
+            *                               * menipular um autômato.           *
+            ********************************************************************
+            * 9.Help                        * Chama a ajuda.                   *
+            ********************************************************************
+            """)
+        input("Precione ENTER para sair.")
