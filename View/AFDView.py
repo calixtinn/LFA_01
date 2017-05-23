@@ -1,3 +1,9 @@
+"""
+Classe AFDView
+@author: Matheus Calixto | Samuel Terra
+
+Classe que implementa a visão do usuário com o sistema.
+"""
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 from Controller.AFDController import AFDController
@@ -85,9 +91,16 @@ class AFDView(object):
             # Retorna a lista de caminhos
             return arrayCaminhoAfds
 
-    def menuModificaAutomato(self, automato):
+    def menuModificaAutomato(self):
+        """
+        Método responsável por printar na tela, o menu interno onde é possível modificar determinado
+        automo
+        :return: 
+        """
 
         opcao = True
+        automato = None
+
         while opcao:
             if automato is None:
                 print("Automato ainda não selecionado.")
@@ -270,7 +283,7 @@ class AFDView(object):
 
     def menuPrincipal(self):
         opcao = True
-        automato = None
+
         while opcao:
             print("""
             0.Sair
@@ -287,21 +300,21 @@ class AFDView(object):
             if opcao is 0:
                 opcao = None
             elif opcao is 1:
-                automato = self.equivalenciaEstados()
+                self.equivalenciaEstados()
             elif opcao is 2:
-                automato = self.minimoAfd()
+                self.minimoAfd()
             elif opcao is 3:
-                automato = self.equivalenciaAfds()
+                self.equivalenciaAfds()
             elif opcao is 4:
-                automato = self.complementoAfd()
+                self.complementoAfd()
             elif opcao is 5:
-                automato = self.uniaoAfds()
+                self.uniaoAfds()
             elif opcao is 6:
-                automato = self.intercessaoAfds()
+                self.intercessaoAfds()
             elif opcao is 7:
-                automato = self.diferencaAfds()
+                self.diferencaAfds()
             elif opcao is 8:
-                self.menuModificaAutomato(automato)
+                self.menuModificaAutomato()
             else:
                 print("\nNão é uma opção válida, tente novamente.")
 
@@ -359,7 +372,6 @@ class AFDView(object):
             afdMinimo = controller.minimum(afd)
 
             self.salvaAfd(afdMinimo)
-        return afdMinimo
 
     def equivalenciaAfds(self):
         print("Obter a equivalência de dois automatos")
@@ -388,7 +400,6 @@ class AFDView(object):
             afdComplemento = controller.complement(afd)
 
             self.salvaAfd(afdComplemento)
-        return afdComplemento
 
     def uniaoAfds(self):
         print("Obter a inião de dois automatos")
@@ -404,7 +415,6 @@ class AFDView(object):
             resultUniao = controller.union(afd1, afd2)
 
             self.salvaAfd(resultUniao)
-        return resultUniao
 
     def intercessaoAfds(self):
         print("Obter a intercessão de dois automatos")
@@ -420,7 +430,6 @@ class AFDView(object):
             resultIntercessao = controller.intersection(afd1, afd2)
 
             self.salvaAfd(resultIntercessao)
-        return resultIntercessao
 
     def diferencaAfds(self):
         print("Obter a diferença de dois automatos")
@@ -436,4 +445,3 @@ class AFDView(object):
             resultDiferenca = controller.difference(afd1, afd2)
 
             self.salvaAfd(resultDiferenca)
-        return resultDiferenca
