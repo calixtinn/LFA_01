@@ -108,20 +108,23 @@ class AFDView(object):
                 print("Automato selecionado")
 
             print("""
-                    0.Voltar ao menu anterior
-                    1.Carregar automato
-                    2.Liberar automato
-                    3.Ver estado inicial
-                    4.Ver lista de estados finais
-                    5.Adicionar estado
-                    6.Adicionar transição
-                    7.Remove estado
-                    8.Remove transição
-                    9.Testar palavra
-                    10.Testar movimento
-                    11.Imprimir AFD no terminal
-                    12.Salvar automato em arquivo do JFlap
-                    """)
+            ********************************************************************
+            *              MANIPULAR AUTÔMATO FINITO DETERMINÌSTICO            *
+            ********************************************************************
+            0.Voltar ao menu anterior
+            1.Carregar automato
+            2.Liberar automato
+            3.Ver estado inicial
+            4.Ver lista de estados finais
+            5.Adicionar estado
+            6.Adicionar transição
+            7.Remove estado
+            8.Remove transição
+            9.Testar palavra
+            10.Testar movimento
+            11.Imprimir AFD no terminal
+            12.Salvar automato em arquivo do JFlap
+            """)
             opcao = int(input("O que você gostaria de fazer?"))
 
             if opcao is 0:
@@ -286,6 +289,9 @@ class AFDView(object):
 
         while opcao:
             print("""
+            ********************************************************************
+            *       TRABALHO 01 - LINGUAGENS FORMAIS E AUTOMATOS FINITOS       *
+            ********************************************************************
             0.Sair
             1.Ver estados equivalentes
             2.Obter AFD mínimo
