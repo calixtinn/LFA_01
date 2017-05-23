@@ -465,13 +465,13 @@ class AFDView(object):
             * 0.Sair                        * Fecha o programa.                 *
             ********************************************************************
             * 1.Ver estados equivalentes    * Seleciona um autômatos e         *
-            *                               * verifica os estados equivalêntes.*                                  *
+            *                               * verifica os estados equivalentes.*                                  *
             ********************************************************************
             * 2.Obter AFD mínimo            * Seleciona um autômato e obtêm o  *
-            *                               * autômato mínimo equivalênte.      *
+            *                               * autômato mínimo equivalente.      *
             ********************************************************************
             * 3.Verificar equivalência de   * Seleciona dois autômato e        *
-            * dois AFDs                     * verificando se são aquivalêntes. *
+            * dois AFDs                     * verificando se são aquivalentes. *
             ********************************************************************
             * 4.Realizar complemento do AFD * Seleciona um autômato e realiza  *
             *                               * o complemento do mesmo.          *
