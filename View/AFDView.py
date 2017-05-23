@@ -294,7 +294,7 @@ class AFDView(object):
             5.Realizar união de dois AFDs
             6.Realizar intercessão de dois AFDs
             7.Realizar diferença de dois AFDs
-            8.Editar automato
+            8.Manipular automato
             """)
             opcao = int(input("O que você gostaria de fazer?"))
             if opcao is 0:
