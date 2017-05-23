@@ -97,9 +97,9 @@
 		\subitem  - ID do estado destino da transição
 		\subitem  - Caractere consumido na transição\\
 		
-		Através da extração destes dados, foram criados objetos State, Transitions, o estado inicial do autômato, a lista de estados finais e o alfabeto, possibilitando então a criação do objeto AFD.\\
+		Através da extração destes dados, foram criados objetos State, Transitions, o estado inicial do autômato, a lista de estados finais e o alfabeto, possibilitando então a criação do objeto AFD. Buscando facilitar ainda mais a interação com o usuário, na entrada de dados foi utilizada a biblioteca \textit{TkInter} que fornece uma interface simples e funcional, tornando assim, mais fácil selecionar o arquivo desejado e no formato correto.\\
 		
-		\item \textbf{Saída de dados:} A saída de dados,
+		\item \textbf{Saída de dados:} Na saída de dados, diferente da entrada, foi utilizada uma biblioteca chamada Dom que também realiza a manipulação de arquivo em formato xml. As mesmas tags utilizadas para a leitura do arquivo em formato JFlap, foram utilizadas, desta forma, é possível salvar o autômato no mesmo formato de entrada e se tornando totalmente "compatível" com o software JFlap. A interface fornecida pela biblioteca \textit{TkInter} também foi utilizada na saída de dados, facilitando ainda mais a escolha de onde salvar o autômato. Além da opção de exportar os dados em formado do JFlap, é possível realizar a impressão em forma de \textit{debug} pelo próprio terminal.\\
 		
 		\item \textbf{Estados equivalentes:} Esta foi a função mais complicada e a principal do trabalho, pois através dela, possibilitou-se implementar as outras funções de maneira fácil. O algoritmo para a implementação desta função, foi o mesmo utilizado em sala de aula. De maneira sucinta, foram realizados os seguintes passos:
 		
