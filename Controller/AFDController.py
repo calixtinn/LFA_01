@@ -5,10 +5,11 @@ Classe AFDController
 Classe que implementa todas as funcionalidades de um Automoto Finito Deterministico.
 """
 import xml.etree.ElementTree as ET
+from xml.dom.minidom import Document
+
+from Model.AFD import AFD
 from Model.State import State
 from Model.Transition import Transition
-from Model.AFD import AFD
-from xml.dom.minidom import Document
 
 
 class AFDController(object):
@@ -96,7 +97,6 @@ class AFDController(object):
         Metodo responsavel por salvar AFD em um arquivo XML em formato jff.
         :type jffFile: str
         :type automata: AFD
-        :param automata
         :param jffFile
         """
         # Cria um documento (root) Dom para gerar o xml
@@ -188,10 +188,11 @@ class AFDController(object):
         :type afd: AFD
         :param afd
         :rtype list
-
         """
+
         tabela_equivalencia = {}  # Tabela que contem a quivalência entre os estados
         lista_estados = []  # lista para o controle dos estados
+
         lista_equivalentes = []  # lista de estados equivalentes
         amarrados = {}  # Dicionario contendo as amarrações entre estados no algoritmo de equivalencia.
 
@@ -240,8 +241,8 @@ class AFDController(object):
 
                     for a in alfabeto:  # Para cada caracter do alfabeto...
 
-                        if a in trans_i and a in trans_j:   # Se houver transições com o caractere do alfabeto em
-                                                            # ambos os estados.
+                        if a in trans_i and a in trans_j:  # Se houver transições com o caractere do alfabeto em
+                            # ambos os estados.
 
                             destino_i = trans_i[a]  # Salva o destino do estado i ao ler o caractere em questão
                             destino_j = trans_j[a]  # Faz o mesmo para o estado j
@@ -492,7 +493,7 @@ class AFDController(object):
                 t.setId(str(id_cont))  # Altera o ID com base no contador atual
                 id_cont += 1  # Incrementa o contador
                 t.setFrom(str(old_from + n_estados_m1))  # Atualiza o novo ID do estado fonte
-                t.setTo(str(old_to + n_estados_m1))     # Atualiza o novo ID do estado destino
+                t.setTo(str(old_to + n_estados_m1))  # Atualiza o novo ID do estado destino
 
             novos_estados = estados_min1 + estados_min2  # Nova lista de estados
             novas_transicoes = transicoes_min1 + transicoes_min2  # Nova lista de transições
@@ -867,7 +868,6 @@ class AFDController(object):
                     print("Palavra ACEITA! Parou no estado (" + id + ")")
                 else:  # Se não, rejeita.
                     print("Palavra REJEITADA! Parou no estado (" + id + ")")
-
 
     def final(self, afd):
         """
