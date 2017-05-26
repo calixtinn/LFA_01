@@ -118,19 +118,10 @@
 		
 		\item \textbf{Complemento de AFD's:} A implementação do método que realiza o complemento do autômato se tornou fácil depois que toda a estrutura de decisão de projeto proporcionou a lista de todos os estados. Tal método recebe como parâmetro o AFD que deseja realizar o complemento, desta forma,se torna fácil obter a lista dos estados através do método \textit{getStates}. Tendo todos os estados retornados pelo método do modelo, bastou apenas percorrer a lista de estados e mudar o valor da variável booleana que sinalizava se o estado era final ou não. Por fim, o método retorna o objeto autômato com os estados finais atualizados.\\
 		
-		\item \textbf{União de AFD's:}
+		\item \textbf{União e Intercessão de AFD's:}
+		Ambos os métodos apresentam comportamentos parecidos. Tanto na união quanto na intercessão de AFD's, é realizado a multiplicação de seus estados, mudando assim, apenas forma de validação dos seus estados finais. Ao final da execução dos métodos, o alfabeto do autômato resultante, irá ser a união dos alfabetos de ambos os autômatos. Durante o processo, faz-se a multiplicação dos estados dos dois autômatos, criando assim uma nova lista de estados, contendo um novo ID, com um novo nome (seguindo o padrão: Estado de m1 = 0, Estado de m2 = 0, estado multiplicado = 0,0), as posições x e y obtidas através das médias das posições dos estados de \textit{m1} e \textit{m2}, e uma \textit{flag} dizendo se é inicial (os dois iniciais de m1 e m2) e/ou final (final de m1 com final de m2 OU final de m1 com não final de m2 e vice versa).\\
 		
-		\item \textbf{Intercessão de AFD's:}
-		
-		\item \textbf{Diferença de AFD's:}
-		
-		\item \textbf{Adiciona estado ao AFD:}
-		
-		\item \textbf{Remove estado do AFD:}
-		
-		\item \textbf{Adiciona transição ao AFD:}
-		
-		\item \textbf{Remove Transição do AFD:}
+		\item \textbf{Diferença de AFD's:} A diferença de AFD's acabou sendo a função mais fácil de todo o trabalho. Depois que as funções de intercessão e complemento já estão implementadas, bastou apenas unir a teoria com a prática. Tendo à abstração do autômato como um conjunto de estados, pode-se aplicar operações representadas na área da matemática, como se o AFD fosse um conjuntos numéricos de elementos. A diferença de conjuntos pode ser representada como a intercessão de um conjunto com a negação de outro, e.g. \textbf{$ A \bigcap ¬ B $}. Contudo, apenas bastou usar os dois métodos que já estavam implementados para que fosse possível realizar a diferença dos autômatos.
 		
 	\end{itemize}
 	
