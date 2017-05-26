@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2017.3.27)  25 MAY 2017 23:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2017.3.27)  25 MAY 2017 23:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -315,7 +315,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 121--123
 Here is how much of TeX's memory you used:
  3076 strings out of 494996
  43128 string characters out of 6180489
- 116774 words of memory out of 5000000
+ 116786 words of memory out of 5000000
  6245 multiletter control sequences out of 15000+600000
  18188 words of font info for 40 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
@@ -329,7 +329,7 @@ ive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8
 a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on sbc-template.pdf (5 pages, 106848 bytes).
+Output written on sbc-template.pdf (5 pages, 107207 bytes).
 PDF statistics:
  57 PDF objects out of 1000 (max. 8388607)
  40 compressed objects within 1 object stream
