@@ -1,11 +1,19 @@
 """
-@Transition
-@author: Matheus Calixto | Samuel Terra
-Esta classe representa uma Transição (ligação) de Estados em um Automato.
+*************************************************************************************************
+*                   Trabalho 01 - Linguagens Formais e Autômatos Finitos                        *
+*                                                                                               *
+*   @teacher: Walace Rodrigues                                                                  *
+*   @author: Matheus Calixto - ⁠⁠⁠0011233                                                          *
+*   @author: Samuel Terra    - 0011946                                                          *
+*   @lastUpdate: 25/05/2017                                                                     *
+*                                                                                               *
+*************************************************************************************************
 """
 
 class Transition(object):
-
+    """
+    Esta classe representa uma Transição (ligação) de Estados em um Automato.
+    """
     def __init__(self, Id, From, To, Read):
         self.Id = Id
         self.From = From

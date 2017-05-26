@@ -1,8 +1,13 @@
 """
-Classe AFDView
-@author: Matheus Calixto | Samuel Terra
-
-Classe que implementa a visão do usuário com o sistema.
+*************************************************************************************************
+*                   Trabalho 01 - Linguagens Formais e Autômatos Finitos                        *
+*                                                                                               *
+*   @teacher: Walace Rodrigues                                                                  *
+*   @author: Matheus Calixto - ⁠⁠⁠0011233                                                          *
+*   @author: Samuel Terra    - 0011946                                                          *
+*   @lastUpdate: 25/05/2017                                                                     *
+*                                                                                               *
+*************************************************************************************************
 """
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
@@ -11,6 +16,7 @@ from Controller.AFDController import AFDController
 
 class AFDView(object):
     """
+    Classe que implementa a visão do usuário com o sistema.
     Classe que representa a visão todas as funcionalidade um Automoto Finito Deterministico.
     """
 

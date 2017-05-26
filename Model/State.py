@@ -1,12 +1,18 @@
 """
-@State
-@author: Matheus Calixto | Samuel Terra
-Esta classe representa um Estado em um Automoto.
+*************************************************************************************************
+*                   Trabalho 01 - Linguagens Formais e Autômatos Finitos                        *
+*                                                                                               *
+*   @teacher: Walace Rodrigues                                                                  *
+*   @author: Matheus Calixto - ⁠⁠⁠0011233                                                          *
+*   @author: Samuel Terra    - 0011946                                                          *
+*   @lastUpdate: 25/05/2017                                                                     *
+*                                                                                               *
+*************************************************************************************************
 """
-
-from Model.Transition import Transition
-
 class State(object):
+    """
+    Esta classe representa um Estado em um Automoto.
+    """
     def __init__(self, Id, Name, Posx, Posy, Initial, Final):
         self.Id = Id
         self.Name = Name

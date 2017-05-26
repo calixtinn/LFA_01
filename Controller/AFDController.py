@@ -1,8 +1,13 @@
 """
-Classe AFDController
-@author: Matheus Calixto | Samuel Terra
-
-Classe que implementa todas as funcionalidades de um Automoto Finito Deterministico.
+*************************************************************************************************
+*                   Trabalho 01 - Linguagens Formais e Autômatos Finitos                        *
+*                                                                                               *
+*   @teacher: Walace Rodrigues                                                                  *
+*   @author: Matheus Calixto - ⁠⁠⁠0011233                                                          *
+*   @author: Samuel Terra    - 0011946                                                          *
+*   @lastUpdate: 25/05/2017                                                                     *
+*                                                                                               *
+*************************************************************************************************
 """
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import Document
