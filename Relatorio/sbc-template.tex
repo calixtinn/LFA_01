@@ -114,7 +114,22 @@
 		\end{enumerate}
 	
 		\item \textbf{Minimização de AFD's:} A função de minimização de AFD's funciona com base na função de equivalência de estados, onde, obtida a lista de estados equivalentes, convencionou-se em eliminar o primeiro estado da chave. Ex: Chave (1,3), elimina-se o estado 1.
-		Caso o primeiro estado da chave for o inicial, elimina-se o segundo. Porém, antes de eliminar o estado do AFD, primeiro, as transições deste estado a ser eliminado são modificadas. Ou seja, todas as transições que tinham ele como destino, terão como destino o estado 2 da chave. E todas as transições que tinham o estado 1 como fonte, terão o estado 2 como fonte. Por fim, retorna-se o AFD mínimo.
+		Caso o primeiro estado da chave for o inicial, elimina-se o segundo. Porém, antes de eliminar o estado do AFD, primeiro, as transições deste estado a ser eliminado são modificadas. Ou seja, todas as transições que tinham ele como destino, terão como destino o estado 2 da chave. E todas as transições que tinham o estado 1 como fonte, terão o estado 2 como fonte. Por fim, retorna-se o AFD mínimo.\\
+		
+		\item \textbf{Equivalência de AFD's:} A função de equivalência de AFD's utilizou de outras funções antes implementadas no trabalho. Dois autômatos são equivalentes, se as propriedades abaixo são satisfeitas:
+		
+		\begin{enumerate}
+			\item O alfabeto deve ser igual
+			\item A quantidade de estados, após aplicada a minimização de ambos, deve ser igual
+			\item Os estados inicais dos dois AFD's devem ser equivalentes.
+		\end{enumerate}
+		
+		Satisfazendo-se portanto estas 3 propriedades, pode-se afirmar que os dois autômatos são equivalentes.
+		
+		Para testar a equivalência dos estados iniciais de ambos, a estratégia utilizada foi tratar os dois AFD's como se fossem um só, e então utilizar a função de equivalência de estados. Este teste é o último a ser realizado na implementação deste trabalho, pois se alguma das duas primeiras propriedades não forem satisfeitas, não é necessário o custo computacional para este teste, que por sua vez é de maior complexidade.
+		
+		
+	
 		
 	\end{itemize}
 	
