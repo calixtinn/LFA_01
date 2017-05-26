@@ -18,7 +18,7 @@ from View.AFDView import AFDView
 *   A aplicação deve ser executada usado Python 3                                               *
 *   Para realizar a execução, basta usar o seguite comando:                                     *
 *                                                                                               *
-*   $ python3 main.py                                                                           *       
+*   $ /usr/bin/python3 main.py                                                                           *       
 *                                                                                               *
 *   Caso não possua a versão necessária instalada, ela pode ser instalada da seguinte forma:    *
 *                                                                                               *
