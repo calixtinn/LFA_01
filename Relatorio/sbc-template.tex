@@ -114,7 +114,23 @@
 		\end{enumerate}
 	
 		\item \textbf{Minimização de AFD's:} A função de minimização de AFD's funciona com base na função de equivalência de estados, onde, obtida a lista de estados equivalentes, convencionou-se em eliminar o primeiro estado da chave. Ex: Chave (1,3), elimina-se o estado 1.
-		Caso o primeiro estado da chave for o inicial, elimina-se o segundo. Porém, antes de eliminar o estado do AFD, primeiro, as transições deste estado a ser eliminado são modificadas. Ou seja, todas as transições que tinham ele como destino, terão como destino o estado 2 da chave. E todas as transições que tinham o estado 1 como fonte, terão o estado 2 como fonte. Por fim, retorna-se o AFD mínimo.
+		Caso o primeiro estado da chave for o inicial, elimina-se o segundo. Porém, antes de eliminar o estado do AFD, primeiro, as transições deste estado a ser eliminado são modificadas. Ou seja, todas as transições que tinham ele como destino, terão como destino o estado 2 da chave. E todas as transições que tinham o estado 1 como fonte, terão o estado 2 como fonte. Por fim, retorna-se o AFD mínimo.\\
+		
+		\item \textbf{Complemento de AFD's:} A implementação do método que realiza o complemento do autômato se tornou fácil depois que toda a estrutura de decisão de projeto proporcionou a lista de todos os estados. Tal método recebe como parâmetro o AFD que deseja realizar o complemento, desta forma,se torna fácil obter a lista dos estados através do método \textit{getStates}. Tendo todos os estados retornados pelo método do modelo, bastou apenas percorrer a lista de estados e mudar o valor da variável booleana que sinalizava se o estado era final ou não. Por fim, o método retorna o objeto autômato com os estados finais atualizados.\\
+		
+		\item \textbf{União de AFD's:}
+		
+		\item \textbf{Intercessão de AFD's:}
+		
+		\item \textbf{Diferença de AFD's:}
+		
+		\item \textbf{Adiciona estado ao AFD:}
+		
+		\item \textbf{Remove estado do AFD:}
+		
+		\item \textbf{Adiciona transição ao AFD:}
+		
+		\item \textbf{Remove Transição do AFD:}
 		
 	\end{itemize}
 	
