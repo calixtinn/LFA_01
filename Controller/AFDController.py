@@ -383,7 +383,8 @@ class AFDController(object):
                 to_j = transicoes[j].getTo()
                 read_j = transicoes[j].getRead()
                 if from_i == from_j and to_i == to_j and read_i == read_j:
-                    transicoes_iguais.append(int(transicoes[j].getId()))
+                    if int(transicoes[j].getId()) not in transicoes_iguais:
+                        transicoes_iguais.append(int(transicoes[j].getId()))
 
         transicoes_iguais.sort(reverse=True)
 
